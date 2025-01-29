@@ -92,7 +92,7 @@ https://github.com/Jimmyu2foru18/
 ```
 Steven Foster
 ```bash
-https://github.com/Silver-Mark/
+https://github.com/Silver-mark/
 ```
 
 [Guidelines for contributing to the project]
