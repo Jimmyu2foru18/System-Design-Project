@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a collaborative effort by James McGuigan and Steven for the System Design and Implementation course. It aims to [brief description of the project's purpose and goals].
+This project is a collaborative effort by James McGuigan and Steven Foster for the System Design and Implementation course. It aims to [brief description of the project's purpose and goals].
 
 ## Table of Contents
 
@@ -86,6 +86,14 @@ git clone https://github.com/Jimmyu2foru18/System-Design-Project-git
 [Provide an overview of the database structure]
 
 ## Contributing
+James McGuigan 
+```bash
+https://github.com/Jimmyu2foru18/
+```
+Steven Foster
+```bash
+https://github.com/Silver-Mark/
+```
 
 [Guidelines for contributing to the project]
 
