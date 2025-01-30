@@ -1,8 +1,10 @@
-# System Design and Implementation Project
+# Recipe Index - System Design Project
 
 ## Project Overview
 
-This project is a collaborative effort by James McGuigan and Steven Foster for the System Design and Implementation course. It aims to [brief description of the project's purpose and goals].
+This project is a dynamic recipe index website that allows users to browse, save, rate, and post recipes. 
+Built with modern web technologies and AWS infrastructure, it focuses on providing improved user experience, fast performance, 
+and strong security standards.
 
 ## Table of Contents
 
@@ -16,99 +18,124 @@ This project is a collaborative effort by James McGuigan and Steven Foster for t
 - [Contributing](#contributing)
 - [Testing](#testing)
 - [Known Issues](#known-issues)
-- [Future Enhancements](#future-enhancements)
-- [License](#license)
 
 ## Technologies Used
 
-- HTML5
-- CSS3
-- JavaScript
-- MySQL
-- PHP
-- React.js / jQuery (choose one)
+### Front-End
+- HTML5, CSS3, JavaScript
+- Tailwind CSS
+- React.js (optional future enhancement)
+
+### Back-End
+- Node.js + Express.js
+- PostgreSQL
+- JWT Authentication
+- Redis (caching)
+- AWS Services
+
+### Infrastructure
+- AWS S3 (storage)
+- AWS CloudFront (CDN)
+- AWS EC2 (hosting)
+- AWS RDS (database)
+- AWS Lambda (serverless functions)
 
 ## Project Structure
 ```bash
 project-root/
 │
-├── frontend/
-│ ├── src/
-│ ├── public/
-│ └── [other frontend-related files and folders]
-│
-├── backend/
-│ ├── api/
-│ ├── config/
-│ ├── database/
-│ └── [other backend-related files and folders]
-│
-├── docs/
-│
-└── README.md
+├── index.html         # Main entry point
+├── styles.css         # Global styles
+├── app.js             # Client-side JavaScript
+├── server.js          # Express server setup
+├── db.js              # Database configuration
+├── schema.sql         # Database schema
+├── auth.js            # Authentication logic
+├── config.js          # Configuration settings
+├── middleware.js      # Custom middleware
+├── utils.js           # Utility functions
+│── Recipe.js          # Recipe model
+│── User.js            # User model
+│── aws.service.js     # AWS integration
+│── email.service.js   # Email service
+│── api.test.js        # API tests
+│── unit.test.js       # Unit tests
+│── schemas.js         # Validation schemas
+
+└── .env               # Environment variables
 ```
 
 ## Setup and Installation
 
-1. Clone the repository:
+1. Clone the repository
+2. Install dependencies:
 ```bash
-git clone https://github.com/Jimmyu2foru18/System-Design-Project-git
+npm install
 ```
 
-2. Set up the backend:
-[Instructions for setting up PHP and MySQL]
+3. Configure environment variables:
+- Copy `.env.example` to `.env`
+- Fill in required credentials
 
-3. Set up the frontend:
-[Instructions for setting up React/jQuery]
+4. Set up the database:
+```bash
+psql -U your_username -d your_database -f schema.sql
+```
 
-4. Configure the database:
-[Instructions for database setup]
-
-5. Start the application:
-[Instructions to run both backend and frontend]
+5. Start the development server:
+```bash
+npm run dev
+```
 
 ## Usage
 
-[Provide instructions on how to use the application]
+[Instructions on how to use the Website]
+
+
 
 ## Features
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
+- User authentication and authorization
+- Recipe CRUD operations
+- Search and filtering functionality
+- Rating and favorite system
+- Image upload and management
+- Email notifications
+- Responsive design
+
+
 
 ## API Documentation
 
-[Outline the API endpoints and their usage]
+[To be completed as endpoints are developed]
+
+
 
 ## Database Schema
 
-[Provide an overview of the database structure]
+Currently implemented tables:
+- Users: Store user information and authentication data
+- Recipes: Contains recipe details and user-generated content
+
+
+
+[Full schema details to be added as development progresses]
+
+
 
 ## Contributing
-James McGuigan 
-```bash
-https://github.com/Jimmyu2foru18/
-```
-Steven Foster
-```bash
-https://github.com/Silver-mark/
-```
 
-[Guidelines for contributing to the project]
+- James McGuigan (https://github.com/Jimmyu2foru18/)
+- Steven Foster (https://github.com/Silver-mark/)
 
 ## Testing
 
-[Instructions for running tests]
+Run tests with:
+```bash
+npm test
+```
 
 ## Known Issues
 
-[List any known bugs or limitations]
+[To be documented as development progresses]
 
-## Future Enhancements
-
-[Outline planned future features or improvements]
-
-## License
-
-[Specify the license under which the project is released]
