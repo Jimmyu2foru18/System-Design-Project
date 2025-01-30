@@ -3,8 +3,8 @@
 ## Project Overview
 
 This project is a dynamic recipe index website that allows users to browse, save, rate, and post recipes. 
-Built with modern web technologies and AWS infrastructure, it focuses on providing improved user experience, fast performance, 
-and strong security standards.
+Our focus is to provide improved user experience, fast performance, and strong security while creating a engaging,
+simple and useful in feature experience for the end user.
 
 ## Table of Contents
 
