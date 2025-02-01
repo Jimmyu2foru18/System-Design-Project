@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This project is a dynamic recipe index website that allows users to browse, save, rate, and post recipes. 
-Our focus is to provide improved user experience, fast performance, and strong security while creating a engaging,
-simple and useful in feature experience for the end user.
+This project is a recipe index website that designed to allows users to browse, save, rate, and post recipes. 
+What we want to do is, provide improved user experience, fast performance, and strong security while creating a engaging,
+yet simple design to create ease of use for the end user.
 
 ## Table of Contents
 
@@ -24,13 +24,13 @@ simple and useful in feature experience for the end user.
 ### Front-End
 - HTML5, CSS3, JavaScript
 - Tailwind CSS
-- React.js (optional future enhancement)
+- React.js (optional for now)
 
 ### Back-End
 - Node.js + Express.js
 - PostgreSQL
 - JWT Authentication
-- Redis (caching)
+- Redis (caching this is whats recommended)
 - AWS Services
 
 ### Infrastructure
