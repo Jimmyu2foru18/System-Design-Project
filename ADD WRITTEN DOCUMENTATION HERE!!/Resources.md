@@ -17,5 +17,5 @@ https://spoonacular.com/food-api/pricing
 ```
 
 ```bash
-[https://spoonacular.com/food-api/pricing](https://rapidapi.com/ltdbilgisam/api/ai-food-recipe-generator-api-custom-diet-quick-meals/playground/apiendpoint_5bfdc2da-8908-47c3-b8dc-8616b8d3185a)
+https://spoonacular.com/food-api/pricing](https://rapidapi.com/ltdbilgisam/api/ai-food-recipe-generator-api-custom-diet-quick-meals/playground/apiendpoint_5bfdc2da-8908-47c3-b8dc-8616b8d3185a)](https://rapidapi.com/ltdbilgisam/api/ai-food-recipe-generator-api-custom-diet-quick-meals/playground/apiendpoint_5bfdc2da-8908-47c3-b8dc-8616b8d3185a
 ```
