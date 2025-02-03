@@ -19,3 +19,6 @@ https://spoonacular.com/food-api/pricing
 ```bash
 https://rapidapi.com/search?term=recipe&sortBy=ByRelevance
 ```
+```bash
+https://www.promptingguide.ai
+```
