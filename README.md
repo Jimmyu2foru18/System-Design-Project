@@ -4,7 +4,7 @@
 
 This project is a recipe index website that designed to allows users to browse, save, rate, and post recipes. 
 What we want to do is, provide improved user experience, fast performance, and strong security while creating a engaging,
-yet simple design to create ease of use for the end user.
+simple design for ease of use to the end user.
 
 ## Table of Contents
 
