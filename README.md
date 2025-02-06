@@ -87,6 +87,8 @@ root-folder/
 ├── faq.html
 ├── feedback.html
 ├── copyright.html
+├── terms.html
+├── privacy-policy.html
 ├──
 ├──
 ├── API	
