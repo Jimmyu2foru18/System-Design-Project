@@ -57,19 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         </button>
                     </div>
                 </div>
-
-                <!-- Mobile Menu -->
-                <div class="md:hidden hidden" id="mobile-menu">
-                    <div class="px-2 pt-2 pb-3 space-y-1">
-                        <a href="index.html" class="block px-3 py-2 hover:bg-gray-100">Home</a>
-                        <a href="by-meal.html" class="block px-3 py-2 hover:bg-gray-100">Browse</a>
-                        <a href="top10.html" class="block px-3 py-2 hover:bg-gray-100">Top 10's</a>
-                        <a href="random.html" class="block px-3 py-2 hover:bg-gray-100">Random Recipe</a>
-                        <a href="full-index.html" class="block px-3 py-2 hover:bg-gray-100">Full Index</a>
-                        <a href="meal-planner.html" class="block px-3 py-2 hover:bg-gray-100">Meal Planner</a>
-                        <a href="profile.html" class="block px-3 py-2 hover:bg-gray-100">Account</a>
-                    </div>
-                </div>
             </nav>
         `;
 
