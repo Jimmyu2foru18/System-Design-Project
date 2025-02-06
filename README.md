@@ -3,11 +3,13 @@
 ## Project Overview
 
 This project is a recipe index website designed to allows users to: 
-	-	browse
+	
+ 	-	browse
 	-	save 
 	-	rate 
 	-	post recipes 
 What we want to do is: 
+
 	-	provide improved user experience superior to competitiors 
 	-	incorperate fast performance  
 	-	strong security  
