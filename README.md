@@ -55,7 +55,7 @@ What we want to do is:
 root-folder/
 │
 ├── landing.html
-├── index.html
+├── respicy-index.html
 ├── signin.html
 ├── signup.html
 ├── profile.html
