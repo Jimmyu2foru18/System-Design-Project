@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile - Recspicy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav id="nav-container"></nav>
+
+ <!-- Profile -->
+        <section class="bg-grey rounded-lg shadow-lg p-8 mb-8">
+            <div class="flex items-center gap-8 mb-8">
+                <label for="profile-upload" class="cursor-pointer">
+                    <img id="profile-picture" class="w-40 h-40 flex items-center rounded-full bg-gray-200 object-cover border-4 border-blue-500 p-2" src="default-profile.jpg" alt="Profile Picture">
+                </label>
+                <input type="file" id="profile-upload" class="hidden" accept="image/*">
+                    <div>
+						<h2 id="profile-name" class="text-2xl font-bold"></h2>
+						<p id="member-since" class=" text-gray-600"></p>
+					</div>
+				</div>
+		</section>
+        <section class="space-y-6 flex items-center gap-8 mb-8">
+                    <div class="form-group">
+                        <label class="form-label px-4 py-2 bg-blue-500 text-green rounded-full">First Name</label>
+                        <input type="text" id="first-name" class="form-input w-50 border-4 border-blue-500 rounded-full p-2" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label px-4 py-2 bg-blue-500 text-green rounded-full">Last Name</label>
+                        <input type="text" id="last-name" class="form-input w-50 border-4 border-blue-500 rounded-full p-2" />
+                    </div>				
+		</section>
+        <section class="form-group">
+                        <label class="form-label px-4 py-2 bg-blue-500 text-green rounded-full">Email</label>
+                        <input type="email" id="email" class="form-input w-50 border-4 border-blue-500 rounded-full p-2" />
+                        <button id="update-email" class="btn-primary mt-2 bg-green-500 text-black px-4 py-2 rounded-full">Request Email Change</button>
+                    </div>
+		</section>
+		<section class="form-group">			
+                    <p><strong>Bio:</strong></p>
+                    <textarea id="bio" class="form-input w-40 h-40 border-4 border-blue-500 rounded-lg p-2"></textarea>
+                    <button id="save-changes" class="bg-green-500 text-black px-6 py-2 rounded-full mt-4">Save Changes</button>
+            </div>
+        </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="navigation.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get("id");
+                const response = await fetch(`/api/profile?id=${userId}`);
+                const userData = await response.json();
+                
+                document.getElementById("profile-name").textContent = `${userData.firstName} ${userData.lastName}`;
+                document.getElementById("member-since").textContent = `Member since ${userData.joinDate}`;
+                document.getElementById("email").value = userData.email;
+                document.getElementById("bio").value = userData.bio || "";
+                document.getElementById("first-name").value = userData.firstName;
+                document.getElementById("last-name").value = userData.lastName;
+                if (userData.profilePicture) {
+                    document.getElementById("profile-picture").src = userData.profilePicture;
+                }
+                loadUserRecipes(userData.recipes);
+            } catch (error) {
+                console.error("Error loading profile data:", error);
+            }
+        });
+
+        function loadUserRecipes(recipes) {
+            const recipesContainer = document.getElementById("user-recipes");
+            recipesContainer.innerHTML = "";
+            recipes.forEach(recipe => {
+                const card = document.createElement("div");
+                card.className = "recipe-card w-72 bg-gray-100 p-4 rounded-lg shadow";
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold">${recipe.title}</h3>
+                    <p class="text-gray-600 text-sm">${recipe.description}</p>
+                    <a href="recipe-detail.html?id=${recipe.id}" class="text-blue-600 hover:underline">View Recipe</a>
+                `;
+                recipesContainer.appendChild(card);
+            });
+        }
+
+        document.getElementById("profile-upload").addEventListener("change", async function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("profile-picture").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                const formData = new FormData();
+                formData.append("profilePicture", file);
+                await fetch("/api/upload-profile-picture", {
+                    method: "POST",
+                    body: formData,
+                });
+            }
+        });
+
+        document.getElementById("save-changes").addEventListener("click", async () => {
+            const firstName = document.getElementById("first-name").value;
+            const lastName = document.getElementById("last-name").value;
+            const bio = document.getElementById("bio").value;
+            const response = await fetch("/api/update-profile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ firstName, lastName, bio })
+            });
+            if (response.ok) {
+                alert("Profile updated successfully.");
+            } else {
+                alert("Failed to update profile.");
+            }
+        });
+    </script>
+</body>
+</html>
