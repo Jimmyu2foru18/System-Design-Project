@@ -21,7 +21,6 @@ Description: Profile editing page that:
     <!-- Navigation Bar -->
     <nav id="nav-container"></nav>
 
-    <!-- Similar layout to profile.html but with editable fields -->
     <div class="max-w-4xl mx-auto">
         <form id="edit-profile-form" class="space-y-6">
             <!-- Profile Image -->
@@ -48,13 +47,13 @@ Description: Profile editing page that:
                 <div class="space-y-4">
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Username</label>
-                        <input type="text" value="Current Username" class="w-full p-3 border rounded-lg" readonly>
+                        <input type="text" value="Current Username" class="w-full p-3 border rounded-lg" >
                     </div>
 
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Email</label>
                         <div class="flex space-x-4">
-                            <input type="email" value="current@email.com" class="flex-1 p-3 border rounded-lg" readonly>
+                            <input type="email" value="current@email.com" class="flex-1 p-3 border rounded-lg" >
                             <button type="button" class="bg-blue-500 text-white px-4 rounded-lg hover:bg-blue-600" 
                                     onclick="requestEmailChange()">
                                 Request Change
