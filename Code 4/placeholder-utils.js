@@ -14,14 +14,14 @@
 const PlaceholderUtils = {
     // Sample images for recipes
     images: [
-        images: [
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/%D0%91%D0%BE%D0%B6%D0%B8%D1%9B%D0%BD%D0%B0_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D0%B0_%28traditional_Christmas_dinner%3B_Folklore_of_Serbia%29.jpg/800px-%D0%91%D0%BE%D0%B6%D0%B8%D1%9B%D0%BD%D0%B0_%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D0%B0_%28traditional_Christmas_dinner%3B_Folklore_of_Serbia%29.jpg?20230115074905', // Dinner
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Penne_Arrabbiata.jpg/698px-Penne_Arrabbiata.jpg?20230521185924', // Pasta
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Lutong_Bahay_-_Chicken_Strips_with_%22Chinese%22_Sauce.jpg/800px-Lutong_Bahay_-_Chicken_Strips_with_%22Chinese%22_Sauce.jpg?20100928162314', // Chicken
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Tuna_salad_sandwich.jpg/800px-Tuna_salad_sandwich.jpg?20121209214243', // Tuna Salad
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Chocolate_Cake_28.jpg/450px-Chocolate_Cake_28.jpg?20241028150534' // Dessert
-	    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Big_Mac_hamburger.jpg/694px-Big_Mac_hamburger.jpg?20140901052922' //burger 
+    images: [
+        'https://upload.wikimedia.org/wikipedia/commons/4/45/Plated_dinner.jpg', // Dinner
+        'https://upload.wikimedia.org/wikipedia/commons/0/0b/Spaghetti_alle_Vongole.jpg', // Pasta
+        'https://upload.wikimedia.org/wikipedia/commons/3/39/Roast_chicken.jpg', // Chicken
+        'https://upload.wikimedia.org/wikipedia/commons/7/7f/Greek_salad.jpg', // Salad
+        'https://upload.wikimedia.org/wikipedia/commons/9/92/Chocolate_cake.jpg' // Dessert
     ],
+};
 
     // Sample recipe titles
     titles: [
