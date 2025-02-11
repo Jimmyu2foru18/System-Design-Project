@@ -14,11 +14,9 @@
 const PlaceholderUtils = {
     // Sample images for recipes
     images: [
-        'https://upload.wikimedia.org/wikipedia/commons/4/45/Plated_dinner.jpg', // Dinner
-        'https://upload.wikimedia.org/wikipedia/commons/0/0b/Spaghetti_alle_Vongole.jpg', // Pasta
-        'https://upload.wikimedia.org/wikipedia/commons/3/39/Roast_chicken.jpg', // Chicken
-        'https://upload.wikimedia.org/wikipedia/commons/7/7f/Greek_salad.jpg', // Salad
-        'https://upload.wikimedia.org/wikipedia/commons/9/92/Chocolate_cake.jpg' // Dessert
+        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1', 
+        'https://images.unsplash.com/photo-1525755662778-989d0524087e', 
+        'https://images.unsplash.com/photo-1551024709-8f23befc6f87'
     ],
 
     // Sample recipe titles
