@@ -14,14 +14,12 @@
 const PlaceholderUtils = {
     // Sample images for recipes
     images: [
-    images: [
         'https://upload.wikimedia.org/wikipedia/commons/4/45/Plated_dinner.jpg', // Dinner
         'https://upload.wikimedia.org/wikipedia/commons/0/0b/Spaghetti_alle_Vongole.jpg', // Pasta
         'https://upload.wikimedia.org/wikipedia/commons/3/39/Roast_chicken.jpg', // Chicken
         'https://upload.wikimedia.org/wikipedia/commons/7/7f/Greek_salad.jpg', // Salad
         'https://upload.wikimedia.org/wikipedia/commons/9/92/Chocolate_cake.jpg' // Dessert
     ],
-};
 
     // Sample recipe titles
     titles: [
