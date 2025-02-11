@@ -85,28 +85,6 @@ Description: User profile page that:
                 </div>
             </div>
 
-                <!-- Recipe Management -->
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold">My Recipes</h2>
-                        <div class="space-x-4">
-                            <select id="recipe-privacy" onchange="filterRecipes(this.value)"
-                                    class="border rounded p-1">
-                                <option value="all">All Recipes</option>
-                                <option value="public">Public</option>
-                                <option value="private">Private</option>
-                            </select>
-                            <a href="recipe-create.html" 
-                               class="px-4 py-2 bg-green-600 text-white rounded">
-                                Create Recipe
-                            </a>
-                        </div>
-                    </div>
-                    <div id="user-recipes" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Recipes will be loaded here -->
-                    </div>
-                </div>
-
                 <!-- Meal Plans -->
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <div class="flex justify-between items-center mb-4">
