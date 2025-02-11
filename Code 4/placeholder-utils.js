@@ -14,11 +14,12 @@
 const PlaceholderUtils = {
     // Sample images for recipes
     images: [
-        'https://source.unsplash.com/800x600/?food,dinner',
-        'https://source.unsplash.com/800x600/?food,pasta',
-        'https://source.unsplash.com/800x600/?food,chicken',
-        'https://source.unsplash.com/800x600/?food,salad',
-        'https://source.unsplash.com/800x600/?food,dessert'
+        images: [
+        'https://upload.wikimedia.org/wikipedia/commons/4/45/Plated_dinner.jpg', // Dinner
+        'https://upload.wikimedia.org/wikipedia/commons/0/0b/Spaghetti_alle_Vongole.jpg', // Pasta
+        'https://upload.wikimedia.org/wikipedia/commons/3/39/Roast_chicken.jpg', // Chicken
+        'https://upload.wikimedia.org/wikipedia/commons/7/7f/Greek_salad.jpg', // Salad
+        'https://upload.wikimedia.org/wikipedia/commons/9/92/Chocolate_cake.jpg' // Dessert
     ],
 
     // Sample recipe titles
