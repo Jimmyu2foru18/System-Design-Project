@@ -1,0 +1,102 @@
+<!--
+Authors: James McGuigan, Steven Foster
+Description: About Us page that:
+- Explains the Recspicy Index mission and purpose
+- Describes the platform's features and benefits
+- Introduces the team and vision
+- Maintains consistent styling with other pages
+- Uses Tailwind CSS for responsive design
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Recspicy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+
+    <main class="flex-grow container mx-auto px-4 py-16">
+        <div class="max-w-4xl mx-auto">
+            <!-- Hero Section -->
+            <section class="text-center mb-16">
+                <h1 class="text-4xl font-bold mb-6">About The Recspicy Index</h1>
+                <p class="text-xl text-gray-600">Your Premium Recipe Management Platform</p>
+            </section>
+
+            <!-- Mission Section -->
+            <section class="bg-white rounded-lg shadow-lg p-8 mb-12">
+                <h2 class="text-2xl font-bold mb-6">Our Mission</h2>
+                <p class="text-gray-700 mb-6">
+                    The Recspicy Index is dedicated to simplifying recipe management and discovery. 
+                    We aim to create a user-friendly platform that makes finding, saving, and sharing recipes 
+                    an enjoyable experience for food enthusiasts of all skill levels.
+                </p>
+            </section>
+
+            <!-- Features Section -->
+            <section class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">Recipe Management</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Create and store personal recipes</li>
+                        <li>• Organize recipes by categories</li>
+                        <li>• Share recipes with the community</li>
+                        <li>• Rate and review recipes</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">Smart Features</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Advanced recipe search</li>
+                        <li>• Meal planning tools</li>
+                        <li>• Dietary restriction filters</li>
+                        <li>• Ingredient-based recommendations</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Platform Benefits -->
+            <section class="bg-white rounded-lg shadow-lg p-8 mb-12">
+                <h2 class="text-2xl font-bold mb-6">Why Choose Recspicy?</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🔍</div>
+                        <h3 class="font-bold mb-2">Easy Discovery</h3>
+                        <p class="text-gray-600">Find recipes that match your preferences and dietary needs</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📱</div>
+                        <h3 class="font-bold mb-2">User Friendly</h3>
+                        <p class="text-gray-600">Simple and intuitive interface for all users</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🤝</div>
+                        <h3 class="font-bold mb-2">Community Driven</h3>
+                        <p class="text-gray-600">Share and discover recipes from food lovers worldwide</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="text-center bg-blue-500 text-white rounded-lg p-8">
+                <h2 class="text-3xl font-bold mb-4">Join Our Community</h2>
+                <p class="mb-6">Start your culinary journey with Recspicy today</p>
+                <div class="space-x-4">
+                    <a href="signup.html" class="inline-block bg-white text-blue-500 px-6 py-2 rounded-full font-bold hover:bg-gray-100 transition">Sign Up</a>
+                    <a href="signin.html" class="inline-block border-2 border-white text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">Sign In</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="navigation.js"></script>
+</body>
+</html> 

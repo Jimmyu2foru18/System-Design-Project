@@ -1,0 +1,219 @@
+<!--
+Authors: James McGuigan, Steven Foster
+Description: User profile page that:
+- Displays user information and settings
+- Shows user's created recipes
+- Lists favorite recipes
+- Manages meal plans
+- Handles profile customization
+- Provides support ticket system
+- Implements privacy controls
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Recspicy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav id="nav-container"></nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Profile Header -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="relative">
+                            <img id="profile-picture" class="w-32 h-32 rounded-full object-cover" src="placeholder-avatar.jpg" alt="Profile Picture">
+                        </div>
+                        <div>
+                            <h1 id="profile-name" class="text-3xl font-bold"></h1>
+                            <p id="username" class="text-lg text-gray-600">@username</p>
+                            <p id="member-since" class="text-gray-600">Member since: January 2024</p>
+                        </div>
+                    </div>
+                    <a href="edit-profile.html" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                        Edit Profile
+                    </a>
+                </div>
+                
+                <div class="mt-6">
+                    <h2 class="text-xl font-semibold mb-2">Bio</h2>
+                    <p id="bio" class="text-gray-700">User's bio text here...</p>
+                </div>
+            </div>
+
+            <!-- Recipe Management -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">My Recipes</h2>
+                    <a href="recipe-create.html" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                        Create Recipe
+                    </a>
+                </div>
+
+                <!-- Recipe Tabs -->
+                <div class="border-b mb-6">
+                    <div class="flex space-x-6">
+                        <button class="px-4 py-2 border-b-2 border-blue-500 font-semibold">Public Recipes</button>
+                        <button class="px-4 py-2 text-gray-500 hover:text-gray-700">Private Recipes</button>
+                    </div>
+                </div>
+
+                <!-- Recipe Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="recipe-grid">
+                    <!-- Recipe cards will be populated here -->
+                </div>
+            </div>
+
+            <!-- Meal Plans Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">My Meal Plans</h2>
+                    <a href="meal-planner.html" 
+                       class="text-blue-600 hover:text-blue-800">
+                        Create New Plan
+                    </a>
+                </div>
+                <div id="meal-plans" class="space-y-4">
+                    <!-- Meal plans will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Add to profile.html -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Profile Info -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Profile Information</h2>
+                        <button onclick="openEditProfile()" 
+                                class="text-blue-600 hover:text-blue-800">
+                            Edit Profile
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <img id="profile-image" src="" alt="Profile" 
+                                 class="w-24 h-24 rounded-full object-cover">
+                            <div>
+                                <h3 id="profile-name" class="text-lg font-semibold"></h3>
+                                <p id="username" class="text-gray-600"></p>
+                            </div>
+                        </div>
+                        <p id="bio" class="text-gray-700"></p>
+                        <div class="flex space-x-4">
+                            <button onclick="requestEmailChange()" 
+                                    class="px-4 py-2 bg-blue-600 text-white rounded">
+                                Change Email
+                            </button>
+                            <button onclick="requestPasswordChange()"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded">
+                                Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe Management -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">My Recipes</h2>
+                        <div class="space-x-4">
+                            <select id="recipe-privacy" onchange="filterRecipes(this.value)"
+                                    class="border rounded p-1">
+                                <option value="all">All Recipes</option>
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                            <a href="recipe-create.html" 
+                               class="px-4 py-2 bg-green-600 text-white rounded">
+                                Create Recipe
+                            </a>
+                        </div>
+                    </div>
+                    <div id="user-recipes" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Recipes will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Meal Plans -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Weekly Meal Plans</h2>
+                        <a href="meal-planner.html" 
+                           class="px-4 py-2 bg-blue-600 text-white rounded">
+                            Create Plan
+                        </a>
+                    </div>
+                    <div id="meal-plans" class="space-y-4">
+                        <!-- Meal plans will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Support & Feedback -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">Support & Feedback</h2>
+                    <div class="space-y-4">
+                        <button onclick="openSupportTicket()" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded">
+                            New Support Ticket
+                        </button>
+                        <div id="support-history" class="space-y-2">
+                            <!-- Support history will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="navigation.js"></script>
+	
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get("id");
+                const response = await fetch(`/api/profile?id=${userId}`);
+                const userData = await response.json();
+                
+                document.getElementById("profile-name").textContent = `${userData.firstName} ${userData.lastName}`;
+                document.getElementById("username").textContent = userData.username;
+                document.getElementById("member-since").textContent = `Member since ${userData.joinDate}`;
+                document.getElementById("email").textContent = userData.email;
+                document.getElementById("bio").textContent = userData.bio || "No bio available.";
+                if (userData.profilePicture) {
+                    document.getElementById("profile-picture").src = userData.profilePicture;
+                }
+                loadUserRecipes(userData.recipes);
+            } catch (error) {
+                console.error("Error loading profile data:", error);
+            }
+        });
+
+        function loadUserRecipes(recipes) {
+            const recipesContainer = document.getElementById("recipe-grid");
+            recipesContainer.innerHTML = "";
+            recipes.forEach(recipe => {
+                const card = document.createElement("div");
+                card.className = "recipe-card w-72 bg-gray-100 p-4 rounded-lg shadow";
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold">${recipe.title}</h3>
+                    <p class="text-gray-600 text-sm">${recipe.description}</p>
+                    <a href="recipe-detail.html?id=${recipe.id}" class="text-blue-600 hover:underline">View Recipe</a>
+                `;
+                recipesContainer.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
