@@ -1,57 +1,147 @@
 /**
- * Authors: James McGuigan, Steven Foster
- * Description: Utility functions that:
- * - Generate placeholder recipe cards for development
- * - Create consistent card layouts with images
- * - Add rating and favorite functionality
- * - Populate containers with specified number of cards
- * - Will be replaced with real data once database is connected
+ * @fileoverview Placeholder utilities that provide:
+ * - Mock recipe data generation
+ * - Sample images, titles, and descriptions
+ * - Trending recipes simulation
+ * - Featured recipes generation
+ * - Search and filter functionality
+ * - Rating and favorite system simulation
+ * 
+ * @authors James McGuigan, Steven Foster
  */
-const placeholderUtils = {
-    createRecipeCard() {
-        const card = document.createElement("div");
-        card.className = "recipe-card w-72 bg-white rounded-lg shadow-md overflow-hidden";
 
-        card.innerHTML = `
-            <div class="relative pb-48">
-                <img src="https://via.placeholder.com/300x200" alt="Recipe" class="absolute inset-0 w-full h-full object-cover">
-            </div>
-            <div class="p-4">
-                <h3 class="text-lg font-bold">Recipe</h3>
-                <p class="text-gray-600 text-sm mb-2">Quick and easy to prepare...</p>
-                <div class="flex justify-between items-center">
-                    <div class="flex space-x-1 text-xs">
-                        <span class="bg-gray-100 px-2 py-1 rounded">30 min</span>
-                        <span class="bg-gray-100 px-2 py-1 rounded">Easy</span>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">4.96 ⭐</span>
-                        <button class="text-blue-600 hover:text-blue-800">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" 
-                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
+// Placeholder utilities for recipe data before database integration
+const PlaceholderUtils = {
+    // Sample images for recipes
+    images: [
+        'https://source.unsplash.com/800x600/?food,dinner',
+        'https://source.unsplash.com/800x600/?food,pasta',
+        'https://source.unsplash.com/800x600/?food,chicken',
+        'https://source.unsplash.com/800x600/?food,salad',
+        'https://source.unsplash.com/800x600/?food,dessert'
+    ],
 
-        return card;
+    // Sample recipe titles
+    titles: [
+        'Creamy Garlic Pasta',
+        'Grilled Chicken with Herbs',
+        'Mediterranean Salad',
+        'Chocolate Lava Cake',
+        'Spicy Thai Curry',
+        'Classic Beef Burger',
+        'Vegetarian Pizza',
+        'Fresh Sushi Roll',
+        'Homemade Tacos',
+        'Apple Pie',
+        'BBQ Ribs',
+        'Caesar Salad',
+        'Mushroom Risotto',
+        'Fish and Chips',
+        'Beef Stir Fry'
+    ],
+
+    // Sample descriptions
+    descriptions: [
+        'A delicious homemade recipe perfect for family dinners...',
+        'Quick and easy meal ready in under 30 minutes...',
+        'Healthy and nutritious with fresh ingredients...',
+        'Classic comfort food with a modern twist...',
+        'Spicy and flavorful dish that will warm your soul...'
+    ],
+
+    // Generate a random recipe
+    generateRecipe(id) {
+        const randomRating = (Math.random() * 2 + 3).toFixed(1); // Rating between 3.0 and 5.0
+        const randomRatingCount = Math.floor(Math.random() * 500) + 50; // Between 50 and 550 ratings
+        const randomVisits = Math.floor(Math.random() * 1000) + 100; // Between 100 and 1100 visits
+
+        return {
+            _id: id || `recipe-${Math.random().toString(36).substr(2, 9)}`,
+            title: this.titles[Math.floor(Math.random() * this.titles.length)],
+            description: this.descriptions[Math.floor(Math.random() * this.descriptions.length)],
+            image: this.images[Math.floor(Math.random() * this.images.length)],
+            rating: parseFloat(randomRating),
+            ratingCount: randomRatingCount,
+            visits: randomVisits,
+            isFavorited: Math.random() > 0.7, // 30% chance of being favorited
+            createdAt: new Date(Date.now() - Math.random() * 10000000000),
+            author: {
+                name: 'Test User',
+                id: 'user-123'
+            },
+            category: ['breakfast', 'lunch', 'dinner', 'dessert'][Math.floor(Math.random() * 4)],
+            prepTime: `${Math.floor(Math.random() * 30) + 10} mins`,
+            cookTime: `${Math.floor(Math.random() * 45) + 15} mins`,
+            servings: Math.floor(Math.random() * 4) + 2
+        };
     },
 
-    populateCards(containerId, count) {
-        const container = document.getElementById(containerId);
-        if (container) {
-            for (let i = 0; i < count; i++) {
-                container.appendChild(this.createRecipeCard());
-            }
+    // Generate multiple recipes
+    generateRecipes(count = 10) {
+        return Array(count).fill(null).map(() => this.generateRecipe());
+    },
+
+    // Get trending recipes (top visited)
+    getTrendingRecipes() {
+        const recipes = this.generateRecipes(5);
+        recipes.forEach(recipe => {
+            recipe.visits = Math.floor(Math.random() * 1000) + 500; // Higher visit counts
+        });
+        return recipes.sort((a, b) => b.visits - a.visits);
+    },
+
+    // Get featured recipes (random selection)
+    getFeaturedRecipes() {
+        return this.generateRecipes(12);
+    },
+
+    // Get recommended recipes (high rated)
+    getRecommendedRecipes() {
+        const recipes = this.generateRecipes(12);
+        recipes.forEach(recipe => {
+            recipe.rating = (Math.random() * 1 + 4).toFixed(1); // Rating between 4.0 and 5.0
+        });
+        return recipes.sort((a, b) => b.rating - a.rating);
+    },
+
+    // Search recipes with filters
+    searchRecipes(params = {}) {
+        let recipes = this.generateRecipes(20);
+        
+        if (params.search) {
+            recipes = recipes.filter(recipe => 
+                recipe.title.toLowerCase().includes(params.search.toLowerCase())
+            );
         }
+
+        if (params.category) {
+            recipes = recipes.filter(recipe => recipe.category === params.category);
+        }
+
+        if (params.minRating) {
+            recipes = recipes.filter(recipe => recipe.rating >= params.minRating);
+        }
+
+        return recipes;
+    },
+
+    // Get recipes by category
+    getRecipesByCategory(category) {
+        const recipes = this.generateRecipes(8);
+        recipes.forEach(recipe => recipe.category = category);
+        return recipes;
+    },
+
+    // Mock favorite toggling
+    toggleFavorite(recipeId) {
+        return {
+            success: true,
+            favorited: Math.random() > 0.5
+        };
     }
 };
 
-// Load placeholders
-document.addEventListener("DOMContentLoaded", () => {
-    placeholderUtils.populateCards("top-5-container", 5);
-    placeholderUtils.populateCards("scroll-container", 12);
-});
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PlaceholderUtils;
+} 
