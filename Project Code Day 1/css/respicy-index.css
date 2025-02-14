@@ -1,11 +1,9 @@
-/* Main Layout */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
 }
 
-/* Hero Section */
 .hero-section {
     position: relative;
     height: 400px;
@@ -55,7 +53,6 @@
     color: #f8f9fa;
 }
 
-/* Recipe Sections */
 .recipe-section {
     margin-bottom: 3rem;
 }
