@@ -1,0 +1,173 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const searchForm = document.getElementById('search-form');
+    const searchInput = document.getElementById('search-input');
+    const resultsGrid = document.getElementById('results-grid');
+    const resultsCount = document.getElementById('results-count');
+    const sortSelect = document.getElementById('sort-select');
+    const filters = {
+        cuisine: document.getElementById('cuisine-filter'),
+        meal: document.getElementById('meal-filter'),
+        diet: document.getElementById('diet-filter'),
+        time: document.getElementById('time-filter')
+    };
+
+    // Check for URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('q')) {
+        searchInput.value = urlParams.get('q');
+        performSearch();
+    }
+
+    // Event listeners
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        performSearch();
+    });
+
+    sortSelect.addEventListener('change', () => {
+        sortResults();
+    });
+
+    Object.values(filters).forEach(filter => {
+        filter.addEventListener('change', () => {
+            performSearch();
+        });
+    });
+
+    async function performSearch() {
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        try {
+            const recipes = await fetchRecipes(query, {
+                mealType: document.getElementById('meal-type').value,
+                allergens: getSelectedAllergens(),
+                // ... other existing filters
+            });
+            displayResults(recipes);
+        } catch (error) {
+            console.error('Search error:', error);
+            showError('Failed to perform search. Please try again.');
+        }
+    }
+
+    function displayResults(results) {
+        resultsCount.textContent = `${results.length} results found`;
+        
+        if (results.length === 0) {
+            resultsGrid.innerHTML = `
+                <div class="no-results">
+                    <h3>No recipes found</h3>
+                    <p>Try adjusting your search terms or filters</p>
+                </div>
+            `;
+            return;
+        }
+
+        resultsGrid.innerHTML = results.map(recipe => `
+            <div class="recipe-card">
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">${recipe.title}</h3>
+                    <div class="recipe-meta">
+                        <span>${recipe.cookTime} mins</span>
+                        <span>★ ${recipe.rating}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function sortResults() {
+        const results = Array.from(resultsGrid.children);
+        const sortBy = sortSelect.value;
+
+        results.sort((a, b) => {
+            switch (sortBy) {
+                case 'rating':
+                    return getRating(b) - getRating(a);
+                case 'time':
+                    return getCookTime(a) - getCookTime(b);
+                default:
+                    return 0;
+            }
+        });
+
+        resultsGrid.innerHTML = '';
+        results.forEach(result => resultsGrid.appendChild(result));
+    }
+
+    function getRating(element) {
+        return parseFloat(element.querySelector('.recipe-meta span:last-child').textContent.replace('★ ', ''));
+    }
+
+    function getCookTime(element) {
+        return parseInt(element.querySelector('.recipe-meta span:first-child').textContent);
+    }
+
+    function showError(message) {
+        resultsGrid.innerHTML = `
+            <div class="no-results">
+                <h3>Error</h3>
+                <p>${message}</p>
+            </div>
+        `;
+    }
+
+    function getSelectedAllergens() {
+        return Array.from(document.querySelectorAll('input[name="allergens"]:checked'))
+            .map(checkbox => checkbox.value);
+    }
+
+    async function fetchRecipes(query, filters) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Mock filtering logic
+        let recipes = mockRecipes.filter(recipe => {
+            // Basic text search
+            if (!recipe.title.toLowerCase().includes(query.toLowerCase())) {
+                return false;
+            }
+
+            // Meal type filter
+            if (filters.mealType && recipe.mealType !== filters.mealType) {
+                return false;
+            }
+
+            // Allergen filter
+            if (filters.allergens.length > 0) {
+                return filters.allergens.every(allergen => 
+                    !recipe.allergens.includes(allergen)
+                );
+            }
+
+            return true;
+        });
+
+        return recipes;
+    }
+
+    const mockRecipes = [
+        {
+            title: 'Classic Pancakes',
+            mealType: 'breakfast',
+            allergens: ['dairy', 'eggs', 'gluten'],
+            // ... other recipe data
+        },
+        {
+            title: 'Vegan Curry',
+            mealType: 'dinner',
+            allergens: ['soy'],
+            // ... other recipe data
+        },
+        // ... more mock recipes
+    ];
+
+    document.querySelectorAll('input[name="allergens"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            // Trigger search with current query and updated filters
+            const query = document.getElementById('search-input').value;
+            performSearch();
+        });
+    });
+}); 
