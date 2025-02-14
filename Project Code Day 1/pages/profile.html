@@ -24,7 +24,6 @@
         </section>
 
         <section class="profile-content">
-            <!-- Sidebar -->
             <div class="profile-sidebar">
                 <div class="sidebar-section">
                     <h3 class="sidebar-title">Preferences</h3>
@@ -70,8 +69,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Main Content -->
             <div class="profile-main">
                 <div class="content-tabs">
                     <button class="tab active" data-tab="public">Public Recipes</button>
@@ -81,7 +78,6 @@
                     <button class="tab" data-tab="support">Support Tickets</button>
                 </div>
 
-                <!-- Public Recipes Tab -->
                 <div id="public" class="tab-content active">
                     <div class="tab-header">
                         <h2>My Public Recipes</h2>
@@ -90,11 +86,9 @@
                         </button>
                     </div>
                     <div class="recipe-grid" id="public-recipes-grid">
-                        <!-- Public recipes will be loaded here -->
                     </div>
                 </div>
 
-                <!-- Private Recipes Tab -->
                 <div id="private" class="tab-content">
                     <div class="tab-header">
                         <h2>My Private Recipes</h2>
@@ -103,11 +97,9 @@
                         </button>
                     </div>
                     <div class="recipe-grid" id="private-recipes-grid">
-                        <!-- Private recipes will be loaded here -->
                     </div>
                 </div>
 
-                <!-- Meal Plans Tab -->
                 <div id="meal-plans" class="tab-content">
                     <div class="tab-header">
                         <h2>My Meal Plans</h2>
@@ -116,21 +108,17 @@
                         </button>
                     </div>
                     <div class="meal-plans-grid" id="meal-plans-grid">
-                        <!-- Meal plans will be loaded here -->
                     </div>
                 </div>
 
-                <!-- Favorites Tab -->
                 <div id="favorites" class="tab-content">
                     <div class="tab-header">
                         <h2>My Favorite Recipes</h2>
                     </div>
                     <div class="recipe-grid" id="favorites-grid">
-                        <!-- Favorited recipes will be loaded here -->
                     </div>
                 </div>
 
-                <!-- Support Tickets Tab -->
                 <div id="support" class="tab-content">
                     <div class="tab-header">
                         <h2>Support Tickets</h2>
@@ -139,14 +127,12 @@
                         </button>
                     </div>
                     <div class="tickets-list" id="tickets-grid">
-                        <!-- Support tickets will be loaded here -->
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Edit Recipe Modal -->
     <div id="edit-recipe-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -167,14 +153,12 @@
                     <div class="form-group">
                         <label for="recipe-ingredients">Ingredients</label>
                         <div id="ingredients-list">
-                            <!-- Ingredients will be added here -->
                         </div>
                         <button type="button" onclick="addIngredient()">Add Ingredient</button>
                     </div>
                     <div class="form-group">
                         <label for="recipe-instructions">Instructions</label>
                         <div id="instructions-list">
-                            <!-- Instructions will be added here -->
                         </div>
                         <button type="button" onclick="addInstruction()">Add Step</button>
                     </div>
