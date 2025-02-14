@@ -11,14 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         time: document.getElementById('time-filter')
     };
 
-    // Check for URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('q')) {
         searchInput.value = urlParams.get('q');
         performSearch();
     }
-
-    // Event listeners
     searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         performSearch();
@@ -42,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const recipes = await fetchRecipes(query, {
                 mealType: document.getElementById('meal-type').value,
                 allergens: getSelectedAllergens(),
-                // ... other existing filters
             });
             displayResults(recipes);
         } catch (error) {
@@ -122,19 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchRecipes(query, filters) {
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        // Mock filtering logic
         let recipes = mockRecipes.filter(recipe => {
-            // Basic text search
             if (!recipe.title.toLowerCase().includes(query.toLowerCase())) {
                 return false;
             }
-
-            // Meal type filter
             if (filters.mealType && recipe.mealType !== filters.mealType) {
                 return false;
             }
-
-            // Allergen filter
             if (filters.allergens.length > 0) {
                 return filters.allergens.every(allergen => 
                     !recipe.allergens.includes(allergen)
@@ -152,20 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Classic Pancakes',
             mealType: 'breakfast',
             allergens: ['dairy', 'eggs', 'gluten'],
-            // ... other recipe data
         },
         {
             title: 'Vegan Curry',
             mealType: 'dinner',
             allergens: ['soy'],
-            // ... other recipe data
         },
-        // ... more mock recipes
     ];
 
     document.querySelectorAll('input[name="allergens"]').forEach(checkbox => {
         checkbox.addEventListener('change', () => {
-            // Trigger search with current query and updated filters
             const query = document.getElementById('search-input').value;
             performSearch();
         });
