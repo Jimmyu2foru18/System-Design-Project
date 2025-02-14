@@ -3,15 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const googleSignup = document.querySelector('.google-signup');
     const inputs = signupForm.querySelectorAll('.form-input');
     const submitButton = signupForm.querySelector('.signup-button');
-
-    // Validation patterns
     const patterns = {
         username: /^[a-zA-Z0-9_]{3,20}$/,
         email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         password: /^.{8,}$/
     };
 
-    // Real-time validation
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             validateInput(input);
@@ -26,8 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function validateInput(input) {
         const errorMessage = input.nextElementSibling;
         let isValid = true;
-
-        // Clear previous error state
         input.classList.remove('error');
         errorMessage.classList.remove('visible');
 
@@ -65,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = !(allInputsValid && termsAgreed);
     }
 
-    // Handle form submission
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -82,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // For demo purposes - replace with actual API call
             console.log('Sign up data:', formData);
             localStorage.setItem('userToken', 'demo-token');
             window.location.href = 'respicy-index.html';
@@ -91,13 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Failed to create account. Please try again.');
         }
     });
-
-    // Handle Google signup
     googleSignup.addEventListener('click', () => {
-        // Implement Google OAuth when ready
         alert('Google sign up will be implemented soon!');
     });
-
-    // Terms checkbox handler
     document.getElementById('terms-agree').addEventListener('change', checkFormValidity);
 }); 
