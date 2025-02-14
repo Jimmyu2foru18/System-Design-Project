@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Load initial data
     loadTrendingRecipes();
     loadFeaturedRecipes();
     loadRecommendedRecipes();
-
-    // Set up filter buttons
     initializeFilters();
 });
 
@@ -13,11 +10,8 @@ function initializeFilters() {
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active state
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
-            // Apply filter
             const filter = button.dataset.filter;
             filterRecipes(filter);
         });
@@ -101,10 +95,7 @@ function showError(containerId) {
         </div>
     `;
 }
-
-// Mock API functions
 async function fetchTrendingRecipes() {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
     return [
@@ -116,16 +107,15 @@ async function fetchTrendingRecipes() {
             difficulty: 'Medium',
             categories: ['trending', 'popular']
         },
-        // Add more mock recipes...
     ];
 }
 
 async function fetchFeaturedRecipes() {
     await new Promise(resolve => setTimeout(resolve, 500));
-    return [/* Mock featured recipes */];
+    return [/*featured recipes */];
 }
 
 async function fetchRecommendedRecipes() {
     await new Promise(resolve => setTimeout(resolve, 500));
-    return [/* Mock recommended recipes */];
+    return [];
 } 
