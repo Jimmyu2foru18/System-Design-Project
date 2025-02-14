@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Load user data
     loadUserProfile();
-    
-    // Initialize tabs
+
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -14,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add edit profile button handler
     const editButton = document.querySelector('.edit-button');
     if (editButton) {
         editButton.addEventListener('click', () => {
@@ -37,36 +34,31 @@ async function loadUserProfile() {
 function updateProfileUI(userData) {
     document.querySelector('.profile-name').textContent = userData.name;
     document.querySelector('.profile-bio').textContent = userData.bio || '';
-    
-    // Update sidebar stats
+
     document.getElementById('public-count').textContent = userData.publicRecipesCount;
     document.getElementById('private-count').textContent = userData.privateRecipesCount;
     document.getElementById('mealplan-count').textContent = userData.mealPlansCount;
     document.getElementById('favorites-count').textContent = userData.favoritesCount;
-    
-    // Update preferences
+
     document.getElementById('cuisine-pref').textContent = userData.preferences.cuisines.join(', ');
     document.getElementById('dietary-pref').textContent = userData.preferences.diet;
     document.getElementById('skill-pref').textContent = userData.preferences.skillLevel;
     document.getElementById('time-pref').textContent = userData.preferences.cookingTime;
-    
-    // Update avatar
+
     if (userData.avatar) {
         document.getElementById('profile-avatar').src = userData.avatar;
     }
 }
 
 async function switchTab(tabName) {
-    // Hide all tab content
+
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
     });
-    
-    // Show selected tab
+
     const selectedTab = document.getElementById(tabName);
     selectedTab.classList.add('active');
-    
-    // Load tab content
+
     try {
         switch(tabName) {
             case 'public':
@@ -200,11 +192,8 @@ function displayTickets(tickets) {
 }
 
 function viewTicket(ticketId) {
-    // Open ticket conversation modal
-    // This will show the full conversation history and allow new replies
 }
 
-// Mock API functions
 async function fetchUserData() {
     return {
         name: 'John Doe',
@@ -216,19 +205,13 @@ async function fetchUserData() {
     };
 }
 
-// Add more mock API functions for recipes and meal plans...
-
-// Add these functions to handle recipe editing
-
 function editRecipe(recipeId) {
-    // Fetch recipe data and populate modal
     fetchRecipeDetails(recipeId).then(recipe => {
         document.getElementById('recipe-id').value = recipe.id;
         document.getElementById('recipe-title').value = recipe.title;
         document.getElementById('recipe-description').value = recipe.description;
         document.getElementById('recipe-visibility').value = recipe.visibility;
-        
-        // Populate ingredients
+
         const ingredientsList = document.getElementById('ingredients-list');
         ingredientsList.innerHTML = recipe.ingredients.map((ingredient, index) => `
             <div class="ingredient-item">
@@ -236,8 +219,6 @@ function editRecipe(recipeId) {
                 <button type="button" onclick="removeIngredient(this)">Remove</button>
             </div>
         `).join('');
-        
-        // Populate instructions
         const instructionsList = document.getElementById('instructions-list');
         instructionsList.innerHTML = recipe.instructions.map((instruction, index) => `
             <div class="instruction-item">
@@ -245,8 +226,6 @@ function editRecipe(recipeId) {
                 <button type="button" onclick="removeInstruction(this)">Remove</button>
             </div>
         `).join('');
-        
-        // Show modal
         document.getElementById('edit-recipe-modal').classList.add('show');
     });
 }
@@ -284,8 +263,6 @@ function removeInstruction(button) {
 function closeEditModal() {
     document.getElementById('edit-recipe-modal').classList.remove('show');
 }
-
-// Update the form submission handler
 document.getElementById('edit-recipe-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -302,7 +279,6 @@ document.getElementById('edit-recipe-form').addEventListener('submit', async (e)
     try {
         await updateRecipe(formData);
         closeEditModal();
-        // Refresh the recipe list
         if (formData.visibility === 'public') {
             loadPublicRecipes();
         } else {
@@ -314,22 +290,14 @@ document.getElementById('edit-recipe-form').addEventListener('submit', async (e)
         showError('Failed to update recipe');
     }
 });
-
-// Mock API function for recipe updates
 async function updateRecipe(recipeData) {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // In a real implementation, this would send the data to your backend
     console.log('Updating recipe:', recipeData);
     return { success: true };
 }
 
 async function fetchRecipeDetails(recipeId) {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Mock recipe data
     return {
         id: recipeId,
         title: 'Sample Recipe',
