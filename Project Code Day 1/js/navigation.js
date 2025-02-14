@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const navContainer = document.getElementById("nav-container");
     if (navContainer) {
-        // Insert navigation HTML
         navContainer.innerHTML = `
             <nav class="nav-container">
                 <div class="nav-title-bar">
@@ -54,14 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             </nav>
         `;
-
-        // Add event listeners
         setupNavigation();
     }
 });
 
 function setupNavigation() {
-    // Add any additional navigation functionality
     const searchForm = document.querySelector('.nav-search');
     if (searchForm) {
         searchForm.addEventListener('submit', (e) => {
@@ -95,7 +91,6 @@ function updateNavigation() {
     `;
 
     if (userToken || adminToken) {
-        // Show authenticated navigation
         navContent += `
             <a href="search.html" class="nav-link">Search</a>
             ${userRole === 'admin' ? '<a href="admin.html" class="nav-link">Admin</a>' : ''}
@@ -108,7 +103,6 @@ function updateNavigation() {
             </div>
         `;
     } else {
-        // Show unauthenticated navigation
         navContent += `
             <a href="search.html" class="nav-link">Search</a>
             <a href="signin.html" class="nav-link">Sign In</a>
