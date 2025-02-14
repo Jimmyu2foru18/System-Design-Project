@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
-    // Avatar preview
+
     const avatarInput = document.getElementById('avatar');
     avatarInput.addEventListener('change', handleAvatarChange);
 
-    // Form submission
+
     const form = document.getElementById('edit-profile-form');
     form.addEventListener('submit', handleSubmit);
 }
@@ -24,26 +24,23 @@ async function loadUserProfile() {
 }
 
 function populateForm(userData) {
-    // Basic info
+
     document.getElementById('display-name').value = userData.name || '';
     document.getElementById('bio').value = userData.bio || '';
 
-    // Avatar preview
     if (userData.avatar) {
         const preview = document.getElementById('avatar-preview');
         preview.innerHTML = `<img src="${userData.avatar}" alt="Profile picture">`;
     }
 
-    // Preferences
     if (userData.preferences) {
-        // Cuisines
+
         const cuisines = userData.preferences.cuisines || [];
         cuisines.forEach(cuisine => {
             const checkbox = document.querySelector(`input[value="${cuisine}"]`);
             if (checkbox) checkbox.checked = true;
         });
 
-        // Other preferences
         document.getElementById('dietary').value = userData.preferences.diet || 'none';
         document.getElementById('skill-level').value = userData.preferences.skillLevel || 'beginner';
         document.getElementById('cooking-time').value = userData.preferences.cookingTime || 'any';
@@ -80,7 +77,7 @@ async function handleSubmit(event) {
     try {
         await saveUserProfile(userData);
         showSuccess('Profile updated successfully!');
-        // Redirect back to profile page after short delay
+
         setTimeout(() => {
             window.location.href = 'profile.html';
         }, 1500);
@@ -90,7 +87,6 @@ async function handleSubmit(event) {
     }
 }
 
-// Add notification system
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -117,10 +113,8 @@ function showError(message) {
 
 // Mock API Functions
 async function fetchUserProfile() {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Get from localStorage or return default values
     const savedProfile = localStorage.getItem('userProfile');
     return savedProfile ? JSON.parse(savedProfile) : {
         name: '',
@@ -135,10 +129,8 @@ async function fetchUserProfile() {
 }
 
 async function saveUserProfile(userData) {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Save to localStorage
     localStorage.setItem('userProfile', JSON.stringify(userData));
     return { success: true };
 } 
