@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Authors: James McGuigan & Steven Foster -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - Recspicy</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/meal-planner.css">
+    <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <nav id="nav-container"></nav>
+
+    <main class="planner-container">
+        <section class="planner-header">
+            <h1 class="planner-title">Weekly Meal Planner</h1>
+        </section>
+
+        <section class="planner-settings">
+            <div class="settings-card">
+                <h2>Plan Name</h2>
+                <input type="text" id="plan-name" class="plan-input" placeholder="Enter plan name...">
+                <div class="plan-meta">
+                    <input type="text" id="plan-notes" class="plan-input" placeholder="Add notes (optional)">
+                    <span class="plan-date">Created: <span id="creation-date"></span></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="weekly-planner">
+            <div class="week-grid" id="week-grid">
+                <div class="loading-placeholder">
+                    <p>Loading meal planner...</p>
+                </div>
+            </div>
+        </section>
+        <div class="planner-actions">
+            <button id="save-plan" class="action-btn save-btn">Save Plan</button>
+            <button id="clear-plan" class="action-btn clear-btn">Clear All</button>
+        </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <section class="footer-section">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="landing.html">Landing Page</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Help</h3>
+                    <ul class="footer-links">
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="feedback.html">Feedback</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="copyright.html">Copyright</a></li>
+                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/meal-planner.js"></script>
+</body>
+</html> 

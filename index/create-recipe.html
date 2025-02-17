@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Authors: James McGuigan & Steven Foster -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Recipe - Recspicy</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/create-recipe.css">
+    <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <nav id="nav-container"></nav>
+
+    <main class="create-recipe-container">
+        <section class="create-recipe-header">
+            <h1 class="create-recipe-title">Create New Recipe</h1>
+            <p class="create-recipe-subtitle">Share your culinary masterpiece with the community</p>
+        </section>
+
+        <form class="create-recipe-form" id="create-recipe-form">
+            <div class="form-section">
+                <h2 class="section-title">Basic Information</h2>
+                <div class="form-group">
+                    <label class="form-label">Recipe Title</label>
+                    <input type="text" class="form-input" id="recipe-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="recipe-description" rows="3" required></textarea>
+                </div>
+
+                <div class="recipe-image-upload">
+                    <img src="../assets/placeholder-recipe.jpg" alt="Recipe" class="image-preview" id="recipe-image-preview">
+                    <div>
+                        <input type="file" id="recipe-image" accept="image/*" hidden>
+                        <label for="recipe-image" class="upload-btn">Upload Image</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Recipe Details</h2>
+                <div class="form-group">
+                    <label class="form-label">Cuisine Type</label>
+                    <select class="form-select" id="cuisine-type" required>
+                        <option value="">Select cuisine</option>
+                        <option value="italian">Italian</option>
+                        <option value="mexican">Mexican</option>
+                        <option value="asian">Asian</option>
+                        <option value="indian">Indian</option>
+                        <option value="mediterranean">Mediterranean</option>
+                        <option value="american">American</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cooking Time (minutes)</label>
+                    <input type="number" class="form-input" id="cooking-time" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Difficulty Level</label>
+                    <select class="form-select" id="difficulty" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Ingredients</h2>
+                <ul class="ingredients-list" id="ingredients-list">
+                    <li class="ingredient-item">
+                        <input type="text" class="form-input ingredient-input" placeholder="Enter ingredient">
+                        <button type="button" class="remove-btn">Remove</button>
+                    </li>
+                </ul>
+                <button type="button" class="add-btn" id="add-ingredient">Add Ingredient</button>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Instructions</h2>
+                <ul class="steps-list" id="steps-list">
+                    <li class="step-item">
+                        <textarea class="form-textarea step-input" rows="2" placeholder="Enter instruction step"></textarea>
+                        <button type="button" class="remove-btn">Remove</button>
+                    </li>
+                </ul>
+                <button type="button" class="add-btn" id="add-step">Add Step</button>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="location.href='profile.html'">Cancel</button>
+                <button type="submit" class="save-btn">Create Recipe</button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <section class="footer-section">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="landing.html">Landing Page</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Help</h3>
+                    <ul class="footer-links">
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="feedback.html">Feedback</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="copyright.html">Copyright</a></li>
+                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/create-recipe.js"></script>
+</body>
+</html> 

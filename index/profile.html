@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Authors: James McGuigan & Steven Foster -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Recspicy</title>
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <nav id="nav-container"></nav>
+
+    <main class="profile-container">
+        <section class="profile-header">
+            <div class="profile-info">
+                <img src="" alt="Profile" class="profile-avatar" id="profile-avatar">
+                <div class="profile-text">
+                    <h1 class="profile-name"></h1>
+                    <p class="profile-bio"></p>
+                    <button class="edit-button">Edit Profile</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-content">
+            <div class="profile-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Preferences</h3>
+                    <ul class="preferences-list">
+                        <li>
+                            <span class="preference-label">Cuisine Types</span>
+                            <span class="preference-value" id="cuisine-pref">Italian, Asian</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Dietary</span>
+                            <span class="preference-value" id="dietary-pref">Vegetarian</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Skill Level</span>
+                            <span class="preference-value" id="skill-pref">Intermediate</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Cooking Time</span>
+                            <span class="preference-value" id="time-pref">30-60 mins</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Stats</h3>
+                    <ul class="preferences-list">
+                        <li>
+                            <span class="preference-label">Public Recipes</span>
+                            <span class="preference-value" id="public-count">0</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Private Recipes</span>
+                            <span class="preference-value" id="private-count">0</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Meal Plans</span>
+                            <span class="preference-value" id="mealplan-count">0</span>
+                        </li>
+                        <li>
+                            <span class="preference-label">Favorites</span>
+                            <span class="preference-value" id="favorites-count">0</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="profile-main">
+                <div class="content-tabs">
+                    <button class="tab active" data-tab="public">Public Recipes</button>
+                    <button class="tab" data-tab="private">Private Recipes</button>
+                    <button class="tab" data-tab="meal-plans">Meal Plans</button>
+                    <button class="tab" data-tab="favorites">Favorites</button>
+                    <button class="tab" data-tab="support">Support Tickets</button>
+                </div>
+
+                <div id="public" class="tab-content active">
+                    <div class="tab-header">
+                        <h2>My Public Recipes</h2>
+                        <button class="create-btn" onclick="window.location.href='create-recipe.html?visibility=public'">
+                            Create Public Recipe
+                        </button>
+                    </div>
+                    <div class="recipe-grid" id="public-recipes-grid">
+                    </div>
+                </div>
+
+                <div id="private" class="tab-content">
+                    <div class="tab-header">
+                        <h2>My Private Recipes</h2>
+                        <button class="create-btn" onclick="window.location.href='create-recipe.html?visibility=private'">
+                            Create Private Recipe
+                        </button>
+                    </div>
+                    <div class="recipe-grid" id="private-recipes-grid">
+                    </div>
+                </div>
+
+                <div id="meal-plans" class="tab-content">
+                    <div class="tab-header">
+                        <h2>My Meal Plans</h2>
+                        <button class="create-btn" onclick="window.location.href='meal-planner.html'">
+                            Create Meal Plan
+                        </button>
+                    </div>
+                    <div class="meal-plans-grid" id="meal-plans-grid">
+                    </div>
+                </div>
+
+                <div id="favorites" class="tab-content">
+                    <div class="tab-header">
+                        <h2>My Favorite Recipes</h2>
+                    </div>
+                    <div class="recipe-grid" id="favorites-grid">
+                    </div>
+                </div>
+
+                <!-- Users View for their Support Tickets-->
+                <div id="support" class="tab-content">
+                    <div class="tab-header">
+                        <h2>Support Tickets</h2>
+                        <button class="create-btn" onclick="window.location.href='contact.html?type=support'">
+                            Create New Ticket
+                        </button>
+                    </div>
+                    <div class="tickets-list" id="tickets-grid">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Recipe's code, I found similar code to this on stack lets see if it works with our project -->
+    <div id="edit-recipe-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Recipe</h2>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-recipe-form">
+                    <input type="hidden" id="recipe-id">
+                    <div class="form-group">
+                        <label for="recipe-title">Title</label>
+                        <input type="text" id="recipe-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipe-description">Description</label>
+                        <textarea id="recipe-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipe-ingredients">Ingredients</label>
+                        <div id="ingredients-list">
+                        </div>
+                        <button type="button" onclick="addIngredient()">Add Ingredient</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipe-instructions">Instructions</label>
+                        <div id="instructions-list">
+                        </div>
+                        <button type="button" onclick="addInstruction()">Add Step</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipe-visibility">Visibility</label>
+                        <select id="recipe-visibility" required>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="save-btn">Save Changes</button>
+                        <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <section class="footer-section">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="landing.html">Landing Page</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Help</h3>
+                    <ul class="footer-links">
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="feedback.html">Feedback</a></li>
+                    </ul>
+                </section>
+                <section class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="copyright.html">Copyright</a></li>
+                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html> 

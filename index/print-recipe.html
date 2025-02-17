@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Authors: James McGuigan & Steven Foster -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Recipe - Recspicy</title>
+    <link rel="stylesheet" href="../css/print-recipe.css">
+</head>
+<body>
+    <div class="print-controls">
+        <button id="print-btn" class="control-btn print-btn">
+            <span class="btn-icon">🖨️</span> Print Recipe
+        </button>
+        <button id="back-btn" class="control-btn back-btn">
+            <span class="btn-icon">←</span> Back to Recipe
+        </button>
+    </div>
+
+    <main class="print-container">
+        <header class="recipe-header">
+            <div class="recipe-title-section">
+                <h1 id="recipe-title"></h1>
+                <div class="recipe-meta">
+                    <span id="cook-time"></span>
+                    <span>•</span>
+                    <span id="servings"></span>
+                    <span>•</span>
+                    <span id="difficulty"></span>
+                </div>
+            </div>
+            <img id="recipe-image" class="recipe-image" src="" alt="">
+        </header>
+
+        <div class="recipe-description" id="recipe-description"></div>
+
+        <div class="recipe-content">
+            <div class="main-info">
+                <section class="recipe-section">
+                    <h2>Ingredients</h2>
+                    <ul id="ingredients-list" class="ingredients-list"></ul>
+                </section>
+
+                <section class="recipe-section">
+                    <h2>Instructions</h2>
+                    <ol id="instructions-list" class="instructions-list"></ol>
+                </section>
+            </div>
+
+            <div class="side-info">
+                <section class="recipe-section nutrition-section">
+                    <h2>Nutrition Facts</h2>
+                    <div id="nutrition-facts" class="nutrition-grid"></div>
+                </section>
+
+                <section class="recipe-section notes-section">
+                    <h2>Notes</h2>
+                    <div id="recipe-notes"></div>
+                </section>
+            </div>
+        </div>
+
+        <footer class="recipe-footer">
+            <div class="recipe-source">
+                Recipe from Recspicy
+                <span id="recipe-url"></span>
+            </div>
+            <div class="print-date">
+                Printed: <span id="print-date"></span>
+            </div>
+        </footer>
+    </main>
+
+    <script src="../js/print-recipe.js"></script>
+</body>
+</html> 
