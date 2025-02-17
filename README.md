@@ -30,75 +30,53 @@ What we want to do is:
 ## Technologies Used
 
 ### Front-End
-- HTML5, CSS3, JavaScript
-- Tailwind CSS
+- HTML
+- CSS
+- JavaScript
 
 
 ### Back-End
-- Node.js + Express.js
-- PostgreSQL
-- JWT Authentication
-- Redis
-- AWS Services
+- PHP
+- SQL
+- jQuery
 
 
 ### Infrastructure
-- AWS S3 (storage)
-- AWS CloudFront (CDN)
-- AWS EC2 (hosting)
-- AWS RDS (database)
-- AWS Lambda (used for serverless functions)
+- AWS EC2
+- AWS S3
+
 
 
 ## Project Structure
 ```bash
 root-folder/
 │
-├── landing.html
-├── respicy-index.html
-├── signin.html
-├── signup.html
-├── profile.html
-├──
-├── styles.css
-├── z as needed
-├──
-├── navigation.js
-├──
-├── x as needed
-├── y as needed
-├── z as needed 
-├──
-├── by-meal.html
-├── dietary.html
-├──
-├── top10.html
-├── random.html
-├── full-index.html
-├──
-├── meal-planner.html
-├── meal-planning-help.html
-├──
-├── recipe-create.html
-├── recipe-view.html
-├── print-template.html
-├──
-├── contact.html
-├── support.html
-├──
-├── faq.html
-├── feedback.html
-├── copyright.html
-├── terms.html
-├── privacy-policy.html
-├──
-├──
-├── API	
-├──
-├── Database
-├──
-├── test of some kind
+└──/
+   ├── landing.html
+   ├── respicy-index.html
+   ├── signin.html
+   ├── signup.html
+   ├── profile.html
 
+└──/
+   ├── styles.css
+   ├── z as needed
+
+└──
+   ├──
+   ├──
+   ├──
+   ├──
+   ├──
+   ├──
+└──
+   ├──
+   ├──
+   ├──
+   ├──
+   ├──
+   ├──
+└──
 ```
 
 
@@ -120,7 +98,6 @@ root-folder/
 - Rating and favorite system
 - Image upload and management
 - Email notifications
-- Responsive design
 
 
 ## API Documentation
@@ -132,7 +109,7 @@ root-folder/
 
 Current tables:
 - Users: Store user information and authentication
-- Recipes: Contains recipe details and user-generated recipies
+- Recipes: Recipe details and user-generated recipies
 
 [Full details to be added as development progresses]
 
