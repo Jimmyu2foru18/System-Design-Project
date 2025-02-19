@@ -1,6 +1,6 @@
 # Logo
 
-## IMAGES
+### IMAGES
 
 ![](01.png)  
 ![](02.png)  
