@@ -1,0 +1,52 @@
+Admin page
+
+Admin tab on footer
+
+admin log in 
+
+admin page
+
+search bar with access to databases for management to edit and change
+
+
+what should be included on the admin page?
+
+profile management
+	-	users usernames
+	-	users emails
+	-	users profile photos
+	-	users bios
+	-	users posts
+	-	account settings and log in resets 
+	-	account security
+	- 	contact and assistant features
+
+Recipe and content management 
+	-	approval system for recipe submissions
+	-	bulk edit,change, deletion system 
+	-	catagory management system for posts and information storage
+	-	user feedback and contact access 
+	-	content filtering 
+	-	page engagement tracer
+	-	search analytics 
+	-	API monitoring
+
+database management
+	-	edit stored recipies
+	-	edit stored profiles
+	
+	
+page management  
+	-	add or remove public posts	
+	-	manage ratings and favorites of users	
+	-	manage recipies with abilities to add to queries for stored information 
+		i.e if its missing a image or miissing measurements for ingredients it can be added 
+
+Activity logs for users 
+
+activity logs for admins ---Accoutability
+
+API service management tools
+
+admin log out 
+
