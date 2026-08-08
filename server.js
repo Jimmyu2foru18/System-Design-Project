@@ -1,309 +1,88 @@
+require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const dotenv = require('dotenv');
-const { OAuth2Client } = require('google-auth-library');
 const connectDB = require('./db');
-const User = require('./User');
-const MealPlan = require('./MealPlan');  // Add this line
-const multer = require('multer');
-const RecipeRecord = require('./recipeRecord');
+const authMiddleware = require('./middleware/authMiddleware');
 
-// Configure multer for memory storage (for binary data)
-const storage = multer.memoryStorage();
-const upload = multer({ 
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-  
-});
+const userRoutes = require('./routes/userRoutes');
+const mealPlanRoutes = require('./controllers/mealPlanController');
 
+const User = require('./models/User');
+const Recipe = require('./models/Recipe');
+const MealPlan = require('./models/MealPlan');
+const RecipeRecord = require('./models/RecipeRecord');
 
-// Load env vars
-dotenv.config();
-
-// Connect to MongoDB
 connectDB();
 
-// Initialize express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors({
-  origin: 'http://localhost:5000',
-  credentials: true
-}));
-app.use(bodyParser.json({ limit: '50mb' })); // Increased limit for image uploads
-
-app.use(express.json());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5000', credentials: true }));
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Import routes
-const userRoutes = require('./userRoutes');
-const mealPlanRoutes = require('./mealPlanController');  // This should import a router instance
-const mealPlanController = require('./mealPlanController');
-
-// Mount routes
 app.use('/api', userRoutes);
-app.use('/api/meal-plans', mealPlanRoutes);  // Add this line
+app.use('/api/meal-plans', mealPlanRoutes);
 
-// Simple root route
-app.get('/', (req, res) => {
-  res.redirect('/landing.html');
-});
+app.get('/', (req, res) => res.redirect('/index.html'));
 
-// User routes
-// Get total user count - MUST come before the :userId route
 app.get('/api/users/count/total', async (req, res) => {
-    try {
-        const count = await User.countDocuments();
-        res.json({ count });
-    } catch (error) {
-        console.error('Error counting users:', error);
-        res.status(500).json({ message: 'Error counting users' });
-    }
+  try {
+    const count = await User.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    console.error('Error counting users:', error);
+    res.status(500).json({ message: 'Error counting users' });
+  }
 });
 
-// Add this new endpoint for recipe count
 app.get('/api/recipes/count/total', async (req, res) => {
-    try {
-        const Recipe = require('./recipes');
-        const count = await Recipe.countDocuments();
-        res.json({ count });
-    } catch (error) {
-        console.error('Error counting recipes:', error);
-        res.status(500).json({ message: 'Error counting recipes' });
-    }
+  try {
+    const count = await Recipe.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    console.error('Error counting recipes:', error);
+    res.status(500).json({ message: 'Error counting recipes' });
+  }
 });
 
-// Get user by ID
-app.get('/api/users/:userId', async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const user = await User.findById(userId);
-        
-        if (user) {
-            res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                bio: user.profileData?.bio || '',
-                profileImage: user.profileData?.avatar,
-                favorites: user.profileData?.favorites // Add favorites array
-            });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ message: 'Error fetching user profile' });
-    }
+app.get('/api/users/:userId/meal-plans', async (req, res) => {
+  try {
+    const mealPlans = await MealPlan.find({ userId: req.params.userId }).sort({ createdAt: -1 });
+    res.json(mealPlans);
+  } catch (error) {
+    console.error('Error fetching meal plans:', error);
+    res.status(500).json({ message: 'Error fetching meal plans' });
+  }
 });
 
-// Update user profile - PUT endpoint
-app.put('/api/users/:userId', async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const userData = req.body;
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update profile data - including favorites array
-        user.profileData = {
-            ...user.profileData,
-            bio: userData.bio || user.profileData?.bio,
-            avatar: userData.profileImage || user.profileData?.avatar,
-            favorites: userData.favorites || user.profileData?.favorites
-        };
-
-        // Update basic user info if provided
-        if (userData.name) user.name = userData.name;
-        if (userData.email) user.email = userData.email;
-        
-        const updatedUser = await user.save();
-        
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            bio: user.profileData?.bio || '',
-            profileImage: user.profileData?.avatar,
-            favorites: user.profileData?.favorites || []
-        });
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user profile' });
-    }
+app.delete('/api/meal-plans/:id', async (req, res) => {
+  try {
+    const mealPlan = await MealPlan.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!mealPlan) return res.status(404).json({ message: 'Meal plan not found or not owned by user' });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Database operation failed', error: error.message });
+  }
 });
 
-// Update the user profile endpoint to handle avatar uploads
-app.put('/api/users/:userId', upload.single('avatar'), async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const userData = req.body;
-      
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      // Update avatar if a new file was uploaded
-      let avatar = user.profileData?.avatar;
-      if (req.file) {
-        avatar = {
-          data: req.file.buffer,
-          contentType: req.file.mimetype
-        };
-      }
-  
-      // Update profile data
-      user.profileData = {
-        ...user.profileData,
-        bio: userData.bio || user.profileData?.bio,
-        avatar: avatar,
-        favorites: userData.favorites || user.profileData?.favorites
-      };
-  
-      // Update basic user info if provided
-      if (userData.name) user.name = userData.name;
-      if (userData.email) user.email = userData.email;
-      
-      const updatedUser = await user.save();
-      
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        bio: user.profileData?.bio || '',
-        hasAvatar: !!user.profileData?.avatar?.data,
-        favorites: user.profileData?.favorites
-      });
-    } catch (error) {
-      console.error('Error updating user:', error);
-      res.status(500).json({ message: 'Error updating user profile' });
-    }
-  });
-
-// Alternative update endpoint - POST endpoint
-app.post('/api/users/update', async (req, res) => {
-    try {
-        const { userId, ...userData } = req.body;
-        
-        console.log('Received alternative update request for user:', userId);
-        console.log('Update data:', userData);
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update profile data
-        user.profileData = {
-            ...user.profileData,
-            bio: userData.bio || user.profileData?.bio,
-            avatar: userData.profileImage || user.profileData?.avatar
-        };
-
-        // Update basic user info if provided
-        if (userData.name) user.name = userData.name;
-        if (userData.email) user.email = userData.email;
-        
-        const updatedUser = await user.save();
-        
-        console.log('Updated user:', updatedUser);
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            bio: user.profileData?.bio || '',
-            profileImage: user.profileData?.avatar,
-            favorites: user.profileData?.favorites // Add favorites array
-        });
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user profile' });
-    }
-});
-
-// Recipe routes
-const { createRecipe, getUserRecipes, getPublicRecipes, getRecipeById, updateRecipe, deleteRecipe } = require('./recipeController');
-
-// Recipe endpoints
-app.post('/api/recipes', createRecipe);
-app.get('/api/recipes/user/:userId', getUserRecipes);
-app.get('/api/recipes/public', getPublicRecipes);
-app.get('/api/recipes/:id', getRecipeById);
-app.put('/api/recipes/:id', updateRecipe);
-app.delete('/api/recipes/:id', deleteRecipe);
-
-
-// Add these new endpoints after the existing recipe routes
-app.delete('/api/recipes/:id', async (req, res) => {
-    try {
-        const recipe = await Recipe.findByIdAndDelete(req.params.id);
-        if (!recipe) {
-            return res.status(404).json({ message: 'Recipe not found' });
-        }
-        res.json({ success: true, message: 'Recipe deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting recipe:', error);
-        res.status(500).json({ message: 'Error deleting recipe' });
-    }
-});
-
-// Add this after other meal plan routes
-app.delete('/api/mealplans/:id', async (req, res) => {
-    try {
-        const mealPlan = await MealPlan.findOneAndDelete({
-            _id: req.params.id,
-            userId: req.user._id // Ensure user owns this meal plan
-        });
-        
-        if (!mealPlan) {
-            return res.status(404).json({ 
-                message: 'Meal plan not found or not owned by user',
-                details: {
-                    requestedId: req.params.id,
-                    userId: req.user._id
-                }
-            });
-        }
-        
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Database error:', error);
-        res.status(500).json({ 
-            message: 'Database operation failed',
-            error: error.message 
-        });
-    }
-});
-
-// Add these new endpoints for admin dashboard
-const Recipe = require('./recipes');
-
-// Get dashboard stats
 app.get('/api/admin/dashboard/stats', async (req, res) => {
   try {
-    // Calculate some basic stats
     const userCount = await User.countDocuments();
     const recipeCount = await Recipe.countDocuments();
     const publicRecipes = await Recipe.countDocuments({ isPublic: true });
     const privateRecipes = await Recipe.countDocuments({ isPublic: false });
-    
     res.json({
       userCount,
       recipeCount,
       publicRecipes,
       privateRecipes,
-      newUsersThisWeek: Math.floor(userCount * 0.15), // Simulated data
-      newRecipesThisWeek: Math.floor(recipeCount * 0.2), // Simulated data
-      activeUsers: Math.floor(userCount * 0.6) // Simulated data
+      newUsersThisWeek: Math.floor(userCount * 0.15),
+      newRecipesThisWeek: Math.floor(recipeCount * 0.2),
+      activeUsers: Math.floor(userCount * 0.6)
     });
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
@@ -311,24 +90,9 @@ app.get('/api/admin/dashboard/stats', async (req, res) => {
   }
 });
 
-app.get('/api/users/:userId/meal-plans', async (req, res) => {
-    try {
-        const MealPlan = require('./MealPlan');
-        const mealPlans = await MealPlan.find({ userId: req.params.userId });
-        res.json(mealPlans);
-    } catch (error) {
-        console.error('Error fetching meal plans:', error);
-        res.status(500).json({ message: 'Error fetching meal plans' });
-    }
-});
-
-// Get top performing recipes
 app.get('/api/admin/recipes/top', async (req, res) => {
   try {
-    // Get 5 random recipes for demonstration
     const recipes = await Recipe.find().limit(5);
-    
-    // Add some simulated metrics
     const topRecipes = recipes.map(recipe => ({
       _id: recipe._id,
       title: recipe.title,
@@ -337,7 +101,6 @@ app.get('/api/admin/recipes/top', async (req, res) => {
       rating: (3 + Math.random() * 2).toFixed(1),
       createdAt: recipe.createdAt
     }));
-    
     res.json(topRecipes);
   } catch (error) {
     console.error('Error fetching top recipes:', error);
@@ -345,233 +108,12 @@ app.get('/api/admin/recipes/top', async (req, res) => {
   }
 });
 
-// Use existing userController for register and login
-const { registerUser, loginUser } = require('./userController');
-app.post('/api/users/register', registerUser);
-app.post('/api/users/login', loginUser);
-
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
-
-// Add a new endpoint for avatar uploads
-app.post('/api/users/:userId/avatar', upload.single('avatar'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
-
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Update the user's avatar with binary data
-    user.profileData = {
-      ...user.profileData,
-      avatar: {
-        data: req.file.buffer,
-        contentType: req.file.mimetype
-      }
-    };
-
-    await user.save();
-    
-    res.json({
-      success: true,
-      message: 'Avatar uploaded successfully'
-    });
-  } catch (error) {
-    console.error('Error uploading avatar:', error);
-    res.status(500).json({ message: 'Error uploading avatar' });
-  }
-});
-
-// Add an endpoint to retrieve the avatar
-app.get('/api/users/:userId/avatar', async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
-    
-    if (!user || !user.profileData?.avatar?.data) {
-      return res.status(404).sendFile(path.join(__dirname, 'default-avatar.png'));
-    }
-    
-    res.set('Content-Type', user.profileData.avatar.contentType);
-    res.send(user.profileData.avatar.data);
-  } catch (error) {
-    console.error('Error retrieving avatar:', error);
-    res.status(500).json({ message: 'Error retrieving avatar' });
-  }
-});
-
-
-
-// Alternative update endpoint - POST endpoint
-app.post('/api/users/update', async (req, res) => {
-    try {
-        const { userId, name, bio, avatar } = req.body;
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Process avatar if provided as base64
-        if (avatar && avatar.startsWith('data:')) {
-            const matches = avatar.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-            
-            if (matches && matches.length === 3) {
-                user.profileData.avatar = {
-                    data: Buffer.from(matches[2], 'base64'),
-                    contentType: matches[1]
-                };
-            }
-        }
-
-        // Update other fields
-        if (name) user.name = name;
-        if (bio) user.profileData.bio = bio;
-
-        await user.save();
-
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            bio: user.profileData.bio,
-            hasAvatar: !!user.profileData.avatar?.data,
-            profileImage: user.profileData.avatar?.data ? 
-                `/api/users/${userId}/avatar` : null
-        });
-
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user profile' });
-    }
-});
-
-// Add an endpoint to retrieve the avatar
-app.get('/api/users/:userId/avatar', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.userId);
-        if (!user?.profileData?.avatar?.data) {
-            return res.status(404).json({ message: 'Avatar not found' });
-        }
-        
-        res.set('Content-Type', user.profileData.avatar.contentType);
-        res.send(user.profileData.avatar.data);
-    } catch (error) {
-        console.error('Error fetching avatar:', error);
-        res.status(500).json({ message: 'Error fetching avatar' });
-    }
-});
-// Update the user profile endpoint to handle avatar uploads
-app.get('/api/users/:userId', async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const user = await User.findById(userId);
-        
-        if (user) {
-            res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                bio: user.profileData?.bio || '',
-                hasAvatar: !!user.profileData?.avatar?.data,
-                favorites: user.profileData?.favorites
-            });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ message: 'Error fetching user profile' });
-    }
-});
-
-// Alternative update endpoint - POST endpoint
-app.post('/api/users/update', async (req, res) => {
-    try {
-        const { userId, ...userData } = req.body;
-        
-        console.log('Received alternative update request for user:', userId);
-        console.log('Update data:', userData);
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update profile data
-        user.profileData = {
-            ...user.profileData,
-            bio: userData.bio || user.profileData?.bio,
-            avatar: userData.profileImage || user.profileData?.avatar
-        };
-
-        // Update basic user info if provided
-        if (userData.name) user.name = userData.name;
-        if (userData.email) user.email = userData.email;
-        
-        const updatedUser = await user.save();
-        
-        console.log('Updated user:', updatedUser);
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            bio: user.profileData?.bio || '',
-            profileImage: user.profileData?.avatar,
-            favorites: user.profileData?.favorites // Add favorites array
-        });
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user profile' });
-    }
-});
-// Add this route for avatar uploads
-app.post('/api/users/avatar', upload.single('avatar'), async (req, res) => {
-  try {
-    const userId = req.body.userId;
-    const user = await User.findById(userId);
-    
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    
-    user.profileData.avatar = {
-      data: req.file.buffer,
-      contentType: req.file.mimetype
-    };
-    
-    await user.save();
-    res.json({ success: true });
-  } catch (error) {
-    res.status(400).json({ message: 'Error uploading avatar' });
-  }
-});
-
-
-// Get recipe record or create if it doesn't exist
 app.get('/api/recipe-records/:recipeId', async (req, res) => {
   try {
-    const { recipeId } = req.params;
-    
-    // Find or create recipe record
-    let recipeRecord = await RecipeRecord.findOne({ recipeId });
-    
+    let recipeRecord = await RecipeRecord.findOne({ recipeId: req.params.recipeId });
     if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({
-        recipeId,
-        ratedBy: [],
-        favoritedBy: []
-      });
+      recipeRecord = await RecipeRecord.create({ recipeId: req.params.recipeId, ratedBy: [], favoritedBy: [] });
     }
-    
     res.json(recipeRecord);
   } catch (error) {
     console.error('Error fetching recipe record:', error);
@@ -579,56 +121,27 @@ app.get('/api/recipe-records/:recipeId', async (req, res) => {
   }
 });
 
-// Toggle user rating for a recipe
 app.post('/api/recipe-records/:recipeId/rate', async (req, res) => {
   try {
     const { recipeId } = req.params;
     const { userId } = req.body;
-    
-    if (!userId) {
-      return res.status(400).json({ message: 'User ID is required' });
-    }
-    
-    // Find or create recipe record
+    if (!userId) return res.status(400).json({ message: 'User ID is required' });
+
     let recipeRecord = await RecipeRecord.findOne({ recipeId });
-    
     if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({
-        recipeId,
-        ratedBy: [userId],
-        favoritedBy: []
-      });
-      
-      return res.json({ 
-        rated: true, 
-        ratedCount: 1,
-        message: 'Recipe rated successfully' 
-      });
+      recipeRecord = await RecipeRecord.create({ recipeId, ratedBy: [userId], favoritedBy: [] });
+      return res.json({ rated: true, ratedCount: 1, message: 'Recipe rated successfully' });
     }
-    
-    // Check if user has already rated
+
     const userIndex = recipeRecord.ratedBy.indexOf(userId);
-    
     if (userIndex === -1) {
-      // Add user to ratedBy array
       recipeRecord.ratedBy.push(userId);
       await recipeRecord.save();
-      
-      return res.json({ 
-        rated: true, 
-        ratedCount: recipeRecord.ratedBy.length,
-        message: 'Recipe rated successfully' 
-      });
+      return res.json({ rated: true, ratedCount: recipeRecord.ratedBy.length, message: 'Recipe rated successfully' });
     } else {
-      // Remove user from ratedBy array
       recipeRecord.ratedBy.splice(userIndex, 1);
       await recipeRecord.save();
-      
-      return res.json({ 
-        rated: false, 
-        ratedCount: recipeRecord.ratedBy.length,
-        message: 'Rating removed successfully' 
-      });
+      return res.json({ rated: false, ratedCount: recipeRecord.ratedBy.length, message: 'Rating removed successfully' });
     }
   } catch (error) {
     console.error('Error rating recipe:', error);
@@ -636,53 +149,27 @@ app.post('/api/recipe-records/:recipeId/rate', async (req, res) => {
   }
 });
 
-// Toggle user favorite for a recipe
 app.post('/api/recipe-records/:recipeId/favorite', async (req, res) => {
   try {
     const { recipeId } = req.params;
     const { userId } = req.body;
-    
-    if (!userId) {
-      return res.status(400).json({ message: 'User ID is required' });
-    }
-    
-    // Find or create recipe record
+    if (!userId) return res.status(400).json({ message: 'User ID is required' });
+
     let recipeRecord = await RecipeRecord.findOne({ recipeId });
-    
     if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({
-        recipeId,
-        ratedBy: [],
-        favoritedBy: [userId]
-      });
-      
-      return res.json({ 
-        favorited: true,
-        message: 'Recipe added to favorites' 
-      });
+      recipeRecord = await RecipeRecord.create({ recipeId, ratedBy: [], favoritedBy: [userId] });
+      return res.json({ favorited: true, message: 'Recipe added to favorites' });
     }
-    
-    // Check if user has already favorited
+
     const userIndex = recipeRecord.favoritedBy.indexOf(userId);
-    
     if (userIndex === -1) {
-      // Add user to favoritedBy array
       recipeRecord.favoritedBy.push(userId);
       await recipeRecord.save();
-      
-      return res.json({ 
-        favorited: true,
-        message: 'Recipe added to favorites' 
-      });
+      return res.json({ favorited: true, message: 'Recipe added to favorites' });
     } else {
-      // Remove user from favoritedBy array
       recipeRecord.favoritedBy.splice(userIndex, 1);
       await recipeRecord.save();
-      
-      return res.json({ 
-        favorited: false,
-        message: 'Recipe removed from favorites' 
-      });
+      return res.json({ favorited: false, message: 'Recipe removed from favorites' });
     }
   } catch (error) {
     console.error('Error updating favorite status:', error);
@@ -690,29 +177,16 @@ app.post('/api/recipe-records/:recipeId/favorite', async (req, res) => {
   }
 });
 
-// Check if user has rated or favorited a recipe
 app.get('/api/recipe-records/:recipeId/user/:userId/status', async (req, res) => {
   try {
     const { recipeId, userId } = req.params;
-    
-    // Find recipe record
     const recipeRecord = await RecipeRecord.findOne({ recipeId });
-    
     if (!recipeRecord) {
-      return res.json({ 
-        rated: false, 
-        favorited: false,
-        ratedCount: 0
-      });
+      return res.json({ rated: false, favorited: false, ratedCount: 0 });
     }
-    
-    // Check if user has rated or favorited
-    const rated = recipeRecord.ratedBy.includes(userId);
-    const favorited = recipeRecord.favoritedBy.includes(userId);
-    
-    res.json({ 
-      rated, 
-      favorited,
+    res.json({
+      rated: recipeRecord.ratedBy.includes(userId),
+      favorited: recipeRecord.favoritedBy.includes(userId),
       ratedCount: recipeRecord.ratedBy.length
     });
   } catch (error) {
@@ -721,137 +195,119 @@ app.get('/api/recipe-records/:recipeId/user/:userId/status', async (req, res) =>
   }
 });
 
-// Add to favorites
-app.post('/api/users/:userId/favorites/:recipeId', async (req, res) => {
-    try {
-        const { userId, recipeId } = req.params;
-        const user = await User.findById(userId);
-        
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Add recipe to favorites if not already there
-        if (!user.profileData.favorites.includes(recipeId)) {
-            user.profileData.favorites.push(recipeId);
-            await user.save();
-        }
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error adding favorite:', error);
-        res.status(500).json({ message: 'Error adding favorite' });
-    }
-});
-
-// Remove from favorites
-app.delete('/api/users/:userId/favorites/:recipeId', async (req, res) => {
-    try {
-        const { userId, recipeId } = req.params;
-        const user = await User.findById(userId);
-        
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Remove recipe from favorites
-        user.profileData.favorites = user.profileData.favorites.filter(
-            id => id.toString() !== recipeId
-        );
-        
-        await user.save();
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error removing favorite:', error);
-        res.status(500).json({ message: 'Error removing favorite' });
-    }
-});
-
-// Add this new endpoint for favorites
 app.post('/api/users/:userId/favorites', async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const { recipeId, action } = req.body;
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+  try {
+    const { userId } = req.params;
+    const { recipeId, action } = req.body;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-        // Initialize favorites array if it doesn't exist
-        if (!user.profileData.favorites) {
-            user.profileData.favorites = [];
-        }
+    if (!user.profileData.favorites) user.profileData.favorites = [];
 
-        // Handle toggle action
-        if (action === 'toggle') {
-            const index = user.profileData.favorites.indexOf(recipeId);
-            if (index === -1) {
-                // Add to favorites
-                user.profileData.favorites.push(recipeId);
-            } else {
-                // Remove from favorites
-                user.profileData.favorites.splice(index, 1);
-            }
-        }
-
-        await user.save();
-        
-        res.json({
-            favorited: user.profileData.favorites.includes(recipeId),
-            message: user.profileData.favorites.includes(recipeId) 
-                ? 'Added to favorites' 
-                : 'Removed from favorites'
-        });
-    } catch (error) {
-        console.error('Error updating favorites:', error);
-        res.status(500).json({ message: 'Error updating favorites' });
+    if (action === 'toggle') {
+      const index = user.profileData.favorites.indexOf(recipeId);
+      if (index === -1) user.profileData.favorites.push(recipeId);
+      else user.profileData.favorites.splice(index, 1);
     }
+
+    await user.save();
+    res.json({ favorited: user.profileData.favorites.includes(recipeId) });
+  } catch (error) {
+    console.error('Error updating favorites:', error);
+    res.status(500).json({ message: 'Error updating favorites' });
+  }
 });
 
-// Add this endpoint to server.js  Could not retrieve recipe
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
-// Add this new endpoint for getting a single recipe by ID
-app.get('/api/recipes/:id', async (req, res) => {
-    try {
-        const Recipe = require('./recipes');
-        const recipe = await Recipe.findById(req.params.id);
-        
-        if (!recipe) {
-            return res.status(404).json({ message: 'Recipe not found' });
-        }
-        
-        res.json(recipe);
-    } catch (error) {
-        console.error('Error fetching recipe:', error);
-        res.status(500).json({ message: 'Error fetching recipe' });
+app.put('/api/users/:userId', upload.single('avatar'), async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const userData = req.body;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    let avatar = user.profileData?.avatar;
+    if (req.file) {
+      avatar = { data: req.file.buffer, contentType: req.file.mimetype };
     }
+
+    user.profileData = {
+      ...user.profileData,
+      bio: userData.bio || user.profileData?.bio,
+      avatar: avatar,
+      favorites: userData.favorites || user.profileData?.favorites
+    };
+
+    if (userData.name) user.name = userData.name;
+    if (userData.email) user.email = userData.email;
+
+    await user.save();
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      bio: user.profileData?.bio || '',
+      hasAvatar: !!user.profileData?.avatar?.data,
+      favorites: user.profileData?.favorites
+    });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Error updating user profile' });
+  }
+});
+
+app.post('/api/users/:userId/avatar', upload.single('avatar'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.profileData.avatar = { data: req.file.buffer, contentType: req.file.mimetype };
+    await user.save();
+    res.json({ success: true, message: 'Avatar uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading avatar:', error);
+    res.status(500).json({ message: 'Error uploading avatar' });
+  }
+});
+
+app.get('/api/users/:userId/avatar', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user?.profileData?.avatar?.data) {
+      return res.status(404).json({ message: 'Avatar not found' });
+    }
+    res.set('Content-Type', user.profileData.avatar.contentType);
+    res.send(user.profileData.avatar.data);
+  } catch (error) {
+    console.error('Error fetching avatar:', error);
+    res.status(500).json({ message: 'Error fetching avatar' });
+  }
 });
 
 app.get('/api/recipes/:id', async (req, res) => {
   try {
-      const recipeId = req.params.id;
-      
-      // First try to find in local database
-      const localRecipe = await Recipe.findById(recipeId);
-      if (localRecipe) {
-          return res.json(localRecipe);
+    const recipeId = req.params.id;
+    const localRecipe = await Recipe.findById(recipeId);
+    if (localRecipe) return res.json(localRecipe);
+
+    if (/^\d+$/.test(recipeId)) {
+      const mealDbResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+      if (mealDbResponse.ok) {
+        const data = await mealDbResponse.json();
+        if (data.meals && data.meals.length > 0) return res.json(data.meals[0]);
       }
-      
-      // If not found locally, try MealDB API
-      if (/^\d+$/.test(recipeId)) { // Check if it's a numeric ID
-          const mealDbResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
-          if (mealDbResponse.ok) {
-              const data = await mealDbResponse.json();
-              if (data.meals && data.meals.length > 0) {
-                  return res.json(data.meals[0]);
-              }
-          }
-      }
-      
-      res.status(404).json({ message: 'Recipe not found' });
+    }
+    res.status(404).json({ message: 'Recipe not found' });
   } catch (error) {
-      console.error('Error fetching recipe:', error);
-      res.status(500).json({ message: 'Error fetching recipe' });
+    console.error('Error fetching recipe:', error);
+    res.status(500).json({ message: 'Error fetching recipe' });
   }
 });
+
+app.use((req, res) => res.status(404).json({ message: 'Not Found' }));
+
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
