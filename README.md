@@ -2,6 +2,13 @@
 
 Recipe management platform with user authentication, meal planning, and recipe creation.
 
+## Tech Stack
+
+- **Backend**: Node.js, Express, MongoDB, Mongoose
+- **Frontend**: Vanilla HTML/CSS/JavaScript
+- **Authentication**: JWT, Google OAuth 2.0
+- **API Integration**: TheMealDB
+
 ## Prerequisites
 
 - Node.js 18+
@@ -32,9 +39,19 @@ Recipe management platform with user authentication, meal planning, and recipe c
 ```
 .
 ├── controllers/     # Route controllers
+│   ├── mealPlanController.js
+│   ├── recipeController.js
+│   └── userController.js
 ├── middleware/      # Auth and error middleware
+│   ├── authMiddleware.js
+│   └── errorMiddleware.js
 ├── models/         # Mongoose models
+│   ├── MealPlan.js
+│   ├── Recipe.js
+│   ├── RecipeRecord.js
+│   └── User.js
 ├── routes/         # API routes
+│   └── userRoutes.js
 ├── public/         # Frontend static files
 │   ├── css/
 │   ├── js/
@@ -44,6 +61,28 @@ Recipe management platform with user authentication, meal planning, and recipe c
 ├── auth.js         # JWT utilities
 └── package.json
 ```
+
+## Design System
+
+The frontend uses a unified CSS design system defined in `public/css/styles.css` with CSS custom properties for consistent colors, typography, spacing, and components.
+
+### Color Palette
+
+- Primary: `#b40000` (red)
+- Secondary: `#1a365d` (navy)
+- Background: `#f8fafc`
+- Surface: `#ffffff`
+- Text: `#1e293b`
+- Border: `#e2e8f0`
+
+### Button Variants
+
+- `.btn-primary` - Primary CTA
+- `.btn-secondary` - Secondary action
+- `.btn-outline` - Outlined button
+- `.btn-success` - Success action
+- `.btn-danger` - Destructive action
+- `.btn-google` - Google sign-in
 
 ## API Endpoints
 
@@ -82,18 +121,22 @@ Recipe management platform with user authentication, meal planning, and recipe c
 - `POST /api/recipe-records/:recipeId/favorite` - Toggle favorite
 - `GET /api/recipe-records/:recipeId/user/:userId/status` - Check user status
 
-## Frontend
+## Frontend Pages
 
-The frontend is served as static files from the `public/` directory. Key pages:
-
-- `/` - Landing page
-- `/index.html` - Home page with recipe discovery
+- `/index.html` - Landing page
+- `/home.html` - Home page with recipe discovery
 - `/signin.html` - User login
 - `/signup.html` - User registration
 - `/profile.html` - User profile and recipe management
 - `/meal-planner.html` - Meal plan creation
 - `/recipes-list.html` - Browse recipes
+- `/recipes.html` - Individual recipe view
 - `/admin.html` - Admin dashboard
+- `/about.html` - About page
+- `/contact.html` - Contact page
+- `/faq.html` - Frequently asked questions
+- `/terms-privacy.html` - Terms and privacy policy
+- `/create-recipe.html` - Create new recipe
 
 ## License
 

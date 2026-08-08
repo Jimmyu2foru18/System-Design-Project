@@ -1,143 +1,123 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Authors: James McGuigan -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome to Recspicy</title>
-<link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/landing.css">
-<link rel="stylesheet" href="css/navigation.css">
-<link rel="stylesheet" href="css/footer.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recspicy - Discover, create, and share delicious recipes">
+    <title>Recspicy - Recipe Management Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/landing.css">
 </head>
-<body class="loading">
-<!-- Navigation Bar -->
-<nav class="navbar">
-<div class="nav-container">
-<div class="logo">
-<a href="index.html">
-<img src="images/logo1.png" alt="Recspicy Logo">
-</a>
-</div>
-<div class="nav-links" id="navLinks">
-<ul>
-<li><a href="home.html">Home</a></li>
-<li><a href="recipes-list.html">Recipes</a></li>
-<li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</div>
-<div class="user-actions" id="user-actions">
-<a href="signin.html" class="profile-link">Sign In</a>
-<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
-</div>
-<div class="hamburger" id="hamburger">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-</nav>
-<div id="intro-overlay" class="intro-overlay">
-<img id="intro-logo" src="images/logo.png" alt="Recspicy Logo" class="intro-logo">
-<p class="intro-hint">Click to enter</p>
-</div>
-<main>
-<section class="hero-section">
-<h1 class="hero-title">Welcome to Recspicy</h1>
-<p class="hero-subtitle">Your Premium Recipe Management Platform</p>
-<div class="button-container">
-<button class="btn btn-secondary" id="signup-btn">
-                                                                                Sign Up
-</button>
-<button class="btn btn-primary" id="signin-btn">
-                                                                                Sign In
-</button>
-</div>
-<div class="about-header">
-<h2 class="hero-title"></h2>
-</div>
-</section>
-<section class="about-section">
-<div class="mission-section">
-<h2>Our Mission</h2>
-<p>The Recspicy Index is dedicated to simplifying recipe management and discovery.
-                                                                                        We aim to create a user-friendly platform that makes finding, saving, and sharing recipes
-                                                                                        an enjoyable experience for culinary intrests at all skill levels.</p>
-</div>
-<div class="features-grid">
-<div class="feature-card">
-<h3>Recipe Management</h3>
-<ul class="feature-list">
-<li>Create and store personal recipes</li>
-<li>Organize recipes by categories</li>
-<li>Share recipes with the community</li>
-<li>Rate and review recipes</li>
-</ul>
-</div>
-<div class="feature-card">
-<h3>Smart Features</h3>
-<ul class="feature-list">
-<li>Advanced recipe search</li>
-<li>Meal planning tools</li>
-<li>Dietary restriction filters</li>
-<li>Ingredient-based recommendations</li>
-</ul>
-</div>
-</div>
-<div class="benefits-section">
-<h2>Why Choose Recspicy?</h2>
-<div class="benefits-grid">
-<div>
-<h3>Easy Discovery</h3>
-<p>Find recipes that match your preferences and dietary needs</p>
-</div>
-<div>
-<h3>User Friendly</h3>
-<p>Simple and intuitive interface for all users</p>
-</div>
-<div>
-<h3>Community Driven</h3>
-<p>Share and discover recipes from food lovers worldwide</p>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="footer">
-<div class="footer-container">
-<div class="footer-logo">
-<img src="images/logo.png" alt="Recspicy Logo">
-</div>
-<div class="footer-links">
-<div class="footer-column">
-<h3>Quick Links</h3>
-<ul>
-<li><a href="home.html">Home</a></li>
-<li><a href="recipes-list.html">Recipes</a></li>
-<li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="about.html">About Us</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</div>
-<div class="footer-column">
-<h3>Resources</h3>
-<ul>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="terms-privacy.html">Terms & Privacy</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="footer-bottom">
-<p>&copy; 2025 Recspicy. All rights reserved.</p>
-</div>
-</footer>
-<!-- Scripts -->
-<script src="js/navigation.js"></script>
-<script src="js/landing.js"></script>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo1.png" alt="Recspicy Logo">
+                </a>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="recipes-list.html">Recipes</a></li>
+                    <li><a href="meal-planner.html">Meal Planner</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="user-actions" id="user-actions">
+                <a href="signin.html" class="profile-link">Sign In</a>
+                <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Welcome to Recspicy</h1>
+                <p class="hero-subtitle">Discover, create, and share delicious recipes with our community of food lovers</p>
+                <div class="button-container">
+                    <a href="signup.html" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="home.html" class="btn btn-outline btn-lg">Explore Recipes</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">Why Choose Recspicy?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128161;</div>
+                        <h3>Smart Discovery</h3>
+                        <p>Find recipes that match your preferences, dietary needs, and available ingredients</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128203;</div>
+                        <h3>Meal Planning</h3>
+                        <p>Plan your week ahead with our intuitive meal planning tools and shopping lists</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128161;</div>
+                        <h3>Community</h3>
+                        <p>Share your creations and discover recipes from food lovers worldwide</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#11088;</div>
+                        <h3>Save & Organize</h3>
+                        <p>Build your personal recipe collection with ratings, notes, and custom categories</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Start Cooking?</h2>
+                <p>Join thousands of home cooks and food enthusiasts. Create your free account today.</p>
+                <a href="signup.html" class="btn btn-primary btn-lg">Create Free Account</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Recspicy Logo">
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="recipes-list.html">Recipes</a></li>
+                        <li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Recspicy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
 </body>
 </html>

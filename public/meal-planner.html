@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/navigation.css">
 <link rel="stylesheet" href="css/meal-planner.css">
 <link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/print.css">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -178,9 +179,39 @@
 </div>
 </div>
 <div class="form-actions">
-<button type="submit" class="btn btn-primary btn-lg btn-block">Save Meal Plan</button>
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Save Meal Plan</button>
+    <button type="button" onclick="printMealPlan()" class="btn btn-outline btn-lg btn-block" id="print-meal-plan-btn" style="display: none;">Print Meal Plan</button>
 </div>
 </form>
+
+<!-- Weekly Nutrition Summary -->
+<div id="nutrition-summary" class="nutrition-summary">
+    <h3>Weekly Nutrition Estimate</h3>
+    <div class="nutrition-grid" id="weekly-nutrition">
+        <div class="nutrition-card">
+            <span class="nutrition-label">Calories</span>
+            <span class="nutrition-value" id="total-calories">0</span>
+        </div>
+        <div class="nutrition-card">
+            <span class="nutrition-label">Protein</span>
+            <span class="nutrition-value" id="total-protein">0g</span>
+        </div>
+        <div class="nutrition-card">
+            <span class="nutrition-label">Fat</span>
+            <span class="nutrition-value" id="total-fat">0g</span>
+        </div>
+        <div class="nutrition-card">
+            <span class="nutrition-label">Carbs</span>
+            <span class="nutrition-value" id="total-carbs">0g</span>
+        </div>
+        <div class="nutrition-card">
+            <span class="nutrition-label">Fiber</span>
+            <span class="nutrition-value" id="total-fiber">0g</span>
+        </div>
+    </div>
+    <p class="nutrition-note">* Estimated values based on ingredients</p>
+</div>
+
 </main>
 <!-- Footer -->
 <footer class="footer">

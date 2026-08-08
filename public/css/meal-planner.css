@@ -158,3 +158,52 @@
         width: 100%;
     }
 }
+
+.nutrition-summary {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.nutrition-summary h3 {
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.nutrition-card {
+    background: var(--color-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.nutrition-label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.nutrition-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.nutrition-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 0.5rem;
+}
+}

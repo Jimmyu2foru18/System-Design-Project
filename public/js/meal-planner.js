@@ -1,3 +1,8 @@
+/**
+ * Meal planner controller.
+ * Handles meal plan creation, editing, nutrition calculation, and printing.
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
     const mealPlanForm = document.getElementById('meal-plan-form');
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
@@ -21,21 +26,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const addButton = document.querySelector(`[data-day="${day}"]`);
         const ingredientsList = document.getElementById(`${day}-ingredients-list`);
 
-        addButton.addEventListener('click', () => {
-            const newIngredient = document.createElement('div');
-            newIngredient.className = 'ingredient-input';
-            newIngredient.innerHTML = `
-                <input type="text" name="${day}[ingredients][]" placeholder="Enter ingredient" required>
-                <button type="button" class="remove-ingredient">Remove</button>
-            `;
-            ingredientsList.appendChild(newIngredient);
+        if (addButton && ingredientsList) {
+            addButton.addEventListener('click', () => {
+                const newIngredient = document.createElement('div');
+                newIngredient.className = 'ingredient-input';
+                newIngredient.innerHTML = `
+                    <input type="text" name="${day}[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="remove-ingredient">Remove</button>
+                `;
+                ingredientsList.appendChild(newIngredient);
 
-            // Add remove functionality to the new ingredient
-            const removeButton = newIngredient.querySelector('.remove-ingredient');
-            removeButton.addEventListener('click', () => {
-                newIngredient.remove();
+                const removeButton = newIngredient.querySelector('.remove-ingredient');
+                removeButton.addEventListener('click', () => {
+                    newIngredient.remove();
+                });
             });
-        });
+        }
     });
 
     // Add remove functionality to initial ingredients
@@ -46,97 +52,113 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Form submission
-    mealPlanForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    if (mealPlanForm) {
+        mealPlanForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        // Collect form data
-        const formData = new FormData(mealPlanForm);
-        const mealPlanData = {
-            planName: formData.get('planName'),
-            description: formData.get('description'),
-            userId: localStorage.getItem('userId'),
-            days: {}
-        };
-
-        // Collect data for each day
-        days.forEach(day => {
-            const ingredients = Array.from(formData.getAll(`${day}[ingredients][]`));
-            mealPlanData.days[day] = {
-                meal: formData.get(`${day}[meal]`),
-                ingredients: ingredients,
-                instructions: formData.get(`${day}[instructions]`)
+            const formData = new FormData(mealPlanForm);
+            const mealPlanData = {
+                planName: formData.get('planName'),
+                description: formData.get('description'),
+                userId: localStorage.getItem('userId'),
+                days: {}
             };
-        });
 
-        try {
-            const endpoint = mealPlanId ? `/api/meal-plans/${mealPlanId}` : '/api/meal-plans';
-            const method = mealPlanId ? 'PUT' : 'POST';
-            
-            const response = await fetch(endpoint, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                },
-                body: JSON.stringify(mealPlanData)
+            days.forEach(day => {
+                const ingredients = Array.from(formData.getAll(`${day}[ingredients][]`));
+                mealPlanData.days[day] = {
+                    meal: formData.get(`${day}[meal]`),
+                    ingredients: ingredients,
+                    instructions: formData.get(`${day}[instructions]`)
+                };
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to save meal plan');
-            }
+            try {
+                const endpoint = mealPlanId ? `/api/meal-plans/${mealPlanId}` : '/api/meal-plans';
+                const method = mealPlanId ? 'PUT' : 'POST';
+                
+                const response = await fetch(endpoint, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify(mealPlanData)
+                });
 
-            const result = await response.json();
-            alert('Meal plan saved successfully!');
-            window.location.href = '/profile.html';
-        } catch (error) {
-            console.error('Error saving meal plan:', error);
-            alert('Failed to save meal plan. Please try again.');
-        }
-    });
-
-    async function loadMealPlanData(id) {
-        try {
-            const response = await fetch(`/api/meal-plans/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
+                if (!response.ok) {
+                    throw new Error('Failed to save meal plan');
                 }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to load meal plan');
-            }
-            
-            const result = await response.json();
-            
-            if (!result.success || !result.mealPlan) {
-                throw new Error('Invalid meal plan data structure');
-            }
-            
-            populateForm(result.mealPlan);
-        } catch (error) {
-            console.error('Error loading meal plan:', error);
-            alert(`Error loading meal plan: ${error.message}`);
-        }
-    }
 
-    function populateForm(mealPlan) {
-        document.getElementById('plan-name').value = mealPlan.planName || '';
-        document.getElementById('plan-description').value = mealPlan.description || '';
+                const result = await response.json();
+                alert('Meal plan saved successfully!');
+                
+                // Show print button
+                const printBtn = document.getElementById('print-meal-plan-btn');
+                if (printBtn) {
+                    printBtn.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error saving meal plan:', error);
+                alert('Failed to save meal plan. Please try again.');
+            }
+        });
+    }
+});
+
+/**
+ * Load meal plan data by ID.
+ * @param {string} id - The meal plan ID
+ */
+async function loadMealPlanData(id) {
+    try {
+        const response = await fetch(`/api/meal-plans/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'Content-Type': 'application/json'
+            }
+        });
         
-        days.forEach(day => {
-            // Ensure day data exists
-            const dayData = mealPlan.days[day] || { 
-                meal: '', 
-                ingredients: [], 
-                instructions: '' 
-            };
-            
-            document.getElementById(`${day}-meal`).value = dayData.meal || '';
-            document.getElementById(`${day}-instructions`).value = dayData.instructions || '';
-            
-            const ingredientsList = document.getElementById(`${day}-ingredients-list`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to load meal plan');
+        }
+        
+        const result = await response.json();
+        
+        if (!result.success || !result.mealPlan) {
+            throw new Error('Invalid meal plan data structure');
+        }
+        
+        populateForm(result.mealPlan);
+    } catch (error) {
+        console.error('Error loading meal plan:', error);
+        alert(`Error loading meal plan: ${error.message}`);
+    }
+}
+
+/**
+ * Populate form with meal plan data.
+ * @param {Object} mealPlan - The meal plan object
+ */
+function populateForm(mealPlan) {
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    
+    document.getElementById('plan-name').value = mealPlan.planName || '';
+    document.getElementById('plan-description').value = mealPlan.description || '';
+    
+    days.forEach(day => {
+        const dayData = mealPlan.days[day] || { 
+            meal: '', 
+            ingredients: [], 
+            instructions: '' 
+        };
+        
+        document.getElementById(`${day}-meal`).value = dayData.meal || '';
+        document.getElementById(`${day}-instructions`).value = dayData.instructions || '';
+        
+        const ingredientsList = document.getElementById(`${day}-ingredients-list`);
+        if (ingredientsList) {
             ingredientsList.innerHTML = '';
             
             if (dayData.ingredients && dayData.ingredients.length > 0) {
@@ -149,12 +171,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     ingredientsList.appendChild(newIngredient);
                     
-                    // Add remove functionality
                     newIngredient.querySelector('.remove-ingredient').addEventListener('click', () => {
                         newIngredient.remove();
                     });
                 });
             }
-        });
-    }
-});
+        }
+    });
+}
