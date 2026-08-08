@@ -3,15 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const connectDB = require('./db');
-const authMiddleware = require('./middleware/authMiddleware');
 
 const userRoutes = require('./routes/userRoutes');
 const mealPlanRoutes = require('./controllers/mealPlanController');
 
 const User = require('./models/User');
 const Recipe = require('./models/Recipe');
-const MealPlan = require('./models/MealPlan');
-const RecipeRecord = require('./models/RecipeRecord');
 
 connectDB();
 
@@ -48,250 +45,17 @@ app.get('/api/recipes/count/total', async (req, res) => {
   }
 });
 
-app.get('/api/users/:userId/meal-plans', async (req, res) => {
-  try {
-    const mealPlans = await MealPlan.find({ userId: req.params.userId }).sort({ createdAt: -1 });
-    res.json(mealPlans);
-  } catch (error) {
-    console.error('Error fetching meal plans:', error);
-    res.status(500).json({ message: 'Error fetching meal plans' });
-  }
-});
-
-app.delete('/api/meal-plans/:id', async (req, res) => {
-  try {
-    const mealPlan = await MealPlan.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-    if (!mealPlan) return res.status(404).json({ message: 'Meal plan not found or not owned by user' });
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Database error:', error);
-    res.status(500).json({ message: 'Database operation failed', error: error.message });
-  }
-});
-
-app.get('/api/admin/dashboard/stats', async (req, res) => {
-  try {
-    const userCount = await User.countDocuments();
-    const recipeCount = await Recipe.countDocuments();
-    const publicRecipes = await Recipe.countDocuments({ isPublic: true });
-    const privateRecipes = await Recipe.countDocuments({ isPublic: false });
-    res.json({
-      userCount,
-      recipeCount,
-      publicRecipes,
-      privateRecipes,
-      newUsersThisWeek: Math.floor(userCount * 0.15),
-      newRecipesThisWeek: Math.floor(recipeCount * 0.2),
-      activeUsers: Math.floor(userCount * 0.6)
-    });
-  } catch (error) {
-    console.error('Error fetching dashboard stats:', error);
-    res.status(500).json({ message: 'Error fetching dashboard stats' });
-  }
-});
-
-app.get('/api/admin/recipes/top', async (req, res) => {
-  try {
-    const recipes = await Recipe.find().limit(5);
-    const topRecipes = recipes.map(recipe => ({
-      _id: recipe._id,
-      title: recipe.title,
-      views: Math.floor(Math.random() * 1000),
-      favorites: Math.floor(Math.random() * 100),
-      rating: (3 + Math.random() * 2).toFixed(1),
-      createdAt: recipe.createdAt
-    }));
-    res.json(topRecipes);
-  } catch (error) {
-    console.error('Error fetching top recipes:', error);
-    res.status(500).json({ message: 'Error fetching top recipes' });
-  }
-});
-
-app.get('/api/recipe-records/:recipeId', async (req, res) => {
-  try {
-    let recipeRecord = await RecipeRecord.findOne({ recipeId: req.params.recipeId });
-    if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({ recipeId: req.params.recipeId, ratedBy: [], favoritedBy: [] });
-    }
-    res.json(recipeRecord);
-  } catch (error) {
-    console.error('Error fetching recipe record:', error);
-    res.status(500).json({ message: 'Error fetching recipe record' });
-  }
-});
-
-app.post('/api/recipe-records/:recipeId/rate', async (req, res) => {
-  try {
-    const { recipeId } = req.params;
-    const { userId } = req.body;
-    if (!userId) return res.status(400).json({ message: 'User ID is required' });
-
-    let recipeRecord = await RecipeRecord.findOne({ recipeId });
-    if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({ recipeId, ratedBy: [userId], favoritedBy: [] });
-      return res.json({ rated: true, ratedCount: 1, message: 'Recipe rated successfully' });
-    }
-
-    const userIndex = recipeRecord.ratedBy.indexOf(userId);
-    if (userIndex === -1) {
-      recipeRecord.ratedBy.push(userId);
-      await recipeRecord.save();
-      return res.json({ rated: true, ratedCount: recipeRecord.ratedBy.length, message: 'Recipe rated successfully' });
-    } else {
-      recipeRecord.ratedBy.splice(userIndex, 1);
-      await recipeRecord.save();
-      return res.json({ rated: false, ratedCount: recipeRecord.ratedBy.length, message: 'Rating removed successfully' });
-    }
-  } catch (error) {
-    console.error('Error rating recipe:', error);
-    res.status(500).json({ message: 'Error rating recipe' });
-  }
-});
-
-app.post('/api/recipe-records/:recipeId/favorite', async (req, res) => {
-  try {
-    const { recipeId } = req.params;
-    const { userId } = req.body;
-    if (!userId) return res.status(400).json({ message: 'User ID is required' });
-
-    let recipeRecord = await RecipeRecord.findOne({ recipeId });
-    if (!recipeRecord) {
-      recipeRecord = await RecipeRecord.create({ recipeId, ratedBy: [], favoritedBy: [userId] });
-      return res.json({ favorited: true, message: 'Recipe added to favorites' });
-    }
-
-    const userIndex = recipeRecord.favoritedBy.indexOf(userId);
-    if (userIndex === -1) {
-      recipeRecord.favoritedBy.push(userId);
-      await recipeRecord.save();
-      return res.json({ favorited: true, message: 'Recipe added to favorites' });
-    } else {
-      recipeRecord.favoritedBy.splice(userIndex, 1);
-      await recipeRecord.save();
-      return res.json({ favorited: false, message: 'Recipe removed from favorites' });
-    }
-  } catch (error) {
-    console.error('Error updating favorite status:', error);
-    res.status(500).json({ message: 'Error updating favorite status' });
-  }
-});
-
-app.get('/api/recipe-records/:recipeId/user/:userId/status', async (req, res) => {
-  try {
-    const { recipeId, userId } = req.params;
-    const recipeRecord = await RecipeRecord.findOne({ recipeId });
-    if (!recipeRecord) {
-      return res.json({ rated: false, favorited: false, ratedCount: 0 });
-    }
-    res.json({
-      rated: recipeRecord.ratedBy.includes(userId),
-      favorited: recipeRecord.favoritedBy.includes(userId),
-      ratedCount: recipeRecord.ratedBy.length
-    });
-  } catch (error) {
-    console.error('Error checking user status:', error);
-    res.status(500).json({ message: 'Error checking user status' });
-  }
-});
-
-app.post('/api/users/:userId/favorites', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { recipeId, action } = req.body;
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    if (!user.profileData.favorites) user.profileData.favorites = [];
-
-    if (action === 'toggle') {
-      const index = user.profileData.favorites.indexOf(recipeId);
-      if (index === -1) user.profileData.favorites.push(recipeId);
-      else user.profileData.favorites.splice(index, 1);
-    }
-
-    await user.save();
-    res.json({ favorited: user.profileData.favorites.includes(recipeId) });
-  } catch (error) {
-    console.error('Error updating favorites:', error);
-    res.status(500).json({ message: 'Error updating favorites' });
-  }
-});
-
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
-
-app.put('/api/users/:userId', upload.single('avatar'), async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const userData = req.body;
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    let avatar = user.profileData?.avatar;
-    if (req.file) {
-      avatar = { data: req.file.buffer, contentType: req.file.mimetype };
-    }
-
-    user.profileData = {
-      ...user.profileData,
-      bio: userData.bio || user.profileData?.bio,
-      avatar: avatar,
-      favorites: userData.favorites || user.profileData?.favorites
-    };
-
-    if (userData.name) user.name = userData.name;
-    if (userData.email) user.email = userData.email;
-
-    await user.save();
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      bio: user.profileData?.bio || '',
-      hasAvatar: !!user.profileData?.avatar?.data,
-      favorites: user.profileData?.favorites
-    });
-  } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ message: 'Error updating user profile' });
-  }
-});
-
-app.post('/api/users/:userId/avatar', upload.single('avatar'), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-    const user = await User.findById(req.params.userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    user.profileData.avatar = { data: req.file.buffer, contentType: req.file.mimetype };
-    await user.save();
-    res.json({ success: true, message: 'Avatar uploaded successfully' });
-  } catch (error) {
-    console.error('Error uploading avatar:', error);
-    res.status(500).json({ message: 'Error uploading avatar' });
-  }
-});
-
-app.get('/api/users/:userId/avatar', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId);
-    if (!user?.profileData?.avatar?.data) {
-      return res.status(404).json({ message: 'Avatar not found' });
-    }
-    res.set('Content-Type', user.profileData.avatar.contentType);
-    res.send(user.profileData.avatar.data);
-  } catch (error) {
-    console.error('Error fetching avatar:', error);
-    res.status(500).json({ message: 'Error fetching avatar' });
-  }
-});
-
 app.get('/api/recipes/:id', async (req, res) => {
   try {
     const recipeId = req.params.id;
-    const localRecipe = await Recipe.findById(recipeId);
+    let localRecipe = null;
+
+    try {
+      localRecipe = await Recipe.findById(recipeId);
+    } catch {
+      localRecipe = null;
+    }
+
     if (localRecipe) return res.json(localRecipe);
 
     if (/^\d+$/.test(recipeId)) {
@@ -305,6 +69,55 @@ app.get('/api/recipes/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching recipe:', error);
     res.status(500).json({ message: 'Error fetching recipe' });
+  }
+});
+
+app.post('/api/nutrition', async (req, res) => {
+  try {
+    const { ingredients, recipeTitle } = req.body;
+    const appId = process.env.NUTRITION_APP_ID;
+    const appKey = process.env.NUTRITION_APP_KEY;
+
+    if (!appId || !appKey) {
+      return res.status(500).json({ message: 'Nutrition API credentials not configured' });
+    }
+
+    const ingredientLines = Array.isArray(ingredients)
+      ? ingredients.map(i => typeof i === 'string' ? i : i.name || '').filter(Boolean)
+      : [];
+
+    if (ingredientLines.length === 0) {
+      return res.status(400).json({ message: 'No ingredients provided' });
+    }
+
+    const url = `https://api.edamam.com/api/nutrition-details?app_id=${appId}&app_key=${appKey}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: recipeTitle || 'Recipe',
+        ingr: ingredientLines
+      })
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Edamam error:', response.status, text);
+      return res.status(502).json({ message: 'Nutrition analysis failed', details: text });
+    }
+
+    const data = await response.json();
+    res.json({
+      calories: data.calories ?? 0,
+      protein: Math.round((data.totalNutrients?.PROCNT?.quantity || 0) * 10) / 10,
+      fat: Math.round((data.totalNutrients?.FAT?.quantity || 0) * 10) / 10,
+      carbs: Math.round((data.totalNutrients?.CHOCDF?.quantity || 0) * 10) / 10,
+      fiber: Math.round((data.totalNutrients?.FIBTG?.quantity || 0) * 10) / 10,
+      source: 'edamam'
+    });
+  } catch (error) {
+    console.error('Nutrition proxy error:', error);
+    res.status(500).json({ message: 'Nutrition service error' });
   }
 });
 

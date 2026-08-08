@@ -29,28 +29,16 @@ async function fetchRecipe(id) {
 
         if (response.ok) {
             const recipe = await response.json();
+            const normalized = normalizeRecipe(recipe, id);
             await checkRecipeRecordStatus(id);
-            displayRecipe(recipe);
+            displayRecipe(normalized);
             hideLoading();
             return;
         }
 
-        // Fallback to user recipes
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            const userResponse = await fetch(`/api/users/${userId}/recipes/${id}`);
-            if (userResponse.ok) {
-                const recipe = await userResponse.json();
-                await checkRecipeRecordStatus(id);
-                displayRecipe(recipe);
-                hideLoading();
-                return;
-            }
-        }
-
         // Fallback to global lookup
-        if (typeof getRecipeById === 'function') {
-            const recipe = await getRecipeById(id);
+        if (typeof window.recipeApi?.getRecipeById === 'function') {
+            const recipe = await window.recipeApi.getRecipeById(id);
             if (recipe) {
                 await checkRecipeRecordStatus(id);
                 displayRecipe(recipe);
@@ -65,6 +53,69 @@ async function fetchRecipe(id) {
         showError('Error loading recipe: ' + error.message);
         hideLoading();
     }
+}
+
+/**
+ * Normalize recipe data from various sources.
+ * @param {Object} recipe - Raw recipe object
+ * @param {string} fallbackId - Fallback ID if not present
+ * @returns {Object} Normalized recipe
+ */
+function normalizeRecipe(recipe, fallbackId) {
+    if (!recipe) return null;
+
+    // Already normalized by frontend API
+    if (recipe.source === 'mealdb' || recipe.ingredients || recipe.instructions) {
+        return recipe;
+    }
+
+    // Raw MealDB format from backend proxy
+    if (recipe.strMeal) {
+        const ingredients = [];
+        for (let i = 1; i <= 20; i++) {
+            const ingredient = recipe[`strIngredient${i}`];
+            const measure = recipe[`strMeasure${i}`];
+            if (ingredient && ingredient.trim()) {
+                ingredients.push({ name: ingredient, quantity: measure || 'to taste' });
+            }
+        }
+
+        const instructions = recipe.strInstructions
+            .split('\r\n')
+            .filter(step => step.trim())
+            .map((text, index) => ({ step: index + 1, instruction: text.trim() }));
+
+        const difficulty = ingredients.length > 10 || instructions.length > 7 ? 'Hard'
+            : ingredients.length > 5 || instructions.length > 4 ? 'Medium' : 'Easy';
+
+        const cookTime = Math.max(15, ingredients.length * 5 + instructions.length * 3);
+
+        const categories = [];
+        if (recipe.strCategory) categories.push(recipe.strCategory);
+        if (recipe.strArea) categories.push(recipe.strArea);
+        if (recipe.strTags) recipe.strTags.split(',').forEach(tag => tag.trim() && categories.push(tag.trim()));
+
+        const meatIngredients = ['chicken', 'beef', 'pork', 'lamb', 'meat', 'fish', 'seafood', 'shrimp', 'bacon'];
+        const isVegetarian = !ingredients.some(ing => meatIngredients.some(meat => ing.name.toLowerCase().includes(meat)));
+
+        return {
+            id: recipe.idMeal || fallbackId,
+            title: recipe.strMeal,
+            description: recipe.strInstructions ? recipe.strInstructions.substring(0, 200) + '...' : 'No description available.',
+            image: recipe.strMealThumb,
+            cookTime,
+            servings: 4,
+            difficulty,
+            rating: (Math.random() * 2 + 3).toFixed(1),
+            categories,
+            dietaryCategories: isVegetarian ? ['vegetarian'] : [],
+            ingredients,
+            instructions,
+            source: 'mealdb'
+        };
+    }
+
+    return recipe;
 }
 
 /**
@@ -134,10 +185,10 @@ function updateFavoriteButton(favorited) {
  */
 async function displayRecipe(recipe) {
     document.getElementById('recipe-title').textContent = recipe.title;
-    document.getElementById('recipe-time').textContent = `${recipe.cookTime || '?'} min`;
-    document.getElementById('recipe-servings').textContent = recipe.servings || 4;
-    document.getElementById('recipe-difficulty').textContent = capitalizeFirstLetter(recipe.difficulty || 'medium');
-    document.getElementById('recipe-author').textContent = recipe.author?.name || 'Unknown';
+    document.getElementById('recipe-time-value').textContent = `${recipe.cookTime || '?'} min`;
+    document.getElementById('recipe-servings-value').textContent = recipe.servings || 4;
+    document.getElementById('recipe-difficulty-value').textContent = capitalizeFirstLetter(recipe.difficulty || 'medium');
+    document.getElementById('recipe-author-value').textContent = recipe.author?.name || 'Unknown';
 
     const recipeImage = document.getElementById('recipe-image');
     if (recipe.image && recipe.image.trim() !== '') {
@@ -154,7 +205,6 @@ async function displayRecipe(recipe) {
     displayInstructions(recipe.instructions);
     displayTags(recipe);
 
-    // Calculate and display nutrition
     if (recipe.ingredients && recipe.ingredients.length > 0) {
         try {
             const nutrition = await calculateRecipeNutrition(recipe.ingredients);
@@ -351,17 +401,18 @@ function setupActionButtons(recipe) {
  */
 window.printRecipe = function(recipe) {
     const printWindow = window.open('', '_blank');
+    const origin = window.location.origin;
     printWindow.document.write(`
         <!DOCTYPE html>
         <html>
         <head>
             <title>${recipe.title} - Recspicy</title>
-            <link rel="stylesheet" href="css/styles.css">
-            <link rel="stylesheet" href="css/print.css">
+            <link rel="stylesheet" href="${origin}/css/styles.css">
+            <link rel="stylesheet" href="${origin}/css/print.css">
         </head>
         <body>
             <div class="print-header">
-                <img src="images/logo.png" alt="Recspicy">
+                <img src="${origin}/images/logo.png" alt="Recspicy">
                 <h1>${recipe.title}</h1>
                 <p>Printed from Recspicy | ${new Date().toLocaleDateString()}</p>
             </div>

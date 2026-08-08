@@ -1,208 +1,319 @@
-/**
- * Recipes list controller.
- * Handles recipe browsing, filtering, search, and pagination.
- */
-
 document.addEventListener('DOMContentLoaded', function() {
+    let allRecipes = [];
+    let displayedRecipes = [];
+    let currentMealType = 'all';
+    let currentDietary = 'all';
+    let currentAllergy = 'none';
+    let currentSource = 'all';
+    let currentSearch = '';
+    const recipesPerPage = 12;
+    let currentPage = 1;
+    let isLoading = false;
+
     const recipesContainer = document.getElementById('recipes-container');
     const searchInput = document.getElementById('search-input');
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const searchBtn = document.getElementById('search-btn');
     const loadMoreBtn = document.getElementById('load-more-btn');
-    const errorContainer = document.getElementById('error-container');
-    const errorMessage = document.getElementById('error-message');
+    const resultsTitle = document.getElementById('results-title');
+    const resultsCount = document.getElementById('results-count');
+    const noResults = document.getElementById('no-results');
 
-    let currentPage = 1;
-    let currentFilter = 'all';
-    let currentSearch = '';
-    let allRecipes = [];
-    let filteredRecipes = [];
-    const recipesPerPage = 12;
+    const mealTypeBtns = document.querySelectorAll('#meal-type-filters .filter-btn');
+    const dietaryBtns = document.querySelectorAll('#dietary-filters .filter-btn');
+    const allergyBtns = document.querySelectorAll('#allergy-filters .filter-btn');
+    const sourceBtns = document.querySelectorAll('.source-btn');
 
-    fetchRecipes();
-    setupEventListeners();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('filter')) {
+        currentMealType = urlParams.get('filter');
+        currentSearch = urlParams.get('search') || '';
+    }
+    if (urlParams.has('source')) {
+        currentSource = urlParams.get('source');
+    }
+    if (searchInput && currentSearch) {
+        searchInput.value = currentSearch;
+    }
 
-    /**
-     * Fetch recipes based on current state.
-     */
-    async function fetchRecipes() {
+    async function loadRecipes() {
+        if (isLoading) return;
+        isLoading = true;
+        currentPage = 1;
+        
         recipesContainer.innerHTML = '<div class="loading-spinner"></div>';
+        noResults.style.display = 'none';
+        loadMoreBtn.style.display = 'none';
 
         try {
             let recipes = [];
 
-            if (currentSearch) {
-                recipes = await searchRecipes(currentSearch);
-            } else if (currentFilter !== 'all') {
-                recipes = await getRecipesByCategory(currentFilter);
+            if (currentSource === 'edamam') {
+                const query = currentSearch || 'recipe';
+                const edamamRecipes = await window.recipeApi.searchEdamamRecipes(query, getEdamamFilters());
+                recipes = edamamRecipes;
+            } else if (currentSource === 'local') {
+                recipes = await window.recipeApi.fetchLocalPublicRecipes();
+            } else if (currentSource === 'mealdb') {
+                recipes = await window.recipeApi.fetchMealdbAllCategories();
             } else {
-                recipes = await fetchAllPublicRecipes();
+                const [mealdb, local, edamam] = await Promise.all([
+                    currentSearch ? Promise.resolve([]) : window.recipeApi.fetchMealdbAllCategories(),
+                    window.recipeApi.fetchLocalPublicRecipes(),
+                    window.recipeApi.searchEdamamRecipes(currentSearch || 'recipe', getEdamamFilters())
+                ]);
+                recipes = [...mealdb, ...local, ...edamam];
             }
 
-            allRecipes = recipes;
-            applyFiltersAndSort();
+            const seen = new Set();
+            allRecipes = recipes.filter(recipe => {
+                if (seen.has(recipe.id)) return false;
+                seen.add(recipe.id);
+                return true;
+            });
+
+            applyFilters();
         } catch (error) {
-            showError('Error loading recipes: ' + error.message);
+            console.error('Error loading recipes:', error);
+            recipesContainer.innerHTML = `
+                <div class="error-message">
+                    <p>Failed to load recipes. Please try again later.</p>
+                </div>
+            `;
+        } finally {
+            isLoading = false;
         }
     }
 
-    /**
-     * Fetch all public recipes by browsing categories.
-     * @returns {Array} All public recipes
-     */
-    async function fetchAllPublicRecipes() {
-        const categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'];
-        const recipes = [];
-        const seen = new Set();
-
-        for (const category of categories) {
-            try {
-                const categoryRecipes = await getRecipesByCategory(category);
-                categoryRecipes.forEach(recipe => {
-                    const id = recipe.id || recipe.idMeal;
-                    if (!seen.has(id)) {
-                        seen.add(id);
-                        recipes.push(recipe);
-                    }
-                });
-            } catch (error) {
-                console.error(`Error fetching ${category} recipes:`, error);
-            }
+    function getEdamamFilters() {
+        const filters = {};
+        if (currentDietary !== 'all') {
+            filters.diet = currentDietary;
         }
-
-        return recipes;
+        if (currentAllergy !== 'none') {
+            filters.excluded = currentAllergy;
+        }
+        if (currentMealType !== 'all') {
+            filters.mealType = currentMealType;
+        }
+        return filters;
     }
 
-    /**
-     * Apply filters and search to recipes.
-     */
-    function applyFiltersAndSort() {
-        filteredRecipes = allRecipes.filter(recipe => {
-            const title = (recipe.title || recipe.strMeal || '').toLowerCase();
-            const categories = [
-                ...(recipe.categories || []),
-                ...(recipe.dietaryCategories || []),
-                ...(recipe.mealTypes || [])
-            ];
+    function applyFilters() {
+        let filtered = [...allRecipes];
 
-            if (currentSearch && !title.includes(currentSearch.toLowerCase())) {
-                return false;
-            }
+        if (currentSearch) {
+            const query = currentSearch.toLowerCase();
+            filtered = filtered.filter(recipe => 
+                recipe.title.toLowerCase().includes(query) ||
+                recipe.description.toLowerCase().includes(query) ||
+                recipe.categories.some(cat => cat.toLowerCase().includes(query))
+            );
+        }
 
-            if (currentFilter !== 'all') {
-                const matchesCategory = categories.some(cat => cat.toLowerCase() === currentFilter.toLowerCase());
-                const matchesApiCategory = (recipe.strCategory || '').toLowerCase() === currentFilter.toLowerCase();
-                if (!matchesCategory && !matchesApiCategory) return false;
-            }
+        if (currentMealType !== 'all') {
+            filtered = filtered.filter(recipe => {
+                const mealTypes = recipe.mealTypes || [];
+                return mealTypes.some(mt => mt.toLowerCase() === currentMealType.toLowerCase()) ||
+                       recipe.categories.some(cat => cat.toLowerCase() === currentMealType.toLowerCase());
+            });
+        }
 
-            return true;
-        });
+        if (currentDietary !== 'all') {
+            filtered = filtered.filter(recipe => {
+                const dietary = recipe.dietaryCategories || [];
+                return dietary.includes(currentDietary);
+            });
+        }
 
+        if (currentAllergy !== 'none') {
+            filtered = filtered.filter(recipe => {
+                const allergens = recipe.allergens || [];
+                return !allergens.includes(currentAllergy);
+            });
+        }
+
+        displayedRecipes = filtered;
         currentPage = 1;
         displayRecipes();
     }
 
-    /**
-     * Display recipes with pagination.
-     */
     function displayRecipes() {
-        recipesContainer.innerHTML = '';
+        const startIndex = 0;
+        const endIndex = currentPage * recipesPerPage;
+        const recipesToShow = displayedRecipes.slice(startIndex, endIndex);
 
-        const startIndex = (currentPage - 1) * recipesPerPage;
-        const endIndex = startIndex + recipesPerPage;
-        const recipesToShow = filteredRecipes.slice(startIndex, endIndex);
+        const titles = {
+            'all': 'All Recipes',
+            'Breakfast': 'Breakfast Recipes',
+            'Brunch': 'Brunch Recipes',
+            'Lunch': 'Lunch Recipes',
+            'Dinner': 'Dinner Recipes',
+            'Snack': 'Snack Recipes',
+            'Dessert': 'Dessert Recipes',
+            'Side': 'Side Dishes',
+            'Appetizer': 'Appetizers',
+            'Beverage': 'Beverages'
+        };
 
-        if (recipesToShow.length === 0) {
-            recipesContainer.innerHTML = `
-                <div class="no-results">
-                    <h3>No recipes found</h3>
-                    <p>Try adjusting your search or filter criteria</p>
-                </div>
-            `;
+        let title = titles[currentMealType] || 'All Recipes';
+        if (currentDietary !== 'all') {
+            title += ` (${currentDietary.charAt(0).toUpperCase() + currentDietary.slice(1)})`;
+        }
+        if (currentAllergy !== 'none') {
+            title += ` (No ${currentAllergy.replace('_', ' ')})`;
+        }
+
+        resultsTitle.textContent = title;
+        resultsCount.textContent = `${displayedRecipes.length} recipe${displayedRecipes.length !== 1 ? 's' : ''}`;
+
+        if (displayedRecipes.length === 0) {
+            recipesContainer.innerHTML = '';
+            noResults.style.display = 'block';
             loadMoreBtn.style.display = 'none';
             return;
         }
 
-        recipesToShow.forEach(recipe => {
-            const card = createRecipeCard(recipe);
-            recipesContainer.appendChild(card);
-        });
-
-        loadMoreBtn.style.display = endIndex >= filteredRecipes.length ? 'none' : 'block';
+        noResults.style.display = 'none';
+        recipesContainer.innerHTML = recipesToShow.map(recipe => createRecipeCard(recipe)).join('');
+        loadMoreBtn.style.display = endIndex >= displayedRecipes.length ? 'none' : 'block';
     }
 
-    /**
-     * Create recipe card element.
-     * @param {Object} recipe - Recipe object
-     * @returns {HTMLElement} Recipe card element
-     */
     function createRecipeCard(recipe) {
-        const card = document.createElement('div');
-        card.className = 'recipe-card';
+        const imageUrl = recipe.image || 'https://via.placeholder.com/300x200?text=No+Image';
+        const title = recipe.title;
+        const category = recipe.categories[0] || '';
+        const difficulty = recipe.difficulty || 'Medium';
+        const cookTime = recipe.cookTime || 30;
+        const source = recipe.source === 'local' ? 'Community' : recipe.source === 'edamam' ? 'Edamam' : 'TheMealDB';
+        const mealTypes = recipe.mealTypes || [];
+        const allergens = recipe.allergens || [];
+        const dietary = recipe.dietaryCategories || [];
 
-        const imageUrl = recipe.strMealThumb || recipe.image || 'https://via.placeholder.com/300x200?text=No+Image';
-        const title = recipe.strMeal || recipe.title || 'Untitled Recipe';
-        const category = recipe.strCategory || (recipe.categories && recipe.categories[0]) || '';
+        const mealTypeBadges = mealTypes.slice(0, 2).map(mt => 
+            `<span class="recipe-badge meal-type-badge">${mt}</span>`
+        ).join('');
 
-        card.innerHTML = `
-            <div class="recipe-card-image">
-                <img src="${imageUrl}" alt="${title}" class="recipe-image" loading="lazy">
-                ${category ? `<span class="recipe-card-category">${category}</span>` : ''}
-            </div>
-            <div class="recipe-card-content">
-                <h3 class="recipe-card-title">${title}</h3>
-                <p class="recipe-card-description">${recipe.description ? recipe.description.substring(0, 100) + (recipe.description.length > 100 ? '...' : '') : ''}</p>
-                <div class="recipe-card-footer">
-                    <span class="recipe-card-id">ID: ${recipe.idMeal || recipe.id}</span>
-                    <a href="recipes.html?id=${recipe.idMeal || recipe.id}" class="btn btn-primary btn-sm">View Recipe</a>
+        const dietaryBadges = dietary.slice(0, 2).map(d => 
+            `<span class="recipe-badge dietary-badge">${d}</span>`
+        ).join('');
+
+        const allergenBadges = allergens.slice(0, 2).map(a => 
+            `<span class="recipe-badge allergen-badge">${a.replace('_', ' ')}</span>`
+        ).join('');
+
+        return `
+            <div class="recipe-card" data-recipe-id="${recipe.id}">
+                <div class="recipe-card-image">
+                    <img src="${imageUrl}" alt="${title}" class="recipe-image" loading="lazy">
+                    ${category ? `<span class="recipe-card-category">${category}</span>` : ''}
+                    <span class="recipe-card-source">${source}</span>
+                </div>
+                <div class="recipe-card-content">
+                    <h3 class="recipe-card-title">${title}</h3>
+                    <p class="recipe-card-description">${recipe.description ? recipe.description.substring(0, 100) + (recipe.description.length > 100 ? '...' : '') : ''}</p>
+                    <div class="recipe-card-badges">
+                        ${mealTypeBadges}
+                        ${dietaryBadges}
+                        ${allergenBadges}
+                    </div>
+                    <div class="recipe-card-meta">
+                        <span>${cookTime} min</span>
+                        <span>${difficulty}</span>
+                    </div>
+                    <a href="recipes.html?id=${recipe.id}" class="btn btn-primary btn-sm btn-block">View Recipe</a>
                 </div>
             </div>
         `;
-
-        return card;
     }
 
-    /**
-     * Set up event listeners.
-     */
-    function setupEventListeners() {
-        // Search with debounce
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                currentSearch = this.value.trim();
-                fetchRecipes();
-            }, 300);
-        });
-
-        // Filter buttons
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
-                currentSearch = '';
-                searchInput.value = '';
-                fetchRecipes();
-            });
-        });
-
-        // Load more
-        loadMoreBtn.addEventListener('click', function() {
-            currentPage++;
-            displayRecipes();
-        });
+    function setActiveButton(buttons, activeBtn) {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        activeBtn.classList.add('active');
     }
 
-    /**
-     * Show error message.
-     * @param {string} message - Error message
-     */
-    function showError(message) {
-        if (errorContainer && errorMessage) {
-            errorMessage.textContent = message;
-            errorContainer.style.display = 'block';
-            recipesContainer.innerHTML = '';
+    function syncFilterUI() {
+        mealTypeBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === currentMealType);
+        });
+        dietaryBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === currentDietary);
+        });
+        allergyBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === currentAllergy);
+        });
+        sourceBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.source === currentSource);
+        });
+        if (searchInput && currentSearch) {
+            searchInput.value = currentSearch;
         }
     }
+
+    mealTypeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            setActiveButton(mealTypeBtns, this);
+            currentMealType = this.dataset.filter;
+            currentPage = 1;
+            applyFilters();
+        });
+    });
+
+    dietaryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            setActiveButton(dietaryBtns, this);
+            currentDietary = this.dataset.filter;
+            currentPage = 1;
+            applyFilters();
+        });
+    });
+
+    allergyBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            setActiveButton(allergyBtns, this);
+            currentAllergy = this.dataset.filter;
+            currentPage = 1;
+            applyFilters();
+        });
+    });
+
+    sourceBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            sourceBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentSource = this.dataset.source;
+            loadRecipes();
+        });
+    });
+
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            currentSearch = this.value.trim();
+            currentPage = 1;
+            applyFilters();
+        }, 300);
+    });
+
+    searchBtn.addEventListener('click', () => {
+        currentSearch = searchInput.value.trim();
+        currentPage = 1;
+        applyFilters();
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            currentSearch = searchInput.value.trim();
+            currentPage = 1;
+            applyFilters();
+        }
+    });
+
+    loadMoreBtn.addEventListener('click', function() {
+        currentPage++;
+        displayRecipes();
+    });
+
+    syncFilterUI();
+    loadRecipes();
 });

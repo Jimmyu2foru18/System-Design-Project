@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover delicious recipes on Recspicy">
-    <title>Recspicy - Discover Delicious Recipes</title>
+    <meta name="description" content="Recspicy - Discover, create, and share delicious recipes">
+    <title>Recspicy - Recipe Management Platform</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/navigation.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/respicy-index.css">
-    <script src="js/mealdb-api.js"></script>
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
     <header>
@@ -25,6 +25,9 @@
                         <li><a href="home.html" class="active">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
                         <li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="breweries.html">Breweries</a></li>
+                        <li><a href="reports.html">Reports</a></li>
+                        <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -42,49 +45,102 @@
         </nav>
     </header>
 
-    <main class="container" role="main">
-        <div class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">Discover Delicious Recipes</h1>
-                <p class="hero-subtitle">Explore trending recipes, vegetarian meals, quick & easy dishes, and more</p>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Welcome to Recspicy</h1>
+                <p>Your one-stop platform for recipes, meal planning, nutrition analysis, and food exploration</p>
+                
+                <div class="search-box">
+                    <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes...">
+                    <button class="search-button" id="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="quick-filters">
-            <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes...">
-            <button class="filter-btn active" data-filter="all">All Recipes</button>
-            <button class="filter-btn" data-filter="quick">Quick & Easy</button>
-            <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
-            <button class="filter-btn" data-filter="trending">Trending</button>
-            <button class="filter-btn" data-filter="popular">Most Popular</button>
-        </div>
+        <section class="container">
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">All Recipes</button>
+                    <button class="filter-btn" data-filter="Breakfast">Breakfast</button>
+                    <button class="filter-btn" data-filter="Lunch">Lunch</button>
+                    <button class="filter-btn" data-filter="Dinner">Dinner</button>
+                    <button class="filter-btn" data-filter="Dessert">Dessert</button>
+                    <button class="filter-btn" data-filter="Snack">Snack</button>
+                </div>
+                <div class="source-toggle">
+                    <button class="source-btn active" data-source="all">All Sources</button>
+                    <button class="source-btn" data-source="mealdb">TheMealDB</button>
+                    <button class="source-btn" data-source="edamam">Edamam</button>
+                    <button class="source-btn" data-source="local">Community</button>
+                </div>
+            </div>
+        </section>
 
-        <div id="recipe-sections">
-            <section class="recipe-section" id="section-all">
-                <h2 class="section-title">All Recipes</h2>
-                <div class="recipe-scroll" id="all-recipes"></div>
-            </section>
+        <section class="container">
+            <h2 class="section-title">Explore</h2>
+            <div class="dashboard-grid">
+                <a href="recipes-list.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">🍽️</div>
+                    <h3 class="dashboard-card-title">Recipes</h3>
+                    <p class="dashboard-card-description">Browse thousands of recipes from TheMealDB and our community. Filter by category, diet, and more.</p>
+                </a>
+                <a href="meal-planner.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">📅</div>
+                    <h3 class="dashboard-card-title">Meal Planner</h3>
+                    <p class="dashboard-card-description">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
+                </a>
+                <a href="breweries.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">🍺</div>
+                    <h3 class="dashboard-card-title">Breweries</h3>
+                    <p class="dashboard-card-description">Explore breweries worldwide. Filter by type, location, and discover new craft beer producers.</p>
+                </a>
+                <a href="reports.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">📺</div>
+                    <h3 class="dashboard-card-title">Reports</h3>
+                    <p class="dashboard-card-description">Browse reports from The Report of the Week. Energy Crisis, drink reviews, and more.</p>
+                </a>
+                <a href="openfoodfacts.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">🥗</div>
+                    <h3 class="dashboard-card-title">Food Facts</h3>
+                    <p class="dashboard-card-description">Search Open Food Facts for nutrition data, ingredients, and product information.</p>
+                </a>
+                <a href="create-recipe.html" class="dashboard-card">
+                    <div class="dashboard-card-icon">➕</div>
+                    <h3 class="dashboard-card-title">Create Recipe</h3>
+                    <p class="dashboard-card-description">Share your own recipes with the community. Add ingredients, instructions, and images.</p>
+                </a>
+            </div>
 
-            <section class="recipe-section" id="section-quick">
-                <h2 class="section-title">Quick & Easy</h2>
-                <div class="recipe-scroll" id="quick-recipes"></div>
-            </section>
-
-            <section class="recipe-section" id="section-vegetarian">
-                <h2 class="section-title">Vegetarian</h2>
-                <div class="recipe-scroll" id="vegetarian-recipes"></div>
-            </section>
-
-            <section class="recipe-section" id="section-trending">
-                <h2 class="section-title">Trending</h2>
-                <div class="recipe-scroll" id="trending-recipes"></div>
-            </section>
-
-            <section class="recipe-section" id="section-popular">
-                <h2 class="section-title">Most Popular</h2>
-                <div class="recipe-scroll" id="popular-recipes"></div>
-            </section>
-        </div>
+            <h2 class="section-title">Platform Stats</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">👥</div>
+                    <h3 class="dashboard-card-title">Users</h3>
+                    <p class="dashboard-card-description" id="stat-users">Loading...</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📖</div>
+                    <h3 class="dashboard-card-title">Recipes</h3>
+                    <p class="dashboard-card-description" id="stat-recipes">Loading...</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">🏭</div>
+                    <h3 class="dashboard-card-title">Breweries</h3>
+                    <p class="dashboard-card-description">8,000+ worldwide</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-icon">📦</div>
+                    <h3 class="dashboard-card-title">Food Products</h3>
+                    <p class="dashboard-card-description">2.5M+ products in Open Food Facts</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -99,6 +155,9 @@
                         <li><a href="home.html">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
                         <li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="breweries.html">Breweries</a></li>
+                        <li><a href="reports.html">Reports</a></li>
+                        <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -118,6 +177,6 @@
     </footer>
 
     <script src="js/navigation.js"></script>
-    <script src="js/respicy-index.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

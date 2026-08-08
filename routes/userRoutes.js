@@ -45,7 +45,6 @@ router.post('/profile', upload.single('avatar'), updateUserProfile);
 router.post('/recipes', createRecipe);
 router.get('/recipes/user/:userId', getUserRecipes);
 router.get('/recipes/public', getPublicRecipes);
-router.get('/recipes/:id', getRecipeById);
 router.put('/recipes/:id', updateRecipe);
 router.delete('/recipes/:id', deleteRecipe);
 

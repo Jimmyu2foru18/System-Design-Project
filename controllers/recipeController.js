@@ -71,12 +71,18 @@ const getPublicRecipes = async (req, res) => {
 const getRecipeById = async (req, res) => {
   try {
     const { id } = req.params;
-    const recipe = await Recipe.findById(id);
-    
+    let recipe = null;
+
+    try {
+      recipe = await Recipe.findById(id);
+    } catch {
+      recipe = null;
+    }
+
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     }
-    
+
     res.json(recipe);
   } catch (error) {
     console.error('Get recipe error:', error);
