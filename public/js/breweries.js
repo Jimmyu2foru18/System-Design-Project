@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayBreweries() {
-        const startIndex = 0;
+        const startIndex = (currentPage - 1) * breweriesPerPage;
         const endIndex = currentPage * breweriesPerPage;
         const breweriesToShow = displayedBreweries.slice(startIndex, endIndex);
 

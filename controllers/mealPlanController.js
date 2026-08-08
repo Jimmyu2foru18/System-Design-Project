@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const MealPlan = require('../models/MealPlan');
+const { isDbConnected } = require('../db');
 
 // Create meal plan
 router.post('/', async (req, res) => {
     try {
+        if (!isDbConnected()) return res.status(503).json({ success: false, message: 'Database not available' });
         const { planName, description, days } = req.body;
         
         // Get user ID from request or token
@@ -39,6 +41,7 @@ router.post('/', async (req, res) => {
 // Get all meal plans for a user
 router.get('/user/:userId', async (req, res) => {
     try {
+        if (!isDbConnected()) return res.json({ success: true, mealPlans: [] });
         const userId = req.params.userId;
         
         const mealPlans = await MealPlan.find({ userId })
@@ -61,6 +64,7 @@ router.get('/user/:userId', async (req, res) => {
 // Change from exports.getMealPlanById to router.get
 router.get('/:id', async (req, res) => {
     try {
+        if (!isDbConnected()) return res.status(503).json({ success: false, message: 'Database not available' });
         const mealPlanId = req.params.id;
         
         const mealPlan = await MealPlan.findById(mealPlanId);
@@ -89,6 +93,7 @@ router.get('/:id', async (req, res) => {
 // Change from exports.updateMealPlan to router.put
 router.put('/:id', async (req, res) => {
     try {
+        if (!isDbConnected()) return res.status(503).json({ success: false, message: 'Database not available' });
         const mealPlanId = req.params.id;
         const updates = req.body;
         
@@ -131,6 +136,7 @@ router.put('/:id', async (req, res) => {
 // Delete a meal plan
 router.delete('/:id', async (req, res) => {
     try {
+        if (!isDbConnected()) return res.status(503).json({ success: false, message: 'Database not available' });
         const mealPlanId = req.params.id;
         
         const mealPlan = await MealPlan.findById(mealPlanId);

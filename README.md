@@ -1,18 +1,18 @@
 # Recspicy
 
-Recipe management platform with user authentication, meal planning, and recipe creation.
+Recipe management platform with user authentication, meal planning, nutrition analysis, and external recipe integrations.
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express, MongoDB, Mongoose
-- **Frontend**: Vanilla HTML/CSS/JavaScript
+- **Frontend**: Vanilla HTML, CSS, JavaScript
 - **Authentication**: JWT, Google OAuth 2.0
-- **API Integration**: TheMealDB
+- **Integrations**: TheMealDB, Edamam Nutrition API, Open Brewery DB, Report of the Week, Open Food Facts
 
 ## Prerequisites
 
 - Node.js 18+
-- MongoDB 6+
+- MongoDB 6+ (optional — app serves static files and external APIs without it)
 - npm or yarn
 
 ## Setup
@@ -20,45 +20,51 @@ Recipe management platform with user authentication, meal planning, and recipe c
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Copy `.env.example` to `.env` and fill in values
-4. Start MongoDB
-5. Run `npm run dev` for development or `npm start` for production
+4. Start MongoDB (optional)
+5. Run `npm start` or `node server.js`
+
+The server starts on `http://localhost:5000` and serves the frontend even without MongoDB. Database-dependent endpoints return empty results when MongoDB is unavailable.
 
 ## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
 | `PORT` | Server port (default: 5000) |
-| `MONGODB_URI` | MongoDB connection string |
+| `MONGO_URI` | MongoDB connection string |
 | `JWT_SECRET` | Secret for JWT signing |
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `NUTRITION_APP_ID` | Edamam Nutrition API app ID |
+| `NUTRITION_APP_KEY` | Edamam Nutrition API app key |
 | `CLIENT_ORIGIN` | Frontend origin for CORS |
 
 ## Project Structure
 
 ```
 .
-├── controllers/     # Route controllers
+├── controllers/         # Route controllers
 │   ├── mealPlanController.js
 │   ├── recipeController.js
+│   ├── recipeRecordController.js
 │   └── userController.js
-├── middleware/      # Auth and error middleware
+├── middleware/          # Auth and error middleware
 │   ├── authMiddleware.js
 │   └── errorMiddleware.js
-├── models/         # Mongoose models
+├── models/             # Mongoose models
 │   ├── MealPlan.js
 │   ├── Recipe.js
 │   ├── RecipeRecord.js
 │   └── User.js
-├── routes/         # API routes
-│   └── userRoutes.js
-├── public/         # Frontend static files
+├── routes/             # API routes
+│   ├── userRoutes.js
+│   └── recipeRecordRoutes.js
+├── public/             # Frontend static files
 │   ├── css/
 │   ├── js/
 │   └── images/
-├── server.js       # App entry point
-├── db.js           # MongoDB connection
-├── auth.js         # JWT utilities
+├── server.js           # App entry point
+├── db.js               # MongoDB connection with fallback
+├── auth.js             # JWT utilities
 └── package.json
 ```
 
@@ -93,20 +99,24 @@ The frontend uses a unified CSS design system defined in `public/css/styles.css`
 - `POST /api/users/google-signup` - Google signup
 
 ### Users
-- `GET /api/users/:userId` - Get user profile
-- `PUT /api/users/:userId` - Update user profile
-- `POST /api/users/:userId/avatar` - Upload avatar
-- `GET /api/users/:userId/avatar` - Get avatar
+- `GET /api/users/:id` - Get user profile
+- `PUT /api/users/:id` - Update user profile
+- `POST /api/profile` - Update profile with avatar
 - `GET /api/users/count/total` - Total user count
 
 ### Recipes
 - `POST /api/recipes` - Create recipe
 - `GET /api/recipes/user/:userId` - Get user's recipes
 - `GET /api/recipes/public` - Get public recipes
-- `GET /api/recipes/:id` - Get recipe by ID
+- `GET /api/recipes/:id` - Get recipe by ID (local or TheMealDB fallback)
 - `PUT /api/recipes/:id` - Update recipe
 - `DELETE /api/recipes/:id` - Delete recipe
 - `GET /api/recipes/count/total` - Total recipe count
+
+### Recipe Records
+- `POST /api/recipe-records/:recipeId/rate` - Toggle rating
+- `POST /api/recipe-records/:recipeId/favorite` - Toggle favorite
+- `GET /api/recipe-records/:recipeId/user/:userId/status` - Check user status
 
 ### Meal Plans
 - `POST /api/meal-plans` - Create meal plan
@@ -115,22 +125,22 @@ The frontend uses a unified CSS design system defined in `public/css/styles.css`
 - `PUT /api/meal-plans/:id` - Update meal plan
 - `DELETE /api/meal-plans/:id` - Delete meal plan
 
-### Favorites
-- `POST /api/users/:userId/favorites` - Toggle favorite
-- `POST /api/recipe-records/:recipeId/rate` - Toggle rating
-- `POST /api/recipe-records/:recipeId/favorite` - Toggle favorite
-- `GET /api/recipe-records/:recipeId/user/:userId/status` - Check user status
+### Nutrition
+- `POST /api/nutrition` - Analyze recipe nutrition via Edamam
 
 ## Frontend Pages
 
 - `/index.html` - Landing page
-- `/home.html` - Home page with recipe discovery
+- `/home.html` - Home dashboard with search and filters
 - `/signin.html` - User login
 - `/signup.html` - User registration
 - `/profile.html` - User profile and recipe management
-- `/meal-planner.html` - Meal plan creation
-- `/recipes-list.html` - Browse recipes
-- `/recipes.html` - Individual recipe view
+- `/meal-planner.html` - Weekly meal planner
+- `/recipes-list.html` - Browse recipes with meal type, dietary, and allergy filters
+- `/recipes.html` - Individual recipe view with nutrition and print
+- `/breweries.html` - Browse breweries via Open Brewery DB
+- `/reports.html` - Browse reports via Report of the Week
+- `/openfoodfacts.html` - Search food products via Open Food Facts
 - `/admin.html` - Admin dashboard
 - `/about.html` - About page
 - `/contact.html` - Contact page

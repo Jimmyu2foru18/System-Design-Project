@@ -2,10 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const connectDB = require('./db');
+const { connectDB, isDbConnected } = require('./db');
 
 const userRoutes = require('./routes/userRoutes');
 const mealPlanRoutes = require('./controllers/mealPlanController');
+const recipeRecordRoutes = require('./routes/recipeRecordRoutes');
 
 const User = require('./models/User');
 const Recipe = require('./models/Recipe');
@@ -18,15 +19,27 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5000', credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/js/config.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send(`window.RECSPICY_CONFIG = ${JSON.stringify({
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+    NUTRITION_APP_ID: process.env.NUTRITION_APP_ID || '',
+    NUTRITION_APP_KEY: process.env.NUTRITION_APP_KEY || ''
+  })};`);
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', userRoutes);
 app.use('/api/meal-plans', mealPlanRoutes);
+app.use('/api/recipe-records', recipeRecordRoutes);
 
 app.get('/', (req, res) => res.redirect('/index.html'));
 
 app.get('/api/users/count/total', async (req, res) => {
   try {
+    if (!isDbConnected()) return res.json({ count: 0 });
     const count = await User.countDocuments();
     res.json({ count });
   } catch (error) {
@@ -37,6 +50,7 @@ app.get('/api/users/count/total', async (req, res) => {
 
 app.get('/api/recipes/count/total', async (req, res) => {
   try {
+    if (!isDbConnected()) return res.json({ count: 0 });
     const count = await Recipe.countDocuments();
     res.json({ count });
   } catch (error) {
@@ -50,10 +64,12 @@ app.get('/api/recipes/:id', async (req, res) => {
     const recipeId = req.params.id;
     let localRecipe = null;
 
-    try {
-      localRecipe = await Recipe.findById(recipeId);
-    } catch {
-      localRecipe = null;
+    if (isDbConnected()) {
+      try {
+        localRecipe = await Recipe.findById(recipeId);
+      } catch {
+        localRecipe = null;
+      }
     }
 
     if (localRecipe) return res.json(localRecipe);

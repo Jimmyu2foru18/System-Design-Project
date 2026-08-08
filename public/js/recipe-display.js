@@ -400,19 +400,34 @@ function setupActionButtons(recipe) {
  * @param {Object} recipe - Recipe object
  */
 window.printRecipe = function(recipe) {
+window.printRecipe = function(recipe) {
     const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      showToast('Please allow popups to print recipes');
+      return;
+    }
+
     const origin = window.location.origin;
-    printWindow.document.write(`
+    const printContent = `
         <!DOCTYPE html>
         <html>
         <head>
             <title>${recipe.title} - Recspicy</title>
             <link rel="stylesheet" href="${origin}/css/styles.css">
             <link rel="stylesheet" href="${origin}/css/print.css">
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                .print-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                .print-header img { max-height: 50px; }
+                .recipe-image { max-width: 100%; height: auto; max-height: 300px; object-fit: cover; margin-bottom: 20px; }
+                .recipe-meta { margin: 10px 0; color: #666; }
+                .ingredient-list, .instructions-list { margin: 10px 0; padding-left: 20px; }
+                .nutrition-info { margin-top: 20px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd; }
+                .nutrition-item { display: inline-block; margin-right: 15px; }
+            </style>
         </head>
         <body>
             <div class="print-header">
-                <img src="${origin}/images/logo.png" alt="Recspicy">
                 <h1>${recipe.title}</h1>
                 <p>Printed from Recspicy | ${new Date().toLocaleDateString()}</p>
             </div>
@@ -421,14 +436,13 @@ window.printRecipe = function(recipe) {
                 ${recipe.image ? `<img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">` : ''}
                 
                 <div class="recipe-content">
-                    <h2>${recipe.title}</h2>
                     <p class="recipe-description">${recipe.description || ''}</p>
                     
                     <div class="recipe-meta">
-                        <span>&#128336; ${recipe.cookTime || '?'} min</span>
-                        <span>&#128170; ${capitalizeFirstLetter(recipe.difficulty || 'Medium')}</span>
-                        <span>&#11088; ${recipe.rating || '?'}</span>
-                        <span>&#127858; ${recipe.servings || 4} servings</span>
+                        <span>Prep Time: ${recipe.cookTime || '?'} min</span> | 
+                        <span>Difficulty: ${capitalizeFirstLetter(recipe.difficulty || 'Medium')}</span> | 
+                        <span>Rating: ${recipe.rating || '?'}</span> | 
+                        <span>Servings: ${recipe.servings || 4}</span>
                     </div>
 
                     <h3>Ingredients</h3>
@@ -446,31 +460,56 @@ window.printRecipe = function(recipe) {
             </div>
         </body>
         </html>
-    `);
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+
+    const nutritionEl = printWindow.document.getElementById('print-nutrition');
+    const renderNutrition = (nutrition) => {
+      if (!nutritionEl) return;
+      nutritionEl.innerHTML = `
+        <h3>Nutrition Information (Estimated)</h3>
+        <div class="nutrition-info">
+          <span class="nutrition-item">${nutrition.calories} kcal</span>
+          <span class="nutrition-item">${nutrition.protein}g protein</span>
+          <span class="nutrition-item">${nutrition.fat}g fat</span>
+          <span class="nutrition-item">${nutrition.carbs}g carbs</span>
+          <span class="nutrition-item">${nutrition.fiber}g fiber</span>
+        </div>
+      `;
+    };
+
+    const doPrint = () => {
+      try {
+        printWindow.focus();
+        printWindow.print();
+      } catch (e) {
+        console.warn('Print failed:', e);
+      } finally {
+        setTimeout(() => {
+          try { printWindow.close(); } catch (e) {}
+        }, 300);
+      }
+    };
 
     if (recipe.ingredients && recipe.ingredients.length > 0) {
-        calculateRecipeNutrition(recipe.ingredients).then(nutrition => {
-            const nutritionEl = printWindow.document.getElementById('print-nutrition');
-            if (nutritionEl) {
-                nutritionEl.innerHTML = `
-                    <h3>Nutrition Information (Estimated)</h3>
-                    <div class="nutrition-info">
-                        <span class="nutrition-item">&#128168; ${nutrition.calories} kcal</span>
-                        <span class="nutrition-item">&#129358; ${nutrition.protein}g protein</span>
-                        <span class="nutrition-item">&#129367; ${nutrition.fat}g fat</span>
-                        <span class="nutrition-item">&#127804; ${nutrition.carbs}g carbs</span>
-                        <span class="nutrition-item">&#127807; ${nutrition.fiber}g fiber</span>
-                    </div>
-                `;
-            }
+      calculateRecipeNutrition(recipe.ingredients)
+        .then(renderNutrition)
+        .catch((error) => {
+          console.warn('Nutrition calculation failed for print:', error);
+          if (nutritionEl) {
+            nutritionEl.innerHTML = '<p><em>Nutrition information unavailable</em></p>';
+          }
+        })
+        .finally(() => {
+          setTimeout(doPrint, 300);
         });
+    } else {
+      setTimeout(doPrint, 300);
     }
-
-    printWindow.document.close();
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-    }, 500);
+  };
 }
 
 /**

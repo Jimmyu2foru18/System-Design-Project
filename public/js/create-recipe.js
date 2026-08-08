@@ -278,7 +278,7 @@ function showSuccess(message) {
 async function updateUserProfileWithRecipe(recipeId) {
     try {
         const userId = localStorage.getItem('userId');
-        const updateResponse = await fetch('/api/users/profile', {
+        const updateResponse = await fetch('/api/profile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -296,4 +296,4 @@ async function updateUserProfileWithRecipe(recipeId) {
         console.error('Error updating user profile:', error);
         showError('Failed to update user profile with recipe');
     }
-}
+  }

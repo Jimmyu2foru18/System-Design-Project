@@ -5,12 +5,14 @@ const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET
 );
+const { isDbConnected } = require('../db');
 
 // @desc    Register a new user - simplified version
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { name, username, email, password } = req.body;
 
     // Simple check if user exists
@@ -61,6 +63,7 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { email, username, password } = req.body;
 
     // Simplified login - accept either email or username
@@ -89,6 +92,7 @@ const loginUser = async (req, res) => {
 
 const getUserProfileById = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const userId = req.params.id;
     
     const user = await User.findById(userId);
@@ -125,7 +129,9 @@ const getUserProfileById = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   try {
-    const { userId, name, bio } = req.body;
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
+    const userId = req.params.id || req.body.userId;
+    const { name, bio } = req.body;
     let avatar = null;
     
     if (req.file) {
@@ -180,6 +186,7 @@ const updateUserProfile = async (req, res) => {
 
 const googleAuth = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { token } = req.body;
     const ticket = await client.verifyIdToken({
       idToken: token,
@@ -207,6 +214,7 @@ const googleAuth = async (req, res) => {
 
 const googleSignup = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { token } = req.body;
     const ticket = await client.verifyIdToken({
       idToken: token,
@@ -256,6 +264,7 @@ const googleSignup = async (req, res) => {
 // @access  Private
 const addToFavorites = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { userId, recipeId } = req.body;
     
     const user = await User.findById(userId);
@@ -287,6 +296,7 @@ const addToFavorites = async (req, res) => {
 
 const removeFromFavorites = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { userId, recipeId } = req.body;
     
     const user = await User.findById(userId);
@@ -313,6 +323,7 @@ const removeFromFavorites = async (req, res) => {
 
 const checkFavorite = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.json({ isFavorite: false });
     const { userId, recipeId } = req.params;
     
     const user = await User.findById(userId);

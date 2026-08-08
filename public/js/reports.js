@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayReports() {
-        const startIndex = 0;
+        const startIndex = (currentPage - 1) * reportsPerPage;
         const endIndex = currentPage * reportsPerPage;
         const reportsToShow = displayedReports.slice(startIndex, endIndex);
 

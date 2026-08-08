@@ -4,8 +4,8 @@
  */
 
 const NUTRITION_API_BASE = 'https://api.edamam.com/api/nutrition-data';
-const NUTRITION_APP_ID = process.env.NUTRITION_APP_ID || '';
-const NUTRITION_APP_KEY = process.env.NUTRITION_APP_KEY || '';
+const appId = window.RECSPICY_CONFIG?.NUTRITION_APP_ID || '';
+const appKey = window.RECSPICY_CONFIG?.NUTRITION_APP_KEY || '';
 
 const localNutritionDB = {
     'chicken breast': { calories: 165, protein: 31, fat: 3.6, carbs: 0, fiber: 0 },
@@ -236,7 +236,8 @@ async function calculateRecipeNutrition(ingredients) {
 
     const promises = ingredients.map(async (ing) => {
         const quantity = ing.quantity ? parseInt(ing.quantity) : 100;
-        const nutrition = await getIngredientNutrition(ing.name, quantity);
+        const safeQuantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 100;
+        const nutrition = await getIngredientNutrition(ing.name, safeQuantity);
         return nutrition;
     });
 
@@ -256,7 +257,7 @@ async function calculateRecipeNutrition(ingredients) {
         carbs: Math.round(totals.carbs * 10) / 10,
         fiber: Math.round(totals.fiber * 10) / 10
     };
-}
+  }
 
 /**
  * Format nutrition data for display.

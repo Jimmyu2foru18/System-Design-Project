@@ -102,8 +102,13 @@ function displayUserProfile(userData) {
 
         if (hasAvatar) {
             profileImage.src = `/api/users/${userId}/avatar?t=${Date.now()}`;
+            profileImage.style.display = 'block';
+            profileImage.onerror = function () {
+                this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23e2e8f0'/%3E%3Ctext x='75' y='85' text-anchor='middle' font-size='48'%3E👤%3C/text%3E%3C/svg%3E";
+            };
         } else {
-            profileImage.src = 'https://via.placeholder.com/150?text=Profile';
+            profileImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23e2e8f0'/%3E%3Ctext x='75' y='85' text-anchor='middle' font-size='48'%3E👤%3C/text%3E%3C/svg%3E";
+            profileImage.style.display = 'block';
         }
     }
 }
@@ -227,6 +232,7 @@ async function saveProfileChanges(event) {
     const bio = document.getElementById('edit-bio').value.trim();
 
     const formData = new FormData();
+    formData.append('userId', userId);
     formData.append('name', name);
     formData.append('bio', bio);
 
@@ -419,7 +425,8 @@ async function loadMealPlans() {
         const response = await fetch(`/api/meal-plans/user/${userId}`);
         if (!response.ok) throw new Error('Failed to load meal plans');
 
-        const mealPlans = await response.json();
+        const data = await response.json();
+        const mealPlans = data.mealPlans || data || [];
         displayMealPlans(mealPlans);
     } catch (error) {
         console.error('Error loading meal plans:', error);

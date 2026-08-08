@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayRecipes() {
-        const startIndex = 0;
+        const startIndex = (currentPage - 1) * recipesPerPage;
         const endIndex = currentPage * recipesPerPage;
         const recipesToShow = displayedRecipes.slice(startIndex, endIndex);
 

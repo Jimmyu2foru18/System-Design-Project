@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayProducts() {
-        const startIndex = 0;
+        const startIndex = (currentPage - 1) * productsPerPage;
         const endIndex = currentPage * productsPerPage;
         const productsToShow = displayedProducts.slice(startIndex, endIndex);
 

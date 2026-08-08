@@ -1,8 +1,9 @@
 const Recipe = require('../models/Recipe');
+const { isDbConnected } = require('../db');
 
-// Create a new recipe
 const createRecipe = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { 
       title, 
       description, 
@@ -47,6 +48,7 @@ const createRecipe = async (req, res) => {
 // Get all recipes for a specific user
 const getUserRecipes = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.json([]);
     const { userId } = req.params;
     const recipes = await Recipe.find({ userId }).sort({ createdAt: -1 });
     res.json(recipes);
@@ -59,6 +61,7 @@ const getUserRecipes = async (req, res) => {
 // Get all public recipes
 const getPublicRecipes = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.json([]);
     const recipes = await Recipe.find({ isPublic: true }).sort({ createdAt: -1 });
     res.json(recipes);
   } catch (error) {
@@ -73,10 +76,12 @@ const getRecipeById = async (req, res) => {
     const { id } = req.params;
     let recipe = null;
 
-    try {
-      recipe = await Recipe.findById(id);
-    } catch {
-      recipe = null;
+    if (isDbConnected()) {
+      try {
+        recipe = await Recipe.findById(id);
+      } catch {
+        recipe = null;
+      }
     }
 
     if (!recipe) {
@@ -93,6 +98,7 @@ const getRecipeById = async (req, res) => {
 // Update a recipe
 const updateRecipe = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { id } = req.params;
     const { 
       title, 
@@ -138,6 +144,7 @@ const updateRecipe = async (req, res) => {
 // Delete a recipe
 const deleteRecipe = async (req, res) => {
   try {
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { id } = req.params;
     const recipe = await Recipe.findById(id);
     
