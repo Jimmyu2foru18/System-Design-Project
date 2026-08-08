@@ -1,6 +1,6 @@
 /* Footer Styles */
 .footer {
-    background-color: #1a365d;
+    background-color: var(--color-secondary);
     color: white;
     padding: 3rem 0 1rem;
     margin-top: 3rem;
@@ -48,7 +48,7 @@
     bottom: 0;
     width: 50px;
     height: 2px;
-    background-color: #b40000;
+    background-color: var(--color-primary);
 }
 
 .footer-column ul {
@@ -62,13 +62,13 @@
 }
 
 .footer-column a {
-    color: #e2e8f0;
+    color: var(--color-border);
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .footer-column a:hover {
-    color: #b40000;
+    color: var(--color-primary);
 }
 
 .social-links {
@@ -86,11 +86,11 @@
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
 }
 
 .social-icon:hover {
-    background-color: #b40000;
+    background-color: var(--color-primary);
 }
 
 .footer-bottom {

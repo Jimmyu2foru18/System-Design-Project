@@ -1,7 +1,5 @@
 /* Profile Page Styles */
-body {
-    background-color: #e6f0ff;
-}
+
 
 .profile-container {
     max-width: 1000px;
@@ -14,7 +12,7 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .profile-avatar {
@@ -23,7 +21,7 @@ body {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 2rem;
-    border: 3px solid #b40000;
+    border: 3px solid var(--color-primary);
 }
 
 .profile-info {
@@ -33,7 +31,7 @@ body {
 .profile-name {
     font-size: 1.75rem;
     font-weight: bold;
-    color: #1a365d;
+    color: var(--color-secondary);
     margin-bottom: 0.5rem;
 }
 
@@ -44,18 +42,18 @@ body {
 }
 
 .edit-profile-btn {
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
 }
 
 .edit-profile-btn:hover {
-    background: #8b0000;
+    background: var(--color-primary-dark);
 }
 
 /* Preferences Section */
@@ -64,15 +62,15 @@ body {
     border-radius: 0.5rem;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 .preferences-title {
     font-size: 1.25rem;
-    color: #1a365d;
+    color: var(--color-secondary);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .preferences-grid {
@@ -94,7 +92,7 @@ body {
 
 .preference-value {
     font-weight: 600;
-    color: #1a365d;
+    color: var(--color-secondary);
 }
 
 /* Tabs Navigation */
@@ -104,7 +102,7 @@ body {
 
 .tabs-nav {
     display: flex;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid var(--color-border);
     margin-bottom: 1.5rem;
 }
 
@@ -113,18 +111,18 @@ body {
     font-weight: 600;
     color: #4a5568;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
 }
 
 .tab:hover {
-    color: #b40000;
+    color: var(--color-primary);
 }
 
 .tab.active {
-    color: #b40000;
-    border-bottom-color: #b40000;
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
 }
 
 /* Tab Content */
@@ -165,14 +163,14 @@ body {
     background: white;
     border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     transition: transform 0.3s, box-shadow 0.3s;
     flex-shrink: 0;
 }
 
 .recipe-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-md);
 }
 
 .recipe-image {
@@ -194,7 +192,7 @@ body {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: #1a365d;
+    color: var(--color-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -218,7 +216,7 @@ body {
 .content-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #1a365d;
+    color: var(--color-secondary);
     margin-bottom: 1rem;
 }
 
@@ -244,12 +242,12 @@ body {
 .view-btn,
 .edit-btn {
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
     text-align: center;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
 }
 
 .view-btn {
@@ -271,7 +269,7 @@ body {
 }
 
 .no-image {
-    background: #e2e8f0;
+    background: var(--color-border);
     width: 100%;
     height: 100%;
     display: flex;
@@ -330,15 +328,15 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #1a365d;
+    color: var(--color-secondary);
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
 }
 
 .form-actions {
@@ -350,19 +348,19 @@ body {
 
 .form-actions button {
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     font-weight: 600;
     cursor: pointer;
 }
 
 .form-actions button[type="button"] {
-    background: #e2e8f0;
+    background: var(--color-border);
     color: #4a5568;
     border: none;
 }
 
 .form-actions button[type="submit"] {
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
     border: none;
 }
@@ -397,18 +395,18 @@ body {
 }
 
 .create-recipe-btn {
-    background: #4299e1;
+    background: #2563eb;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
 }
 
 .create-recipe-btn:hover {
-    background: #3182ce;
+    background: #1d4ed8;
 }
 
 /* You can remove the preferences section styles if you want, or keep them for future use */
@@ -432,7 +430,7 @@ body {
     width: 50px;
     height: 50px;
     border: 5px solid #f3f3f3;
-    border-top: 5px solid #b40000;
+    border-top: 5px solid var(--color-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 1rem;
@@ -456,7 +454,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     padding: 1rem 2rem;
-    border-radius: 4px;
+    border-radius: var(--radius);
     color: white;
     font-weight: 600;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -488,12 +486,12 @@ body {
     background: white;
     border-radius: 0.5rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
 }
 
 .meal-plan-card h3 {
     margin-top: 0;
-    color: #b40000;
+    color: var(--color-primary);
 }
 
 .meal-plan-days {
@@ -512,17 +510,17 @@ body {
 }
 
 .edit-meal-plan-btn {
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
 }
 
 .edit-meal-plan-btn:hover {
-    background: #8b0000;
+    background: var(--color-primary-dark);
 }
 .logout-btn {
     background: none;
@@ -555,12 +553,12 @@ body {
 .edit-btn,
 .delete-btn {
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
     text-align: center;
-    transition: background-color 0.3s;
+    transition: background 0.2s;
     border: none;
     cursor: pointer;
 }

@@ -1,6 +1,4 @@
-body {
-    background-color: #e6f0ff;
-}
+
 
 .admin-container {
     max-width: 1400px;
@@ -16,7 +14,7 @@ body {
 .admin-title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #1a365d;
+    color: var(--color-secondary);
     margin-bottom: 0.5rem;
 }
 
@@ -35,7 +33,7 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 .admin-nav {
@@ -54,13 +52,13 @@ body {
     padding: 0.75rem;
     color: #4a5568;
     text-decoration: none;
-    border-radius: 0.375rem;
-    transition: all 0.3s;
+    border-radius: var(--radius);
+    transition: all 0.2s;
 }
 
 .admin-nav-link:hover,
 .admin-nav-link.active {
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -68,14 +66,14 @@ body {
     background: white;
     padding: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 .section-title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    color: #2d3748;
+    color: var(--color-secondary-light);
 }
 
 .data-table {
@@ -87,7 +85,7 @@ body {
 .data-table td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .data-table th {
@@ -126,37 +124,42 @@ body {
 .action-btn {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: var(--radius);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.2s, transform 0.1s;
     font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
 }
 
 .view-btn {
-    background: #4299e1;
+    background: #2563eb;
     color: white;
 }
 
 .view-btn:hover {
-    background: #3182ce;
+    background: #1d4ed8;
 }
 
 .edit-btn {
-    background: #48bb78;
+    background: #059669;
     color: white;
 }
 
 .edit-btn:hover {
-    background: #38a169;
+    background: #047857;
 }
 
 .delete-btn {
-    background: #e53e3e;
+    background: #dc2626;
     color: white;
 }
 
 .delete-btn:hover {
-    background: #c53030;
+    background: #b91c1c;
 }
 
 .modal {
@@ -192,7 +195,7 @@ body {
 .modal-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2d3748;
+    color: var(--color-secondary-light);
 }
 
 .close-modal {
@@ -214,7 +217,7 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
 }
 
@@ -234,13 +237,13 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
 }
 
 .stat-icon {
     font-size: 2rem;
-    color: #b40000;
+    color: var(--color-primary);
     margin-bottom: 0.75rem;
 }
 
@@ -270,8 +273,8 @@ body {
 
 .filter-select {
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
     min-width: 150px;
 }
 
@@ -289,14 +292,14 @@ body {
     margin: 20px;
     padding: 20px;
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
 }
 
 .credential-card {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
 }
 
 .credential-field {
@@ -314,7 +317,7 @@ body {
     margin-left: 10px;
     padding: 5px 10px;
     background: #f1f1f1;
-    border-radius: 4px;
+    border-radius: var(--radius);
 }
 
 .admin-logo {
@@ -336,8 +339,8 @@ body {
     padding: 0.75rem;
     color: #4a5568;
     text-decoration: none;
-    border-radius: 0.375rem;
-    transition: all 0.3s;
+    border-radius: var(--radius);
+    transition: all 0.2s;
     background: none;
     border: none;
     width: 100%;
@@ -347,7 +350,7 @@ body {
 }
 
 .logout-btn:hover {
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -360,13 +363,13 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
 }
 
 .stat-icon {
     font-size: 2rem;
-    color: #b40000;
+    color: var(--color-primary);
     margin-bottom: 0.75rem;
 }
 
@@ -396,8 +399,8 @@ body {
 
 .filter-select {
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
     min-width: 150px;
 }
 
@@ -411,14 +414,14 @@ body {
     margin: 20px;
     padding: 20px;
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
 }
 
 .credential-card {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
 }
 
 .credential-field {
@@ -436,7 +439,7 @@ body {
     margin-left: 10px;
     padding: 5px 10px;
     background: #f1f1f1;
-    border-radius: 4px;
+    border-radius: var(--radius);
 }
 
 .admin-logo {
@@ -470,7 +473,7 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
 }
 
@@ -490,13 +493,13 @@ body {
     background: white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
 }
 
 .stat-icon {
     font-size: 2rem;
-    color: #b40000;
+    color: var(--color-primary);
     margin-bottom: 0.75rem;
 }
 
@@ -526,7 +529,7 @@ body {
 
 .filter-select {
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
     min-width: 150px;
 }

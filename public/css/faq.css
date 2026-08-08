@@ -1,6 +1,4 @@
-body {
-  background-color: #e6f0ff;
-}
+
 
 .faq-container {
     max-width: 50%;
@@ -12,12 +10,12 @@ body {
     background: white;
     border-radius: 0.5rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     margin-bottom: 2rem;
 }
 
 .section-title {
-    color: #1a365d;
+    color: var(--color-secondary);
     font-size: 2rem;
     margin-bottom: 1.5rem;
     position: relative;
@@ -30,11 +28,11 @@ body {
     bottom: -0.5rem;
     width: 50px;
     height: 3px;
-    background-color: #b40000;
+    background-color: var(--color-primary);
 }
 
 .faq-item {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
 }
@@ -50,7 +48,7 @@ body {
     background: #f7fafc;
     border: none;
     border-radius: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .faq-question:hover {
@@ -60,12 +58,12 @@ body {
 .question-text {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1a365d;
+    color: var(--color-secondary);
 }
 
 .question-arrow {
     transition: transform 0.3s ease;
-    color: #b40000;
+    color: var(--color-primary);
 }
 
 .question-arrow.rotated {
@@ -85,7 +83,7 @@ body {
 
 .help-section {
     text-align: center;
-    background: #b40000;
+    background: var(--color-primary);
     color: white;
     padding: 2rem;
     border-radius: 0.5rem;
@@ -110,16 +108,16 @@ body {
 .help-button {
     display: inline-block;
     background: white;
-    color: #b40000;
+    color: var(--color-primary);
     padding: 0.5rem 1.5rem;
     border-radius: 9999px;
     font-weight: bold;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .help-button:hover {
     background: #f7fafc;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }

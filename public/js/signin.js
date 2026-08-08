@@ -7,42 +7,39 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Sign-in form not found');
     }
     
-    const googleSignInButton = document.querySelector('.google-signin');
+    const googleSignInButton = document.querySelector('.btn-google');
     if (googleSignInButton) {
         googleSignInButton.addEventListener('click', handleGoogleSignIn);
     }
 });
 
+function getRedirectUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+    return redirect && redirect !== 'signin.html' ? redirect : 'profile.html';
+}
+
 async function handleGoogleSignIn() {
     try {
-        // Initialize Google OAuth client
         const client = google.accounts.oauth2.initTokenClient({
             client_id: window.RECSPICY_CONFIG.GOOGLE_CLIENT_ID,
             scope: 'profile email',
             callback: async (response) => {
                 if (response.access_token) {
-                    // Send token to your backend for verification
                     const res = await fetch('/api/users/google-auth', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            token: response.access_token
-                        })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token: response.access_token })
                     });
                     
                     const userData = await res.json();
                     
                     if (res.ok) {
-                        // Store user data in localStorage
                         localStorage.setItem('userId', userData._id);
                         localStorage.setItem('userName', userData.name);
                         localStorage.setItem('username', userData.username);
                         localStorage.setItem('authToken', userData.token);
-                        
-                        // Redirect to profile page
-                        window.location.href = 'profile.html';
+                        window.location.href = getRedirectUrl();
                     } else {
                         throw new Error(userData.message || 'Google authentication failed');
                     }
@@ -50,7 +47,6 @@ async function handleGoogleSignIn() {
             }
         });
         
-        // Request access token
         client.requestAccessToken();
     } catch (error) {
         console.error('Google sign-in error:', error);

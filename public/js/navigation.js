@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     initMobileMenu();
     highlightCurrentPage();
+    updateAuthUI();
     fetchUserCount();
 });
 
@@ -42,12 +43,35 @@ function highlightCurrentPage() {
     });
 }
 
+function isLoggedIn() {
+    return !!(localStorage.getItem('userId') || localStorage.getItem('authToken') || localStorage.getItem('userToken'));
+}
+
+function updateAuthUI() {
+    const userActions = document.getElementById('user-actions');
+    if (!userActions) return;
+    
+    if (isLoggedIn()) {
+        userActions.innerHTML = `
+            <a href="profile.html" class="profile-link">My Profile</a>
+            <button onclick="handleSignOut()" class="btn btn-outline btn-sm">Sign Out</button>
+        `;
+    } else {
+        userActions.innerHTML = `
+            <a href="signin.html" class="profile-link">Sign In</a>
+            <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+        `;
+    }
+}
+
 function handleSignOut() {
     localStorage.removeItem('userToken');
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
     localStorage.removeItem('rememberUser');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('userRole');
     window.location.href = 'index.html';
 }
 

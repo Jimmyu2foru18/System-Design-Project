@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    const googleSignupButton = document.querySelector('.google-signup');
+    const googleSignupButton = document.querySelector('.btn-google');
     if (googleSignupButton) {
         googleSignupButton.addEventListener('click', handleGoogleSignup);
     }

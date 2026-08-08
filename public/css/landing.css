@@ -1,7 +1,7 @@
 
 
 .hero-section {
-  background: linear-gradient(to right, #b40000, #1a365d);
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
   padding: 4rem 0;
   text-align: center;
 }
@@ -35,28 +35,28 @@
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background 0.2s;
   cursor: pointer;
 }
 
 .btn-primary {
   background-color: white;
-  color: #b40000;
-  border: 2px solid #b40000;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
 }
 
 .btn-primary:hover {
-  background-color: #8b0000;
+  background-color: var(--color-primary-dark);
 }
 
 .btn-secondary {
   background-color: white;
-  color: #1a365d;
-  border: 2px solid #1a365d;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
 }
 
 .btn-secondary:hover {
-  background-color: #1a365d;
+  background-color: var(--color-secondary);
 }
 
 .about-section {
@@ -74,7 +74,7 @@
   background: white;
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
   margin-bottom: 3rem;
 }
 
@@ -95,7 +95,7 @@
   background: white;
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
 }
 
 .feature-list {
@@ -120,7 +120,7 @@
   background: white;
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
 }
 
 .benefits-grid {
