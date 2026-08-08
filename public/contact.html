@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Authors: James McGuigan & Steven Foster -->
+    <!-- Authors: James McGuigan -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Recspicy</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/contact.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/contact.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
     <!-- Add EmailJS library -->
     <script src="js/https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
 </head>
@@ -39,13 +40,11 @@
             </div>
         </div>
     </nav>
-
     <main class="contact-container">
         <section class="contact-header">
             <h1 class="contact-title">Contact Us</h1>
             <p class="contact-subtitle">We're here to help with any questions or concerns</p>
         </section>
-
         <section class="contact-form">
             <form id="contact-form">
                 <div class="form-group">
@@ -59,7 +58,6 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
                 <div class="form-group name-fields">
                     <div>
                         <label class="form-label">First Name</label>
@@ -70,12 +68,10 @@
                         <input type="text" id="lastName" name="lastName" class="form-input" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
                     <input type="email" id="email" name="email" class="form-input" required>
                 </div>
-
                 <div class="form-group">
                     <label for="subject" class="form-label">Subject</label>
                     <select name="type" id="contact-type" class="form-select" required>
@@ -84,7 +80,6 @@
                         <option value="feedback">Feedback</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="message" class="form-label">Message</label>
                     <textarea id="message" 
@@ -93,7 +88,6 @@
                               rows="5" 
                               required></textarea>
                 </div>
-
                 <div class="form-group ticket-priority hidden" id="ticket-priority">
                     <label for="priority" class="form-label">Priority</label>
                     <select name="priority" id="priority" class="form-select">
@@ -102,11 +96,9 @@
                         <option value="high">High</option>
                     </select>
                 </div>
-
                 <button type="submit" class="submit-button">Send Message</button>
             </form>
         </section>
-
         <section class="contact-info">
             <div class="info-card">
                 <h3 class="info-title">Business Hours</h3>
@@ -124,7 +116,6 @@
             </div>
         </section>
     </main>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -155,7 +146,6 @@
             <p>&copy; 2025 Recspicy. All rights reserved.</p>
         </div>
     </footer>
-
     <!-- Scripts -->
     <script src="js/navigation.js"></script>
     <script src="js/contact.js"></script>

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Authors: James McGuigan & Steven Foster -->
+    <!-- Authors: James McGuigan -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe - Recspicy</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/recipe.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/recipe.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -37,12 +38,10 @@
             </div>
         </div>
     </nav>
-
     <main class="search-container">
         <div id="error-container" class="error-message">
             <span id="error-message"></span>
         </div>
-
         <section class="search-header">
             <h1 id="recipe-title" class="search-title"></h1>
             <div class="recipe-actions">
@@ -61,33 +60,26 @@
                 </button>
             </div>
         </section>
-
         <div class="recipe-image-container">
             <img id="recipe-image" class="recipe-image" src="" alt="">
         </div>
-
         <div id="recipe-description" class="recipe-description"></div>
-
         <div id="recipe-tags" class="recipe-tags"></div>
-
         <div class="recipe-content">
             <div class="recipe-main results-section">
                 <section class="recipe-section">
                     <h2 class="filters-title">Ingredients</h2>
                     <ul id="ingredients-list" class="ingredients-list"></ul>
                 </section>
-
                 <section class="recipe-section">
                     <h2 class="filters-title">Instructions</h2>
                     <ol id="instructions-list" class="instructions-list"></ol>
                 </section>
-
                 <section class="nutrition-card">
                     <h2 class="filters-title">Nutrition Facts</h2>
                     <div id="nutrition-facts" class="nutrition-grid"></div>
                 </section>
             </div>
-
             <div class="recipe-sidebar filters-section">
                 <section id="notes-section" class="notes-section" style="display: none;">
                     <h2 class="filters-title">Recipe Notes</h2>
@@ -96,9 +88,7 @@
             </div>
         </div>
     </main>
-
     <div id="toast-message" class="toast-message"></div>
-
    <!-- Footer -->
    <footer class="footer">
     <div class="footer-container">
@@ -129,7 +119,6 @@
         <p>&copy; 2025 Recspicy. All rights reserved.</p>
     </div>
 </footer>
-
     <script src="js/navigation.js"></script>
     <script src="js/mealdb-api.js"></script>
     <script src="js/recipe-display.js"></script>

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Authors: James McGuigan & Steven Foster -->
+    <!-- Authors: James McGuigan -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recspicy - Discover Delicious Recipes</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/respicy-index.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/respicy-index.css">
     <!-- TheMealDB API Integration -->
     <script src="js/mealdb-api.js"></script>
 </head>
@@ -41,7 +42,6 @@
         </div>
     </nav>
     </header>
-
     <main class="container" role="main">
         <div class="hero-section">
             <div class="hero-overlay"></div>
@@ -50,7 +50,6 @@
                 <p class="hero-subtitle">Discover, create, and share delicious recipes</p>
             </div>
         </div>
-
         <div class="quick-filters">
             <button class="filter-btn active" data-filter="all">All Recipes</button>
             <button class="filter-btn" data-filter="quick">Quick & Easy</button>
@@ -58,26 +57,21 @@
             <button class="filter-btn" data-filter="trending">Trending</button>
             <button class="filter-btn" data-filter="popular">Most Popular</button>
         </div>
-
         <div id="recipe-sections">
             <section class="recipe-section">
                 <h2 class="section-title">Trending Today</h2>
                 <div class="recipe-scroll" id="trending-today"></div>
             </section>
-
             <section class="recipe-section">
                 <h2 class="section-title">Check These Out</h2>
                 <div class="recipe-scroll" id="check-these-out"></div>
             </section>
-
             <section class="recipe-section">
                 <h2 class="section-title">Recommended For You</h2>
                 <div class="recipe-scroll" id="recommended-for-you"></div>
             </section>
         </div>
     </main>
-
-
    <!-- Footer -->
    <footer class="footer">
     <div class="footer-container">
@@ -108,8 +102,6 @@
         <p>&copy; 2025 Recspicy. All rights reserved.</p>
     </div>
 </footer>
-
-
     <script src="js/navigation.js"></script>
     <script src="js/respicy-index.js"></script>
 </body>

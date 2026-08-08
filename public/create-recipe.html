@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Recipe - Recspicy</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/create-recipe.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/create-recipe.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
  <!-- Navigation Bar -->
@@ -38,7 +39,6 @@
 </nav>
     <main class="create-recipe-container">
         <h1 class="create-recipe-title">Create New Recipe</h1>
-        
         <form id="recipe-form" class="recipe-form">
             <!-- Basic Info Section -->
             <section class="form-section">
@@ -46,12 +46,10 @@
                     <label for="title">Recipe Title</label>
                     <input type="text" id="title" name="title" required>
                 </div>
-
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="description" rows="3" required></textarea>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="cookTime">Cooking Time (minutes)</label>
@@ -62,7 +60,6 @@
                         <input type="number" id="servings" name="servings" min="1" value="4" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Visibility</label>
                     <div class="radio-group">
@@ -77,7 +74,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Ingredients Section -->
             <section class="form-section">
                 <h2>Ingredients</h2>
@@ -91,7 +87,6 @@
                 </div>
                 <button type="button" id="add-ingredient" class="add-btn">Add Ingredient</button>
             </section>
-
             <!-- Instructions Section -->
             <section class="form-section">
                 <h2>Instructions</h2>
@@ -104,7 +99,6 @@
                 </div>
                 <button type="button" id="add-instruction" class="add-btn">Add Step</button>
             </section>
-
             <!-- Form Actions -->
             <div class="form-actions">
                 <button type="button" class="cancel-btn" onclick="window.location.href='profile.html'">Cancel</button>
@@ -112,7 +106,6 @@
             </div>
         </form>
     </main>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -143,7 +136,6 @@
             <p>&copy; 2025 Recspicy. All rights reserved.</p>
         </div>
     </footer>
-
     <script src="js/navigation.js"></script>
     <script src="js/create-recipe.js"></script>
 </body>

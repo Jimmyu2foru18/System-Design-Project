@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - Recspicy</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/profile.css">
+    `n    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
     <script type="module" src="js/profile.js"></script>
     <script type="module" src="js/mealdb-api.js"></script>
 </head>
@@ -42,7 +43,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Main Content -->
     <!-- Remove the preferences section and add create recipe button -->
     <div class="profile-container">
@@ -57,15 +57,12 @@
                 </div>
             </div>
         </div>
-        
         <!-- Preferences section has been removed -->
-        
         <div class="tabs-container">
             <div class="tabs-nav">
                 <div class="tab active" data-tab="my-recipes">My Recipes</div>
                 <div class="tab" data-tab="meal-plans">Meal Plans</div>
             </div>
-            
             <div id="my-recipes" class="tab-content active">
                 <h2 class="content-title">My Recipes</h2>
                 <div class="recipe-container">
@@ -75,7 +72,6 @@
                     </div>
                 </div>
             </div>
-            
             <div id="favorites" class="tab-content">
                 <h2 class="content-title">Favorite Recipes</h2>
                 <div class="recipe-container">
@@ -84,7 +80,6 @@
                     </div>
                 </div>
             </div>
-            
             <div id="meal-plans" class="tab-content">
                 <h2>My Meal Plans</h2>
                 <div id="meal-plans-grid">
@@ -93,7 +88,6 @@
             </div>
         </div>
     </div>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
@@ -124,7 +118,6 @@
             <p>&copy; 2025 Recspicy. All rights reserved.</p>
         </div>
     </footer>
-    
     <!-- Edit Profile Modal -->
     <div id="edit-profile-modal" class="modal">
         <div class="modal-content">
@@ -135,12 +128,10 @@
                     <label for="edit-name">Name</label>
                     <input type="text" id="edit-name" name="name" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="edit-bio">Bio</label>
                     <textarea id="edit-bio" name="bio" rows="4"></textarea>
                 </div>
-                
                 <div class="form-group">
                     <label for="edit-profile-image">Profile Image</label>
                     <input type="file" id="edit-profile-image" name="profileImage" accept="image/*" onchange="handleProfileImageChange(event)">
@@ -148,7 +139,6 @@
                         <img id="profile-image-preview" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
                     </div>
                 </div>
-                
                 <div class="form-actions">
                     <button type="button" onclick="closeEditProfileModal()">Cancel</button>
                     <button type="submit">Save Changes</button>
@@ -156,7 +146,6 @@
             </form>
         </div>
     </div>
-    
     <!-- Scripts -->
     <script src="js/navigation.js"></script>
     <script src="js/profile.js"></script>

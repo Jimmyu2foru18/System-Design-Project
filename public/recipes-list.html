@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Authors: James McGuigan & Steven Foster -->
+    <!-- Authors: James McGuigan -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Recipes - Recspicy</title>
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/recipes-list.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/styles.css">`n    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    `n    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    `n    <link rel="stylesheet" href="css/recipes-list.css">
+    `n    <link rel="stylesheet" href="css/footer.css">
+    `n    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -38,25 +39,20 @@
             </div>
         </div>
     </nav>
-
     <main class="search-container">
         <div id="error-container" class="error-message">
             <span id="error-message"></span>
         </div>
-
         <section class="search-header">
             <h1 class="search-title">Browse Recipes</h1>
             <p class="search-subtitle">Discover delicious recipes for every occasion</p>
-            
             <div class="search-box">
                 <input type="text" id="search-input" class="search-input" placeholder="Search recipes...">
                 <button class="search-button"><i class="fas fa-search"></i></button>
             </div>
         </section>
-
         <section class="filters-section">
             <h2 class="filters-title">Filters</h2>
-            
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All Recipes</button>
                 <button class="filter-btn" data-filter="Beef">Beef</button>
@@ -74,19 +70,14 @@
                 <button class="filter-btn" data-filter="Breakfast">Breakfast</button>
                 <button class="filter-btn" data-filter="Goat">Goat</button>
             </div>
-            
-            
         </section>
-
         <section class="results-section">
             <div id="recipes-container" class="recipes-grid">
                 <!-- Recipe cards will be inserted here by JavaScript -->
             </div>
-            
             <button id="load-more-btn" class="load-more-btn">Load More</button>
         </section>
     </main>
-	
 	  <!-- Footer -->
       <footer class="footer">
         <div class="footer-container">
@@ -117,8 +108,6 @@
             <p>&copy; 2025 Recspicy. All rights reserved.</p>
         </div>
     </footer>
-
-
     <!-- Before closing body tag -->
     <script src="js/navigation.js"></script>
     <script src="js/mealdb-api.js"></script>
