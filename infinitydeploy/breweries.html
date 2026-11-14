@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breweries - Recspicy</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/breweries.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo1.png" alt="Recspicy Logo">
+                    </a>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="recipes-list.html">Recipes</a></li>
+                        <li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="breweries.html" class="active">Breweries</a></li>
+                        <li><a href="reports.html">Reports</a></li>
+                        <li><a href="openfoodfacts.html">Food Facts</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="user-actions" id="user-actions">
+                    <a href="signin.html" class="profile-link">Sign In</a>
+                    <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="page-header">
+            <h1>Breweries</h1>
+            <p class="page-subtitle">Explore breweries from around the world</p>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Search breweries by name, city, or country...">
+                <button class="search-button" id="search-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <h2 class="filters-title">Filters</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="micro">Micro</button>
+                <button class="filter-btn" data-filter="nano">Nano</button>
+                <button class="filter-btn" data-filter="regional">Regional</button>
+                <button class="filter-btn" data-filter="brewpub">Brewpub</button>
+                <button class="filter-btn" data-filter="large">Large</button>
+                <button class="filter-btn" data-filter="planning">Planning</button>
+                <button class="filter-btn" data-filter="bar">Bar</button>
+                <button class="filter-btn" data-filter="contract">Contract</button>
+                <button class="filter-btn" data-filter="proprietor">Proprietor</button>
+                <button class="filter-btn" data-filter="closed">Closed</button>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <div class="results-header">
+                <h2 id="results-title">All Breweries</h2>
+                <span id="results-count" class="results-count">Loading...</span>
+            </div>
+            
+            <div id="breweries-container" class="breweries-grid">
+                <div class="loading-spinner"></div>
+            </div>
+            
+            <button id="load-more-btn" class="load-more-btn" style="display: none;">Load More</button>
+            
+            <div id="no-results" class="no-results" style="display: none;">
+                <h3>No breweries found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Recspicy Logo">
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="recipes-list.html">Recipes</a></li>
+                        <li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="breweries.html">Breweries</a></li>
+                        <li><a href="reports.html">Reports</a></li>
+                        <li><a href="openfoodfacts.html">Food Facts</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Recspicy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/brewery-api.js"></script>
+    <script src="js/breweries.js"></script>
+</body>
+</html>

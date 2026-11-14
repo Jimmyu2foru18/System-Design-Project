@@ -1,0 +1,209 @@
+
+
+.meal-planner-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.meal-planner-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.meal-plan-form {
+    background-color: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: var(--radius);
+}
+
+.form-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.day-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius);
+}
+
+.day-section h3 {
+    color: #444;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.ingredient-list {
+    margin-bottom: 1rem;
+}
+
+.ingredient-input {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+}
+
+.ingredient-input input {
+    flex: 1;
+}
+
+.add-ingredient,
+.remove-ingredient {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    font-weight: 600;
+}
+
+.add-ingredient {
+    background: #059669;
+    color: white;
+}
+
+.add-ingredient:hover {
+    background: #047857;
+}
+
+.remove-ingredient {
+    background: #dc2626;
+    color: white;
+}
+
+.remove-ingredient:hover {
+    background: #b91c1c;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.submit-btn {
+    background: var(--color-primary);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    background: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+    .meal-planner-container {
+        margin: 1rem;
+    }
+
+    .meal-plan-form {
+        padding: 1rem;
+    }
+
+    .day-section {
+        padding: 1rem;
+    }
+
+    .ingredient-input {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .remove-ingredient {
+        width: 100%;
+    }
+}
+
+.nutrition-summary {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.nutrition-summary h3 {
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.nutrition-card {
+    background: var(--color-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+}
+
+.nutrition-label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.nutrition-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.nutrition-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 0.5rem;
+}
+}
