@@ -2,8 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { connectDB, isDbConnected } = require('./db');
-
 const userRoutes = require('./routes/userRoutes');
 const mealPlanRoutes = require('./controllers/mealPlanController');
 const recipeRecordRoutes = require('./routes/recipeRecordRoutes');
