@@ -63,17 +63,48 @@
 }
 
 .signin-prompt { text-align: center; margin-top: 1.5rem; color: var(--muted); }
-.signin-link { color: var(--accent); font-weight: 600; }
-.signin-link:hover { text-decoration: underline; }
+.signin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  min-height: 44px;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.signin-link:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
 
 .return-link {
-  display: inline-block;
-  margin-top: 2rem;
-  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  min-height: 44px;
+  margin: 2rem auto 0;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
   text-decoration: none;
-  font-size: 0.875rem;
+  transition: all var(--transition);
 }
-.return-link:hover { color: var(--ink); text-decoration: underline; }
+.return-link:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
 
 /* Two-column layout: Sign Up form | Join Our Community */
 .grid {
