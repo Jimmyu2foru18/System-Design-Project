@@ -27,7 +27,6 @@
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="reports.html">Reports</a></li>
 <li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About</a></li>
 <li><a href="contact.html">Contact</a></li>
@@ -58,7 +57,7 @@
         <p id="profile-bio" class="profile-bio">Loading profile...</p>
       </div>
       <div class="profile-actions">
-        <button id="edit-profile-btn" class="btn btn-primary">Edit Profile</button>
+        <button id="edit-profile-btn" class="btn btn-primary" onclick="openEditProfileModal()">Edit Profile</button>
         <a href="create-recipe.html" class="btn btn-secondary">Create Recipe</a>
       </div>
     </div>
@@ -117,7 +116,6 @@
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="reports.html">Reports</a></li>
 <li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About Us</a></li>
 <li><a href="contact.html">Contact</a></li>
@@ -170,9 +168,18 @@
 <script src="js/navigation.js"></script>
 <script src="js/profile.js"></script>
 <script>
+function openEditProfileModal() {
+    document.getElementById('edit-profile-modal').classList.add('show');
+    document.getElementById('edit-profile-modal-overlay').classList.add('show');
+}
+
+function closeEditProfileModal() {
+    document.getElementById('edit-profile-modal').classList.remove('show');
+    document.getElementById('edit-profile-modal-overlay').classList.remove('show');
+}
+
 document.getElementById('edit-profile-modal-overlay').addEventListener('click', function() {
-document.getElementById('edit-profile-modal').classList.remove('show');
-document.getElementById('edit-profile-modal-overlay').classList.remove('show');
+    closeEditProfileModal();
 });
 </script>
 </body>

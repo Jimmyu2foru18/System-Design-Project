@@ -235,21 +235,134 @@ function normalizeRecipe(recipe, fallbackId) {
 
 /**
  * Check recipe record status for current user.
+ * Tries backend first, falls back to localStorage for demo/external users.
  * @param {string} recipeId - Recipe ID
  */
 async function checkRecipeRecordStatus(recipeId) {
-    try {
-        const userId = localStorage.getItem('userId');
-        if (!userId) return;
+    const user = getCurrentUser();
+    if (!user) return;
 
-        const response = await fetch(`/api/recipe-records/${recipeId}/user/${userId}/status`);
+    // Try backend first (works for registered users with DB records)
+    try {
+        const response = await fetch(`/api/recipe-records/${encodeURIComponent(recipeId)}/user/${encodeURIComponent(user.id)}/status`);
         if (response.ok) {
             const { rated, favorited, ratedCount } = await response.json();
             updateStarButton(rated, ratedCount);
             updateFavoriteButton(favorited);
+            return;
         }
     } catch (error) {
-        console.error('Error checking recipe status:', error);
+        console.error('Backend recipe status check failed:', error);
+    }
+
+    // Fall back to localStorage for demo users or external recipe IDs
+    try {
+        const [ratings, favorites] = await Promise.all([getRatings(user.email), getFavorites(user.email)]);
+        const rated = !!ratings[recipeId];
+        const ratedCount = Object.values(ratings).length;
+        const favorited = favorites.includes(recipeId);
+        updateStarButton(rated, ratedCount);
+        updateFavoriteButton(favorited);
+    } catch (error) {
+        console.error('Error checking recipe status from localStorage:', error);
+    }
+}
+
+/**
+ * Get the current signed-in user info from localStorage.
+ * @returns {Object|null} { id, email, name, isDemo } or null
+ */
+function getCurrentUser() {
+    const userId = localStorage.getItem('userId');
+    const email = localStorage.getItem('userEmail');
+    const name = localStorage.getItem('userName');
+    if (!userId) return null;
+    return {
+        id: userId,
+        email: email || '',
+        name: name || '',
+        isDemo: String(userId).startsWith('demo-')
+    };
+}
+
+/**
+ * Get localStorage key for favorites, keyed by user email.
+ * @param {string} email - User email
+ * @returns {string} localStorage key
+ */
+function getFavoritesKey(email) {
+    return `recspicy_favorites_${email}`;
+}
+
+/**
+ * Get localStorage key for ratings, keyed by user email.
+ * @param {string} email - User email
+ * @returns {string} localStorage key
+ */
+function getRatingsKey(email) {
+    return `recspicy_ratings_${email}`;
+}
+
+/**
+ * Read favorites for a user from localStorage.
+ * @param {string} email - User email
+ * @returns {Promise<Array<string>>} Array of favorited recipe IDs
+ */
+async function getFavorites(email) {
+    if (!email) return [];
+    try {
+        const raw = localStorage.getItem(getFavoritesKey(email));
+        return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+        console.error('Error reading favorites:', e);
+        return [];
+    }
+}
+
+/**
+ * Save favorites for a user to localStorage.
+ * @param {string} email - User email
+ * @param {Array<string>} favorites - Array of favorited recipe IDs
+ */
+async function saveFavorites(email, favorites) {
+    if (!email) return;
+    try {
+        localStorage.setItem(getFavoritesKey(email), JSON.stringify(favorites));
+    } catch (e) {
+        console.error('Error saving favorites:', e);
+    }
+}
+
+/**
+ * Read ratings for a user from localStorage.
+ * @param {string} email - User email
+ * @returns {Promise<Object>} Map of recipeId → rating value
+ */
+async function getRatings(email) {
+    if (!email) return {};
+    try {
+        const raw = localStorage.getItem(getRatingsKey(email));
+        return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+        console.error('Error reading ratings:', e);
+        return {};
+    }
+}
+
+/**
+ * Save a rating for a user to localStorage.
+ * @param {string} email - User email
+ * @param {string} recipeId - Recipe ID
+ * @param {number} rating - Rating value (1-5)
+ */
+async function saveRating(email, recipeId, rating) {
+    if (!email) return;
+    try {
+        const ratings = await getRatings(email);
+        ratings[recipeId] = rating;
+        localStorage.setItem(getRatingsKey(email), JSON.stringify(ratings));
+    } catch (e) {
+        console.error('Error saving rating:', e);
     }
 }
 
@@ -259,18 +372,16 @@ async function checkRecipeRecordStatus(recipeId) {
  * @param {number} count - Rating count
  */
 function updateStarButton(rated, count) {
-    const starIcon = document.querySelector('#star-btn i');
+    const starIcon = document.getElementById('star-icon');
     const countBadge = document.getElementById('star-count');
-    const label = document.querySelector('#star-btn span');
+    const label = document.getElementById('star-label');
 
     if (countBadge) countBadge.textContent = count || 0;
     if (rated) {
-        starIcon.classList.remove('far');
-        starIcon.classList.add('fas');
+        if (starIcon) starIcon.textContent = '★';
         if (label) label.textContent = 'Rated';
     } else {
-        starIcon.classList.remove('fas');
-        starIcon.classList.add('far');
+        if (starIcon) starIcon.textContent = '☆';
         if (label) label.textContent = 'Rate Recipe';
     }
 }
@@ -280,16 +391,14 @@ function updateStarButton(rated, count) {
  * @param {boolean} favorited - Whether user favorited
  */
 function updateFavoriteButton(favorited) {
-    const heartIcon = document.querySelector('#favorite-btn i');
-    const label = document.querySelector('#favorite-btn span');
+    const heartIcon = document.getElementById('favorite-icon');
+    const label = document.getElementById('favorite-label');
 
     if (favorited) {
-        heartIcon.classList.remove('far');
-        heartIcon.classList.add('fas');
+        if (heartIcon) heartIcon.textContent = '♥';
         if (label) label.textContent = 'Remove from Favorites';
     } else {
-        heartIcon.classList.remove('fas');
-        heartIcon.classList.add('far');
+        if (heartIcon) heartIcon.textContent = '♡';
         if (label) label.textContent = 'Add to Favorites';
     }
 }
@@ -316,17 +425,14 @@ async function displayRecipe(recipe) {
 
     document.getElementById('recipe-description').textContent = recipe.description || 'No description available.';
 
-    displayIngredients(recipe.ingredients);
-    displayInstructions(recipe.instructions);
-    displayTags(recipe);
-
     if (recipe.ingredients && recipe.ingredients.length > 0) {
-        try {
-            const nutrition = await calculateRecipeNutrition(recipe.ingredients);
-            displayNutrition(nutrition);
-        } catch (error) {
-            console.error('Error calculating nutrition:', error);
-        }
+        displayIngredients(recipe.ingredients);
+        displayInstructions(recipe.instructions);
+        displayTags(recipe);
+    } else {
+        displayIngredients(recipe.ingredients);
+        displayInstructions(recipe.instructions);
+        displayTags(recipe);
     }
 
     setupActionButtons(recipe);
@@ -408,24 +514,8 @@ function displayTags(recipe) {
 }
 
 /**
- * Display nutrition information.
- * @param {Object} nutrition - Nutrition data
- */
-function displayNutrition(nutrition) {
-    const container = document.getElementById('nutrition-facts');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="nutrition-item"><span class="nutrition-name">Calories</span><span class="nutrition-value">${nutrition.calories} kcal</span></div>
-        <div class="nutrition-item"><span class="nutrition-name">Protein</span><span class="nutrition-value">${nutrition.protein}g</span></div>
-        <div class="nutrition-item"><span class="nutrition-name">Fat</span><span class="nutrition-value">${nutrition.fat}g</span></div>
-        <div class="nutrition-item"><span class="nutrition-name">Carbs</span><span class="nutrition-value">${nutrition.carbs}g</span></div>
-        <div class="nutrition-item"><span class="nutrition-name">Fiber</span><span class="nutrition-value">${nutrition.fiber}g</span></div>
-    `;
-}
-
-/**
- * Set up action buttons.
+ * Set up action buttons (rate, favorite, print).
+ * Supports demo users via localStorage fallback and external recipe IDs.
  * @param {Object} recipe - Recipe object
  */
 function setupActionButtons(recipe) {
@@ -433,26 +523,53 @@ function setupActionButtons(recipe) {
     const favoriteBtn = document.getElementById('favorite-btn');
     const printBtn = document.getElementById('print-btn');
 
+    const user = getCurrentUser();
+    const recipeKey = String(recipe.id);
+
+    // ---- Rate Recipe ----
     if (starBtn) {
         starBtn.onclick = async () => {
-            const userId = localStorage.getItem('userId');
-            if (!userId) {
+            if (!user) {
                 showToast('Please log in to rate recipes');
                 return;
             }
 
+            let rated = false;
+            let ratedCount = 0;
+
             try {
-                const response = await fetch(`/api/recipe-records/${recipe.id}/rate`, {
+                const response = await fetch(`/api/recipe-records/${encodeURIComponent(recipeKey)}/rate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId })
+                    body: JSON.stringify({ userId: user.id })
                 });
 
                 if (response.ok) {
-                    const { rated, ratedCount, message } = await response.json();
+                    const data = await response.json();
+                    rated = data.rated;
+                    ratedCount = data.ratedCount;
+                    showToast(data.message || 'Rating saved');
                     updateStarButton(rated, ratedCount);
-                    showToast(message);
+                    return;
                 }
+            } catch (error) {
+                console.error('Backend rate failed:', error);
+            }
+
+            // Fall back to localStorage for demo users or external recipe IDs
+            try {
+                const ratings = await getRatings(user.email);
+                const wasRated = !!ratings[recipeKey];
+                rated = !wasRated;
+                if (rated) {
+                    ratings[recipeKey] = 5;
+                } else {
+                    delete ratings[recipeKey];
+                }
+                await saveRating(user.email, recipeKey, rated ? 5 : undefined);
+                ratedCount = Object.values(ratings).filter(Boolean).length;
+                updateStarButton(rated, ratedCount);
+                showToast(rated ? 'Rated 5 stars!' : 'Rating removed');
             } catch (error) {
                 console.error('Error rating recipe:', error);
                 showToast('Error rating recipe');
@@ -460,46 +577,63 @@ function setupActionButtons(recipe) {
         };
     }
 
+    // ---- Add to Favorites ----
     if (favoriteBtn) {
         favoriteBtn.onclick = async () => {
-            const userId = localStorage.getItem('userId');
-            if (!userId) {
+            if (!user) {
                 showToast('Please sign in to add favorites');
                 return;
             }
 
+            let isFavorite = false;
+
             try {
-                const userResponse = await fetch(`/api/users/${userId}`, {
+                const userResponse = await fetch(`/api/users/${encodeURIComponent(user.id)}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                     }
                 });
 
-                if (!userResponse.ok) throw new Error('Failed to fetch user data');
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    let favorites = userData.profileData?.favorites || [];
+                    isFavorite = favorites.includes(recipeKey);
+                    const updatedFavorites = isFavorite
+                        ? favorites.filter(id => id !== recipeKey)
+                        : [...favorites, recipeKey];
 
-                const userData = await userResponse.json();
-                let favorites = userData.profileData?.favorites || [];
-                const isFavorite = favorites.includes(recipe.id);
-                const updatedFavorites = isFavorite
-                    ? favorites.filter(id => id !== recipe.id)
-                    : [...favorites, recipe.id];
+                    const updateResponse = await fetch(`/api/users/${encodeURIComponent(user.id)}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        },
+                        body: JSON.stringify({ favorites: updatedFavorites })
+                    });
 
-                const updateResponse = await fetch(`/api/users/${userId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    },
-                    body: JSON.stringify({ favorites: updatedFavorites })
-                });
-
-                if (updateResponse.ok) {
-                    updateFavoriteButton(!isFavorite);
-                    showToast(!isFavorite ? 'Added to favorites!' : 'Removed from favorites!');
+                    if (updateResponse.ok) {
+                        updateFavoriteButton(!isFavorite);
+                        showToast(!isFavorite ? 'Added to favorites!' : 'Removed from favorites!');
+                        return;
+                    }
                 }
             } catch (error) {
-                console.error('Error updating favorites:', error);
+                console.error('Backend favorites failed:', error);
+            }
+
+            // Fall back to localStorage
+            try {
+                const favorites = await getFavorites(user.email);
+                isFavorite = favorites.includes(recipeKey);
+                const updatedFavorites = isFavorite
+                    ? favorites.filter(id => id !== recipeKey)
+                    : [...favorites, recipeKey];
+                await saveFavorites(user.email, updatedFavorites);
+                updateFavoriteButton(!isFavorite);
+                showToast(!isFavorite ? 'Added to favorites!' : 'Removed from favorites!');
+            } catch (e) {
+                console.error('Favorites fallback failed:', e);
                 showToast('Failed to update favorites');
             }
         };
@@ -514,7 +648,6 @@ function setupActionButtons(recipe) {
  * Print recipe.
  * @param {Object} recipe - Recipe object
  */
-window.printRecipe = function(recipe) {
 window.printRecipe = function(recipe) {
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -537,8 +670,9 @@ window.printRecipe = function(recipe) {
                 .recipe-image { max-width: 100%; height: auto; max-height: 300px; object-fit: cover; margin-bottom: 20px; }
                 .recipe-meta { margin: 10px 0; color: #666; }
                 .ingredient-list, .instructions-list { margin: 10px 0; padding-left: 20px; }
-                .nutrition-info { margin-top: 20px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd; }
-                .nutrition-item { display: inline-block; margin-right: 15px; }
+                .recipe-image { max-width: 100%; height: auto; max-height: 300px; object-fit: cover; margin-bottom: 20px; }
+                .recipe-meta { margin: 10px 0; color: #666; }
+                .ingredient-list, .instructions-list { margin: 10px 0; padding-left: 20px; }
             </style>
         </head>
         <body>
@@ -570,7 +704,6 @@ window.printRecipe = function(recipe) {
                         ${(recipe.instructions || []).map(inst => `<li>${typeof inst === 'string' ? inst : (inst.instruction || inst.text || '')}</li>`).join('')}
                     </ol>
 
-                    <div id="print-nutrition"></div>
                 </div>
             </div>
         </body>
@@ -580,21 +713,6 @@ window.printRecipe = function(recipe) {
     printWindow.document.open();
     printWindow.document.write(printContent);
     printWindow.document.close();
-
-    const nutritionEl = printWindow.document.getElementById('print-nutrition');
-    const renderNutrition = (nutrition) => {
-      if (!nutritionEl) return;
-      nutritionEl.innerHTML = `
-        <h3>Nutrition Information (Estimated)</h3>
-        <div class="nutrition-info">
-          <span class="nutrition-item">${nutrition.calories} kcal</span>
-          <span class="nutrition-item">${nutrition.protein}g protein</span>
-          <span class="nutrition-item">${nutrition.fat}g fat</span>
-          <span class="nutrition-item">${nutrition.carbs}g carbs</span>
-          <span class="nutrition-item">${nutrition.fiber}g fiber</span>
-        </div>
-      `;
-    };
 
     const doPrint = () => {
       try {
@@ -609,26 +727,11 @@ window.printRecipe = function(recipe) {
       }
     };
 
-    if (recipe.ingredients && recipe.ingredients.length > 0) {
-      calculateRecipeNutrition(recipe.ingredients)
-        .then(renderNutrition)
-        .catch((error) => {
-          console.warn('Nutrition calculation failed for print:', error);
-          if (nutritionEl) {
-            nutritionEl.innerHTML = '<p><em>Nutrition information unavailable</em></p>';
-          }
-        })
-        .finally(() => {
-          setTimeout(doPrint, 300);
-        });
-    } else {
-      setTimeout(doPrint, 300);
-    }
+    setTimeout(doPrint, 300);
   };
-}
 
-/**
- * Show error message.
+  /**
+   * Show error message.
  * @param {string} message - Error message
  */
 function showError(message) {

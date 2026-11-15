@@ -93,6 +93,7 @@ async function handleSignIn(event) {
         localStorage.setItem('userId', 'admin');
         localStorage.setItem('userName', 'Administrator');
         localStorage.setItem('username', 'admin');
+        localStorage.setItem('userEmail', 'admin@recspicy.com');
         localStorage.setItem('authToken', 'admin-token');
         localStorage.setItem('adminToken', 'admin-token');
         localStorage.setItem('userRole', 'admin');
@@ -125,6 +126,7 @@ async function handleSignIn(event) {
         localStorage.setItem('userId', userData._id);
         localStorage.setItem('userName', userData.name);
         localStorage.setItem('username', userData.username);
+        localStorage.setItem('userEmail', email);
         localStorage.setItem('authToken', userData.token || 'dummy-token');
         
         console.log('Redirecting to profile page...');

@@ -27,7 +27,6 @@
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="reports.html">Reports</a></li>
 <li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About</a></li>
 <li><a href="contact.html">Contact</a></li>
@@ -44,73 +43,75 @@
 </nav>
 </header>
 <main class="create-recipe-container reveal">
-<div class="grid">
-<article class="feature">
-<h1 class="create-recipe-title">Create New Recipe</h1>
-<form id="recipe-form" class="recipe-form">
-<section class="form-section">
-<div class="form-group">
-<label for="title">Recipe Title</label>
-<input type="text" id="title" name="title" required>
-</div>
-<div class="form-group">
-<label for="description">Description</label>
-<textarea id="description" name="description" rows="3" required></textarea>
-</div>
-<div class="form-row">
-<div class="form-group span-6">
-<label for="cookTime">Cooking Time (minutes)</label>
-<input type="number" id="cookTime" name="cookTime" min="1" value="30" required>
-</div>
-<div class="form-group span-6">
-<label for="servings">Servings</label>
-<input type="number" id="servings" name="servings" min="1" value="4" required>
-</div>
-</div>
-<div class="form-group">
-<label>Visibility</label>
-<div class="radio-group">
-<label>
-<input type="radio" name="visibility" value="public" checked>
-Public
-</label>
-<label>
-<input type="radio" name="visibility" value="private">
-Private
-</label>
-</div>
-</div>
-</section>
-<section class="form-section">
-<h2>Ingredients</h2>
-<div id="ingredients-list" class="ingredients-list">
-<div class="ingredient-row">
-<input type="text" name="ingredients[]" placeholder="Enter ingredient" required>
-<input type="text" name="amounts[]" placeholder="Amount">
-<input type="text" name="units[]" placeholder="Unit">
-<button type="button" class="remove-btn" title="Remove ingredient">×</button>
-</div>
-</div>
-<button type="button" id="add-ingredient" class="add-btn">Add Ingredient</button>
-</section>
-<section class="form-section">
-<h2>Instructions</h2>
-<div id="instructions-list" class="instructions-list">
-<div class="instruction-row">
-<span class="step-number">1</span>
-<textarea name="instructions[]" rows="2" placeholder="Enter instruction step" required></textarea>
-<button type="button" class="remove-btn" title="Remove step">×</button>
-</div>
-</div>
-<button type="button" id="add-instruction" class="add-btn">Add Step</button>
-</section>
-<div class="form-actions">
-<button type="button" class="cancel-btn" onclick="window.location.href='profile.html'">Cancel</button>
-<button type="submit" class="save-btn">Save Recipe</button>
-</div>
-</form>
-</article>
-</div>
+  <div class="recipe-form">
+    <span class="kicker">Create Recipe</span>
+    <h1 class="create-recipe-title">Create New Recipe</h1>
+    <form id="recipe-form" class="recipe-form-inner" novalidate>
+      <section class="form-section">
+        <div class="form-group">
+          <label for="title">Recipe Title <span class="required">*</span></label>
+          <input type="text" id="title" name="title" placeholder="Enter recipe title" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3" placeholder="Describe your recipe..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cookTime">Cooking Time (minutes)</label>
+            <input type="number" id="cookTime" name="cookTime" min="1" value="30" required>
+          </div>
+          <div class="form-group">
+            <label for="servings">Servings</label>
+            <input type="number" id="servings" name="servings" min="1" value="4" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Visibility</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="visibility" value="public" checked>
+              Public
+            </label>
+            <label>
+              <input type="radio" name="visibility" value="private">
+              Private
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h2>Ingredients</h2>
+        <div id="ingredients-list" class="ingredients-list">
+          <div class="ingredient-row">
+            <input type="text" name="ingredients[]" placeholder="Enter ingredient" required>
+            <input type="text" name="amounts[]" placeholder="Amount">
+            <input type="text" name="units[]" placeholder="Unit">
+            <button type="button" class="remove-btn" title="Remove ingredient">×</button>
+          </div>
+        </div>
+        <button type="button" id="add-ingredient" class="add-btn">Add Ingredient</button>
+      </section>
+
+      <section class="form-section">
+        <h2>Instructions</h2>
+        <div id="instructions-list" class="instructions-list">
+          <div class="instruction-row">
+            <span class="step-number">1</span>
+            <textarea name="instructions[]" rows="2" placeholder="Enter instruction step" required></textarea>
+            <button type="button" class="remove-btn" title="Remove step">×</button>
+          </div>
+        </div>
+        <button type="button" id="add-instruction" class="add-btn">Add Step</button>
+      </section>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" onclick="window.location.href='profile.html'">Cancel</button>
+        <button type="submit" class="save-btn">Save Recipe</button>
+      </div>
+    </form>
+  </div>
 </main>
 <footer class="footer">
 <div class="footer-container">
@@ -124,7 +125,6 @@ Private
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
-<li><a href="reports.html">Reports</a></li>
 <li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About Us</a></li>
 <li><a href="contact.html">Contact</a></li>

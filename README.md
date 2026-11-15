@@ -139,7 +139,6 @@ The frontend uses a unified CSS design system defined in `public/css/styles.css`
 - `/recipes-list.html` - Browse recipes with meal type, dietary, and allergy filters
 - `/recipes.html` - Individual recipe view with nutrition and print
 - `/breweries.html` - Browse breweries via Open Brewery DB
-- `/reports.html` - Browse reports via Report of the Week
 - `/openfoodfacts.html` - Search food products via Open Food Facts
 - `/admin.html` - Admin dashboard
 - `/about.html` - About page

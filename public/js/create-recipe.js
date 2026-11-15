@@ -1,14 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+async function initCreateRecipe() {
     // Check authentication
     if (!localStorage.getItem('authToken')) {
         window.location.href = 'signin.html';
         return;
     }
 
-    initializeForm();
-});
-
-async function initializeForm() {
     const form = document.getElementById('recipe-form');
     const addIngredientBtn = document.getElementById('add-ingredient');
     const addInstructionBtn = document.getElementById('add-instruction');
@@ -16,7 +12,7 @@ async function initializeForm() {
     // Check if we're editing an existing recipe
     const urlParams = new URLSearchParams(window.location.search);
     const recipeId = urlParams.get('edit');
-    
+
     if (recipeId) {
         // Load existing recipe data
         try {
@@ -25,7 +21,7 @@ async function initializeForm() {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
-            
+
             if (response.ok) {
                 const recipe = await response.json();
                 populateFormWithRecipeData(recipe);
@@ -51,7 +47,7 @@ function populateFormWithRecipeData(recipe) {
     document.getElementById('description').value = recipe.description;
     document.getElementById('cookTime').value = recipe.cookingTime;
     document.getElementById('servings').value = recipe.servings;
-    
+
     // Set visibility
     const publicRadio = document.querySelector('input[name="visibility"][value="public"]');
     const privateRadio = document.querySelector('input[name="visibility"][value="private"]');
@@ -117,7 +113,7 @@ function setupRemoveButtons() {
             const row = button.closest('.ingredient-row, .instruction-row');
             const container = row.parentElement;
             container.removeChild(row);
-            
+
             // Update step numbers if it's an instruction
             if (container.id === 'instructions-list') {
                 updateStepNumbers();
@@ -135,12 +131,12 @@ function updateStepNumbers() {
 
 async function handleSubmit(event) {
     event.preventDefault();
-    
+
     try {
         const formData = new FormData(event.target);
         const urlParams = new URLSearchParams(window.location.search);
         const recipeId = urlParams.get('edit');
-        
+
         const recipe = {
             title: formData.get('title'),
             description: formData.get('description'),
@@ -158,7 +154,7 @@ async function handleSubmit(event) {
         const ingredients = formData.getAll('ingredients[]');
         const amounts = formData.getAll('amounts[]');
         const units = formData.getAll('units[]');
-        
+
         ingredients.forEach((ingredient, index) => {
             if (ingredient.trim()) {
                 recipe.ingredients.push({
@@ -199,7 +195,7 @@ async function handleSubmit(event) {
 
         const result = await response.json();
         showSuccess(recipeId ? 'Recipe updated successfully!' : 'Recipe created successfully!');
-        
+
         setTimeout(() => {
             window.location.href = 'profile.html';
         }, 2000);
@@ -296,4 +292,10 @@ async function updateUserProfileWithRecipe(recipeId) {
         console.error('Error updating user profile:', error);
         showError('Failed to update user profile with recipe');
     }
-  }
+}
+
+if (document.readyState !== 'loading') {
+    initCreateRecipe();
+} else {
+    document.addEventListener('DOMContentLoaded', initCreateRecipe);
+}

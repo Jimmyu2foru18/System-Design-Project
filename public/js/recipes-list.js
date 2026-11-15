@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+function initRecipes() {
     let allRecipes = [];
     let displayedRecipes = [];
     let currentMealType = 'all';
@@ -18,29 +18,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsCount = document.getElementById('results-count');
     const noResults = document.getElementById('no-results');
 
-    const mealTypeBtns = document.querySelectorAll('#meal-type-filters .filter-btn');
-    const dietaryBtns = document.querySelectorAll('#dietary-filters .filter-btn');
-    const allergyBtns = document.querySelectorAll('#allergy-filters .filter-btn');
+    const mealTypeBtns = document.querySelectorAll('#filter-buttons .filter-btn');
     const sourceBtns = document.querySelectorAll('.source-btn');
 
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('filter')) {
-        currentMealType = urlParams.get('filter');
-        currentSearch = urlParams.get('search') || '';
-    }
-    if (urlParams.has('source')) {
-        currentSource = urlParams.get('source');
-    }
-    if (searchInput && currentSearch) {
-        searchInput.value = currentSearch;
+    function showError(message, retryable) {
+        const retryHtml = retryable
+            ? '<button class="btn btn-primary" onclick="retryLoadRecipes()">Retry</button>'
+            : '';
+        recipesContainer.innerHTML = `
+            <div class="error-message">
+                <p>${message}</p>
+                ${retryHtml}
+            </div>
+        `;
+        noResults.style.display = 'none';
+        loadMoreBtn.style.display = 'none';
+        resultsCount.textContent = '0 recipes';
     }
 
     async function loadRecipes() {
         if (isLoading) return;
         isLoading = true;
         currentPage = 1;
-        
-        recipesContainer.innerHTML = '<div class="loading-spinner"></div>';
+
+        recipesContainer.innerHTML = '<div class="loading-spinner" role="status" aria-label="Loading recipes"></div>';
         noResults.style.display = 'none';
         loadMoreBtn.style.display = 'none';
 
@@ -74,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             });
 
-            // Cache all recipes keyed by ID for the detail page fallback
             try {
                 const byId = {};
                 allRecipes.forEach(r => { byId[r.id] = r; });
@@ -86,15 +86,15 @@ document.addEventListener('DOMContentLoaded', function() {
             applyFilters();
         } catch (error) {
             console.error('Error loading recipes:', error);
-            recipesContainer.innerHTML = `
-                <div class="error-message">
-                    <p>Failed to load recipes. Please try again later.</p>
-                </div>
-            `;
+            showError('Failed to load recipes. Please try again later.', true);
         } finally {
             isLoading = false;
         }
     }
+
+    window.retryLoadRecipes = function() {
+        loadRecipes();
+    };
 
     function getEdamamFilters() {
         const filters = {};
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (currentSearch) {
             const query = currentSearch.toLowerCase();
-            filtered = filtered.filter(recipe => 
+            filtered = filtered.filter(recipe =>
                 recipe.title.toLowerCase().includes(query) ||
                 recipe.description.toLowerCase().includes(query) ||
                 recipe.categories.some(cat => cat.toLowerCase().includes(query))
@@ -201,15 +201,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const allergens = recipe.allergens || [];
         const dietary = recipe.dietaryCategories || [];
 
-        const mealTypeBadges = mealTypes.slice(0, 2).map(mt => 
+        const mealTypeBadges = mealTypes.slice(0, 2).map(mt =>
             `<span class="recipe-badge meal-type-badge">${mt}</span>`
         ).join('');
 
-        const dietaryBadges = dietary.slice(0, 2).map(d => 
+        const dietaryBadges = dietary.slice(0, 2).map(d =>
             `<span class="recipe-badge dietary-badge">${d}</span>`
         ).join('');
 
-        const allergenBadges = allergens.slice(0, 2).map(a => 
+        const allergenBadges = allergens.slice(0, 2).map(a =>
             `<span class="recipe-badge allergen-badge">${a.replace('_', ' ')}</span>`
         ).join('');
 
@@ -247,12 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
         mealTypeBtns.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.filter === currentMealType);
         });
-        dietaryBtns.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.filter === currentDietary);
-        });
-        allergyBtns.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.filter === currentAllergy);
-        });
         sourceBtns.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.source === currentSource);
         });
@@ -265,24 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             setActiveButton(mealTypeBtns, this);
             currentMealType = this.dataset.filter;
-            currentPage = 1;
-            applyFilters();
-        });
-    });
-
-    dietaryBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            setActiveButton(dietaryBtns, this);
-            currentDietary = this.dataset.filter;
-            currentPage = 1;
-            applyFilters();
-        });
-    });
-
-    allergyBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            setActiveButton(allergyBtns, this);
-            currentAllergy = this.dataset.filter;
             currentPage = 1;
             applyFilters();
         });
@@ -328,4 +304,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     syncFilterUI();
     loadRecipes();
-});
+}
+
+if (document.readyState !== 'loading') {
+    initRecipes();
+} else {
+    document.addEventListener('DOMContentLoaded', initRecipes);
+}
