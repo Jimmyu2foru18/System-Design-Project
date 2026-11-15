@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signup-form');
     const inputs = document.querySelectorAll('.form-input');
     const submitButton = document.querySelector('button[type="submit"]');
-    const passwordToggles = document.querySelectorAll('.password-toggle');
-    const termsCheckbox = document.getElementById('terms');
+    const termsCheckbox = document.getElementById('terms-agree');
 
     // Simplified validation patterns
     const patterns = {
@@ -21,28 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             checkFormValidity();
         });
     });
-
-    // Add event listeners to password toggles if they exist
-    if (passwordToggles) {
-        passwordToggles.forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                const passwordField = toggle.previousElementSibling;
-                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordField.setAttribute('type', type);
-                
-                const icon = toggle.querySelector('i');
-                if (icon) {
-                    if (type === 'text') {
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    } else {
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    }
-                }
-            });
-        });
-    }
 
     // Add event listener to terms checkbox
     if (termsCheckbox) {
@@ -70,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             try {
                 // Simple fetch request to register endpoint
-                const response = await fetch('/api/users/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

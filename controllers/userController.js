@@ -70,8 +70,24 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
   try {
-    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
     const { email, username, password } = req.body;
+
+    // Demo credential fallback (works even when DB is unavailable)
+    const demo = DEMO_CREDENTIALS[email];
+    if (demo && demo.password === password) {
+      res.json({
+        _id: 'demo-' + demo.username,
+        name: demo.name,
+        username: demo.username,
+        email: email,
+        isAdmin: demo.isAdmin,
+        token: generateToken('demo-' + demo.username, demo.isAdmin),
+        demo: true,
+      });
+      return;
+    }
+
+    if (!isDbConnected()) return res.status(503).json({ message: 'Database not available' });
 
     // Simplified login - accept either email or username
     const user = await User.findOne(
@@ -87,21 +103,6 @@ const loginUser = async (req, res) => {
         username: user.username,
         email: user.email,
         token: generateToken(user._id, user.isAdmin),
-      });
-      return;
-    }
-
-    // Demo credential fallback (works when DB is unavailable or user not seeded)
-    const demo = DEMO_CREDENTIALS[email];
-    if (demo && demo.password === password) {
-      res.json({
-        _id: 'demo-' + demo.username,
-        name: demo.name,
-        username: demo.username,
-        email: email,
-        isAdmin: demo.isAdmin,
-        token: generateToken('demo-' + demo.username, demo.isAdmin),
-        demo: true,
       });
       return;
     }
