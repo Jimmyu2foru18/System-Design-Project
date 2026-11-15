@@ -1477,6 +1477,7 @@ h4 { font-size: 1.125rem; margin-bottom: 0.5rem; }
   border: 1px solid var(--accent);
   border-radius: var(--radius);
   margin: 3rem 0;
+  display: none;
 }
 
 /* About Page - Split layout & pillars grid */

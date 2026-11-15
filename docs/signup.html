@@ -8,6 +8,7 @@
 <title>Sign Up - Recspicy</title>
 <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/signup.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -54,9 +55,9 @@
 <p class="signup-subtitle">Join our community of food lovers</p>
 </header>
 
-<button class="btn-google reveal">
-<img src="images/Google__G__logo.svg" alt="Google" class="google-icon">
-Sign up with Google
+<button class="btn btn-secondary btn-block btn-google reveal" type="button">
+  <img src="images/Google__G__logo.svg" alt="Google" class="google-icon">
+  Sign up with Google
 </button>
 
 <div class="divider reveal">
@@ -95,10 +96,10 @@ Sign up with Google
 <span class="error-message">Passwords do not match</span>
 </div>
 <div class="terms-checkbox reveal">
-<input type="checkbox" id="terms-agree" required>
-<span class="terms-text">
-I agree to the <a href="terms-privacy.html#terms">Terms of Service.</a>
-</span>
+  <label class="terms-label" for="terms-agree">
+    <input type="checkbox" id="terms-agree" required>
+    <span>I agree to the <a href="terms-privacy.html#terms">Terms of Service.</a></span>
+  </label>
 </div>
 <button type="submit" class="btn btn-primary btn-block reveal">Create Account</button>
 </form>
