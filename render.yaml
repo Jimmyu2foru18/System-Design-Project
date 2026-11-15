@@ -1,26 +1,24 @@
 services:
   - type: web
-    name: recspicy-api
+    name: recspicy
     env: node
-    plan: free
+    rootDir: .
     buildCommand: npm install
     startCommand: node server.js
     envVars:
-      - key: NODE_ENV
-        value: production
+      - key: NODE_VERSION
+        value: 18
       - key: PORT
         value: 10000
+      - key: CLIENT_ORIGIN
+        value: https://recspicy.onrender.com
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
-        generateValue: true
-      - key: GOOGLE_CLIENT_ID
         sync: false
-      - key: GOOGLE_CLIENT_SECRET
+      - key: GOOGLE_CLIENT_ID
         sync: false
       - key: NUTRITION_APP_ID
         sync: false
       - key: NUTRITION_APP_KEY
         sync: false
-      - key: CLIENT_ORIGIN
-        value: https://recspicy.ct.ws

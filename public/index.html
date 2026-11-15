@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Recspicy - Discover, create, and share delicious recipes">
-    <title>Recspicy - Recipe Management Platform</title>
+    <meta name="description" content="Recspicy - Discover, create, and share delicious recipes from around the world">
+    <title>Recspicy - Discover Delicious Recipes</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,9 +24,9 @@
                 </div>
                 <div class="nav-links" id="navLinks">
                     <ul>
-                        <li><a href="home.html" class="active">Home</a></li>
+                        <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-<li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="meal-planner.html">Meal Planner</a></li>
                         <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -44,98 +44,138 @@
     </header>
 
     <main>
-        <div class="grid reveal">
-            <article class="feature">
-                <header class="hero-header">
-                    <span class="kicker">Welcome</span>
-                    <h1>Welcome to Recspicy</h1>
-                    <p class="deck">Your one-stop platform for recipes, meal planning, nutrition analysis, and food exploration.</p>
+        <!-- Hero Section -->
+        <section class="hero reveal">
+            <div class="hero-content">
+                <span class="kicker">Welcome to Recspicy</span>
+                <h1>Discover Your Next Favorite Recipe</h1>
+                <p class="deck">From quick weeknight meals to weekend baking projects, explore thousands of recipes from TheMealDB, our community, and Open Food Facts. Find something delicious to cook today.</p>
+                <div class="hero-actions">
+                    <a href="recipes-list.html" class="btn btn-primary btn-lg">Browse Recipes</a>
+                    <a href="create-recipe.html" class="btn btn-secondary btn-lg">Share Your Recipe</a>
+                </div>
+            </div>
+            <div class="hero-image reveal">
+                <img src="images/logo.png" alt="Recspicy Logo" class="hero-logo">
+            </div>
+        </section>
+
+        <!-- What We Carry -->
+        <section class="offerings reveal">
+            <div class="container">
+                <header class="section-header">
+                    <span class="kicker">What We Carry</span>
+                    <h2>Explore Our Recipe Collection</h2>
+                    <p class="deck">Whether you're looking for a quick dinner, a healthy breakfast, or a decadent dessert, we've got you covered.</p>
                 </header>
 
-                <div class="search-block reveal">
-                    <div class="search-box">
-                        <label for="recipe-search" class="visually-hidden">Search recipes</label>
-                        <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes..." aria-label="Search recipes">
-                        <button class="search-button" id="search-btn" aria-label="Submit search">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
+                <div class="offerings-grid">
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                             </svg>
-                        </button>
+                        </div>
+                        <h3>Main Dishes</h3>
+                        <p>Hearty mains for every occasion — from comforting classics to bold new flavors.</p>
+                        <a href="recipes-list.html?category=Dinner" class="offering-link">View Main Dishes <span>&rarr;</span></a>
+                    </div>
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M12 2l3.09 6.26C20.06 8.67 21 12.88 18 15c-1.73 1.19-4 1-5-1-1-1-3-0.19-4-1C3 12.88 3.94 8.67 7.91 8.26L12 2z"></svg>
+                            </svg>
+                        </div>
+                        <h3>Baking &amp; Desserts</h3>
+                        <p>Sweet treats and baked goods — cakes, cookies, pies, and more for every celebration.</p>
+                        <a href="recipes-list.html?category=Dessert" class="offering-link">View Desserts <span>&rarr;</span></a>
+                    </div>
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <h3>Breakfast &amp; Brunch</h3>
+                        <p>Start your day right with pancakes, eggs, smoothies, and morning favorites.</p>
+                        <a href="recipes-list.html?category=Breakfast" class="offering-link">View Breakfast <span>&rarr;</span></a>
+                    </div>
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M17 12h-3v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-5H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2z"></svg>
+                            </svg>
+                        </div>
+                        <h3>Beverages</h3>
+                        <p>Refreshing drinks, smoothies, coffee, and cocktails for any time of day.</p>
+                        <a href="openfoodfacts.html" class="offering-link">View Beverages <span>&rarr;</span></a>
+                    </div>
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M12 2l3.09 6.26C20.06 8.67 21 12.88 18 15c-1.73 1.19-4 1-5-1-1-1-3-0.19-4-1C3 12.88 3.94 8.67 7.91 8.26L12 2z"></svg>
+                            </svg>
+                        </div>
+                        <h3>Healthy &amp; Dietary</h3>
+                        <p>Vegetarian, vegan, gluten-free, and allergy-friendly recipes for every lifestyle.</p>
+                        <a href="recipes-list.html?diet=Vegetarian" class="offering-link">View Healthy <span>&rarr;</span></a>
+                    </div>
+                    <div class="offering-card reveal">
+                        <div class="offering-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M12 5v14M8 11l2 2 4-4"></svg>
+                        </div>
+                        <h3>Snacks &amp; Sides</h3>
+                        <p>Quick bites, appetizers, and side dishes to complement any meal.</p>
+                        <a href="recipes-list.html?category=Snack" class="offering-link">View Snacks <span>&rarr;</span></a>
                     </div>
                 </div>
-            </article>
+            </div>
+        </section>
 
-            <aside class="sidebar">
-                <section class="platform-stats reveal">
-                    <span class="kicker">Platform Stats</span>
-                    <h2>Platform Stats</h2>
-                    <div class="stat-grid">
-                        <div class="stat-card">
-                            <span class="stat-label">Users</span>
-                            <span class="stat-value" id="stat-users">Loading...</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-label">Recipes</span>
-                            <span class="stat-value" id="stat-recipes">Loading...</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-label">Food Products</span>
-                            <span class="stat-value">2.5M+</span>
-                        </div>
-                    </div>
-                </section>
-            </aside>
-        </div>
+        <!-- How It Works -->
+        <section class="how-it-works reveal">
+            <div class="container">
+                <header class="section-header">
+                    <span class="kicker">How It Works</span>
+                    <h2>Find, Cook, Share</h2>
+                    <p class="deck">Simple steps to discover and enjoy amazing recipes.</p>
+                </header>
 
-        <section class="grid reveal">
-            <header class="span-full">
-                <span class="kicker">Explore</span>
-                <h2>Platform Features</h2>
-                <p class="deck">Choose how you want to explore Recspicy.</p>
-            </header>
-            <div class="dashboard-grid">
-                <a href="recipes-list.html" class="dashboard-card reveal">
-                    <div class="dashboard-card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                        </svg>
+                <div class="steps-grid">
+                    <div class="step reveal">
+                        <div class="step-number">1</div>
+                        <h3>Browse</h3>
+                        <p>Explore thousands of recipes by category, cuisine, or dietary preference.</p>
                     </div>
-                    <h3 class="dashboard-card-title">Recipes</h3>
-                    <p class="dashboard-card-description">Browse thousands of recipes from TheMealDB and our community. Filter by category, diet, and more.</p>
-                </a>
-                <a href="meal-planner.html" class="dashboard-card reveal">
-                    <div class="dashboard-card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
+                    <div class="step reveal">
+                        <div class="step-number">2</div>
+                        <h3>Cook</h3>
+                        <p>Follow clear step-by-step instructions with ingredient lists and cooking times.</p>
                     </div>
-                    <h3 class="dashboard-card-title">Meal Planner</h3>
-                    <p class="dashboard-card-description">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
-                </a>
-                <a href="openfoodfacts.html" class="dashboard-card reveal">
-                    <div class="dashboard-card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M12 2l3.09 6.26C20.06 8.67 21 12.88 18 15c-1.73 1.19-4 1-5-1-1-1-3-0.19-4-1C3 12.88 3.94 8.67 7.91 8.26L12 2z"></svg>
-                        </svg>
+                    <div class="step reveal">
+                        <div class="step-number">3</div>
+                        <h3>Share</h3>
+                        <p>Save your favorites, create meal plans, and share your own recipes with the community.</p>
                     </div>
-                    <h3 class="dashboard-card-title">Food Facts</h3>
-                    <p class="dashboard-card-description">Search Open Food Facts for nutrition data, ingredients, and product information.</p>
-                </a>
-                <a href="create-recipe.html" class="dashboard-card reveal">
-                    <div class="dashboard-card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                    </div>
-                    <h3 class="dashboard-card-title">Create Recipe</h3>
-                    <p class="dashboard-card-description">Share your own recipes with the community. Add ingredients, instructions, and images.</p>
-                </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Recipe Callout -->
+        <section class="featured-callout reveal">
+            <div class="callout-content">
+                <span class="kicker">Get Started</span>
+                <h2>Ready to Cook Something Delicious?</h2>
+                <p>Browse our collection of recipes and find your next favorite meal. Everything you need is just a click away.</p>
+                <div class="callout-actions">
+                    <a href="recipes-list.html" class="btn btn-primary btn-lg">Browse All Recipes</a>
+                    <a href="meal-planner.html" class="btn btn-secondary btn-lg">Plan Your Meals</a>
+                </div>
             </div>
         </section>
     </main>
@@ -149,9 +189,9 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="home.html">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-<li><a href="meal-planner.html">Meal Planner</a></li>
+                        <li><a href="meal-planner.html">Meal Planner</a></li>
                         <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -172,6 +212,5 @@
     </footer>
 
     <script src="js/navigation.js"></script>
-    <script src="js/home.js"></script>
 </body>
 </html>

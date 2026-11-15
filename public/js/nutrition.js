@@ -103,7 +103,7 @@ const localNutritionDB = {
     'water': { calories: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 }
 };
 
-const CACHE_TTL = 60 * 60 * 1000;
+const NUTRITION_CACHE_TTL = 60 * 60 * 1000;
 const nutritionCache = new Map();
 
 /**
@@ -115,7 +115,7 @@ const nutritionCache = new Map();
 async function getIngredientNutrition(ingredient, quantity = 100) {
     const cacheKey = `${ingredient.toLowerCase()}-${quantity}`;
     const cached = nutritionCache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    if (cached && Date.now() - cached.timestamp < NUTRITION_CACHE_TTL) {
         return cached.data;
     }
 
