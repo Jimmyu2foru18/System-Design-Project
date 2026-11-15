@@ -28,13 +28,30 @@ app.get('/js/config.js', (req, res) => {
   })};`);
 });
 
+app.get('/api/reports', async (req, res) => {
+  try {
+    const response = await fetch('https://thereportoftheweekapi.com/api/v1/reports/', {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!response.ok) {
+      return res.status(response.status).json({ message: 'Report API error' });
+    }
+    const data = await response.json();
+    const reports = Array.isArray(data) ? data : data.reports || [];
+    res.json(reports);
+  } catch (error) {
+    console.error('Error fetching reports:', error);
+    res.status(502).json({ message: 'Failed to fetch reports' });
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', userRoutes);
 app.use('/api/meal-plans', mealPlanRoutes);
 app.use('/api/recipe-records', recipeRecordRoutes);
 
-app.get('/', (req, res) => res.redirect('/index.html'));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.get('/api/users/count/total', async (req, res) => {
   try {

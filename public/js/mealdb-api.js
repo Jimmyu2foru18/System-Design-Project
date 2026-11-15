@@ -168,7 +168,7 @@ function formatMealDbRecipe(meal) {
     return {
         id: meal.idMeal,
         title: meal.strMeal,
-        description: `A delicious ${meal.strCategory} recipe from ${meal.strArea} cuisine.`,
+        description: `A delicious ${meal.strCategory} recipe from ${meal.strArea || 'International'} cuisine.`,
         image: meal.strMealThumb,
         cookTime,
         servings: 4,

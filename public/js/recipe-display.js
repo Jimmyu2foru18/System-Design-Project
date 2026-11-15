@@ -16,14 +16,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Fetch recipe data from API.
- * @param {string} id - Recipe ID
+ * Fetch recipe data from API with layered fallbacks.
+ * Order: sessionStorage cache -> backend /api/recipes/:id -> MealDB API -> Edamam API.
+ * @param {string} id - Recipe ID (MealDB numeric, local ObjectId, or Edamam URI)
+ * @param {string} sourceHint - 'mealdb', 'edamam', 'local', or undefined
  */
-async function fetchRecipe(id) {
+async function fetchRecipe(id, sourceHint) {
+    const encodedId = encodeURIComponent(id);
+
+    // 1. SessionStorage cache (recipes list page caches all recipes by ID)
+    try {
+        const cached = sessionStorage.getItem('recspicy_recipes_by_id');
+        if (cached) {
+            const byId = JSON.parse(cached);
+            if (byId[id]) {
+                console.log('Recipe found in sessionStorage cache:', id);
+                await checkRecipeRecordStatus(id);
+                displayRecipe(byId[id]);
+                hideLoading();
+                return;
+            }
+        }
+    } catch (e) {
+        console.error('Error reading recipe cache from sessionStorage:', e);
+    }
+
+    // 2. Backend proxy /api/recipes/:id (local DB + MealDB numeric IDs)
     try {
         showLoading('Loading recipe...');
-
-        const response = await fetch(`/api/recipes/${id}`, {
+        const response = await fetch(`/api/recipes/${encodedId}`, {
             headers: { 'Content-Type': 'application/json' }
         });
 
@@ -35,9 +56,13 @@ async function fetchRecipe(id) {
             hideLoading();
             return;
         }
+    } catch (error) {
+        console.error('Backend recipe lookup failed:', error);
+    }
 
-        // Fallback to global lookup
-        if (typeof window.recipeApi?.getRecipeById === 'function') {
+    // 3. MealDB API directly (for numeric MealDB IDs)
+    if (typeof window.recipeApi?.getRecipeById === 'function') {
+        try {
             const recipe = await window.recipeApi.getRecipeById(id);
             if (recipe) {
                 await checkRecipeRecordStatus(id);
@@ -45,14 +70,73 @@ async function fetchRecipe(id) {
                 hideLoading();
                 return;
             }
+        } catch (error) {
+            console.error('MealDB recipe lookup failed:', error);
         }
-
-        throw new Error('Recipe not found');
-    } catch (error) {
-        console.error('Error loading recipe:', error);
-        showError('Error loading recipe: ' + error.message);
-        hideLoading();
     }
+
+    // 4. Edamam API directly (for Edamam URIs)
+    if (sourceHint === 'edamam' || id.startsWith('http')) {
+        try {
+            const recipe = await fetchEdamamRecipeById(id);
+            if (recipe) {
+                await checkRecipeRecordStatus(id);
+                displayRecipe(recipe);
+                hideLoading();
+                return;
+            }
+        } catch (error) {
+            console.error('Edamam recipe lookup failed:', error);
+        }
+    }
+
+    throw new Error(`Recipe not found (id: ${id}${sourceHint ? ', source: ' + sourceHint : ''})`);
+}
+
+/**
+ * Fetch a single Edamam recipe by URI.
+ * @param {string} uri - Edamam recipe URI
+ */
+async function fetchEdamamRecipeById(uri) {
+    const appId = window.RECSPICY_CONFIG?.NUTRITION_APP_ID || '';
+    const appKey = window.RECSPICY_CONFIG?.NUTRITION_APP_KEY || '';
+
+    if (!appId || !appKey) {
+        throw new Error('Edamam credentials not configured');
+    }
+
+    const params = new URLSearchParams({ app_id: appId, app_key: appKey, r: uri });
+    const url = `https://api.edamam.com/api/recipes/v2?${params}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Edamam error ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (!data.hits || !data.hits.length) return null;
+
+    const hit = data.hits[0];
+    const recipe = hit.recipe;
+    const ingredients = recipe.ingredients || [];
+
+    return {
+        id: recipe.uri,
+        title: recipe.label,
+        description: recipe.source || recipe.label,
+        image: recipe.image,
+        cookTime: recipe.totalTime ? Math.round(recipe.totalTime) : 30,
+        servings: recipe.yield ? Math.round(recipe.yield) : 4,
+        difficulty: recipe.totalTime > 60 ? 'Hard' : recipe.totalTime > 30 ? 'Medium' : 'Easy',
+        rating: '?',
+        categories: recipe.cuisineType || [],
+        dietaryCategories: [],
+        allergens: [],
+        mealTypes: recipe.mealType || [],
+        ingredients: ingredients.map(ing => ({ name: ing.food || ing.text || '', quantity: ing.quantity || 'to taste' })),
+        instructions: recipe.ingredientLines || [],
+        source: 'edamam'
+    };
 }
 
 /**
@@ -65,8 +149,39 @@ function normalizeRecipe(recipe, fallbackId) {
     if (!recipe) return null;
 
     // Already normalized by frontend API
-    if (recipe.source === 'mealdb' || recipe.ingredients || recipe.instructions) {
+    if (recipe.source === 'mealdb' || recipe.source === 'edamam' || recipe.source === 'local') {
         return recipe;
+    }
+
+    // Already normalized with ingredients/instructions
+    if (recipe.ingredients || recipe.instructions) {
+        return recipe;
+    }
+
+    // Raw Edamam format from backend proxy or direct API
+    if (recipe.uri || recipe.ingredientLines || recipe.label) {
+        const ingredients = (recipe.ingredients || []).map(ing => ({
+            name: ing.food || ing.text || '',
+            quantity: ing.quantity || 'to taste'
+        }));
+
+        return {
+            id: recipe.uri,
+            title: recipe.label,
+            description: recipe.source || recipe.label,
+            image: recipe.image,
+            cookTime: recipe.totalTime ? Math.round(recipe.totalTime) : 30,
+            servings: recipe.yield ? Math.round(recipe.yield) : 4,
+            difficulty: recipe.totalTime > 60 ? 'Hard' : recipe.totalTime > 30 ? 'Medium' : 'Easy',
+            rating: '?',
+            categories: recipe.cuisineType || [],
+            dietaryCategories: [],
+            allergens: [],
+            mealTypes: recipe.mealType || [],
+            ingredients,
+            instructions: recipe.ingredientLines || [],
+            source: 'edamam'
+        };
     }
 
     // Raw MealDB format from backend proxy

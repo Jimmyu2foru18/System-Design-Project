@@ -33,7 +33,7 @@ function initMobileMenu() {
 
 function highlightCurrentPage() {
     const currentPage = window.location.pathname.split('/').pop();
-    const navItems = document.querySelectorAll('.nav-links a, .navbar a');
+    const navItems = document.querySelectorAll('.nav-links a');
     
     navItems.forEach(item => {
         const href = item.getAttribute('href');
@@ -58,7 +58,7 @@ function updateAuthUI() {
         `;
     } else {
         userActions.innerHTML = `
-            <a href="signin.html" class="profile-link">Sign In</a>
+            <a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
             <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
         `;
     }

@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="product-name">${name}</h3>
                     <p class="product-brand">${brand}</p>
                     <div class="product-nutrition">
-                        ${nutritionBadges.slice(0, 3).map(badge => `<span class="nutrition-badge">${badge}</span>`).join('')}
+                        ${nutritionBadges.slice(0, 3).map(badge => `<span class="nutrition-badge">${badge}</span>`).join('  |  ')}
                     </div>
                 </div>
             </div>

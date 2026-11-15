@@ -56,12 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (currentSource === 'mealdb') {
                 recipes = await window.recipeApi.fetchMealdbAllCategories();
             } else {
-                const [mealdb, local, edamam] = await Promise.all([
+                const [mealdbRes, localRes, edamamRes] = await Promise.allSettled([
                     currentSearch ? Promise.resolve([]) : window.recipeApi.fetchMealdbAllCategories(),
                     window.recipeApi.fetchLocalPublicRecipes(),
                     window.recipeApi.searchEdamamRecipes(currentSearch || 'recipe', getEdamamFilters())
                 ]);
-                recipes = [...mealdb, ...local, ...edamam];
+                recipes = [];
+                if (mealdbRes.status === 'fulfilled') recipes.push(...mealdbRes.value);
+                if (localRes.status === 'fulfilled') recipes.push(...localRes.value);
+                if (edamamRes.status === 'fulfilled') recipes.push(...edamamRes.value);
             }
 
             const seen = new Set();
@@ -70,6 +73,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 seen.add(recipe.id);
                 return true;
             });
+
+            // Cache all recipes keyed by ID for the detail page fallback
+            try {
+                const byId = {};
+                allRecipes.forEach(r => { byId[r.id] = r; });
+                sessionStorage.setItem('recspicy_recipes_by_id', JSON.stringify(byId));
+            } catch (e) {
+                console.error('Error caching recipes to sessionStorage:', e);
+            }
 
             applyFilters();
         } catch (error) {
@@ -210,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="recipe-card-content">
                     <h3 class="recipe-card-title">${title}</h3>
-                    <p class="recipe-card-description">${recipe.description ? recipe.description.substring(0, 100) + (recipe.description.length > 100 ? '...' : '') : ''}</p>
+                    <p class="recipe-card-description">${recipe.categories ? recipe.categories.slice(0, 2).join(' • ') : ''}</p>
                     <div class="recipe-card-badges">
                         ${mealTypeBadges}
                         ${dietaryBadges}

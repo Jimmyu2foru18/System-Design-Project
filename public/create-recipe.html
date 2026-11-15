@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Authors: James McGuigan -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Recipe - Recspicy</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/navigation.css">
-<link rel="stylesheet" href="css/create-recipe.css">
-<link rel="stylesheet" href="css/footer.css">
+<title>Create Recipe - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -16,38 +17,37 @@
 <nav class="navbar">
 <div class="nav-container">
 <div class="logo">
-<a href="index.html">
-<img src="images/logo1.png" alt="Recspicy Logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
 </a>
 </div>
-                <div class="nav-links" id="navLinks">
-                    <ul>
-                        <li><a href="home.html">Home</a></li>
-                        <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
-                        <li><a href="openfoodfacts.html">Food Facts</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
 <div class="user-actions" id="user-actions">
-<a href="signin.html" class="profile-link">Sign In</a>
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
 <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
 </div>
-<div class="hamburger" id="hamburger">
-<span></span>
-<span></span>
-<span></span>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
 </div>
 </div>
 </nav>
 </header>
-<main class="create-recipe-container">
+<main class="create-recipe-container reveal">
+<div class="grid">
+<article class="feature">
 <h1 class="create-recipe-title">Create New Recipe</h1>
 <form id="recipe-form" class="recipe-form">
-<!-- Basic Info Section -->
 <section class="form-section">
 <div class="form-group">
 <label for="title">Recipe Title</label>
@@ -58,11 +58,11 @@
 <textarea id="description" name="description" rows="3" required></textarea>
 </div>
 <div class="form-row">
-<div class="form-group">
+<div class="form-group span-6">
 <label for="cookTime">Cooking Time (minutes)</label>
 <input type="number" id="cookTime" name="cookTime" min="1" value="30" required>
 </div>
-<div class="form-group">
+<div class="form-group span-6">
 <label for="servings">Servings</label>
 <input type="number" id="servings" name="servings" min="1" value="4" required>
 </div>
@@ -72,16 +72,15 @@
 <div class="radio-group">
 <label>
 <input type="radio" name="visibility" value="public" checked>
-                                                                                                        Public
+Public
 </label>
 <label>
 <input type="radio" name="visibility" value="private">
-                                                                                                        Private
+Private
 </label>
 </div>
 </div>
 </section>
-<!-- Ingredients Section -->
 <section class="form-section">
 <h2>Ingredients</h2>
 <div id="ingredients-list" class="ingredients-list">
@@ -94,7 +93,6 @@
 </div>
 <button type="button" id="add-ingredient" class="add-btn">Add Ingredient</button>
 </section>
-<!-- Instructions Section -->
 <section class="form-section">
 <h2>Instructions</h2>
 <div id="instructions-list" class="instructions-list">
@@ -106,14 +104,14 @@
 </div>
 <button type="button" id="add-instruction" class="add-btn">Add Step</button>
 </section>
-<!-- Form Actions -->
 <div class="form-actions">
 <button type="button" class="cancel-btn" onclick="window.location.href='profile.html'">Cancel</button>
 <button type="submit" class="save-btn">Save Recipe</button>
 </div>
 </form>
+</article>
+</div>
 </main>
-<!-- Footer -->
 <footer class="footer">
 <div class="footer-container">
 <div class="footer-logo">
@@ -126,6 +124,8 @@
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About Us</a></li>
 <li><a href="contact.html">Contact</a></li>
 </ul>
@@ -134,7 +134,7 @@
 <h3>Resources</h3>
 <ul>
 <li><a href="faq.html">FAQ</a></li>
-<li><a href="terms-privacy.html">Terms & Privacy</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
 </ul>
 </div>
 </div>

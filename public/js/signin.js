@@ -11,6 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (googleSignInButton) {
         googleSignInButton.addEventListener('click', handleGoogleSignIn);
     }
+
+    // One-click demo credential fill buttons
+    document.querySelectorAll('.cred-fill').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const item = this.closest('.cred-item');
+            if (!item) return;
+            const email = item.dataset.email;
+            const pass = item.dataset.pass;
+            const userInput = document.getElementById('user-input');
+            const password = document.getElementById('password');
+            if (userInput) userInput.value = email;
+            if (password) password.value = pass;
+        });
+    });
 });
 
 function getRedirectUrl() {
@@ -58,8 +72,15 @@ async function handleSignIn(event) {
     event.preventDefault();
     console.log('Sign-in attempt started');
     
-    const userInput = document.getElementById('user-input').value;
+    const errorEl = document.getElementById('signin-error');
+    if (errorEl) {
+        errorEl.style.display = 'none';
+        errorEl.textContent = '';
+    }
+
+    const userInput = document.getElementById('user-input').value.trim();
     const password = document.getElementById('password').value;
+    const email = userInput.toLowerCase();
     
     if (!userInput || !password) {
         showError('Please fill in all fields');
@@ -73,8 +94,8 @@ async function handleSignIn(event) {
         localStorage.setItem('userName', 'Administrator');
         localStorage.setItem('username', 'admin');
         localStorage.setItem('authToken', 'admin-token');
-        localStorage.setItem('adminToken', 'admin-token'); // Add this line
-        localStorage.setItem('userRole', 'admin'); // Add this line
+        localStorage.setItem('adminToken', 'admin-token');
+        localStorage.setItem('userRole', 'admin');
         localStorage.setItem('isAdmin', 'true');
         window.location.href = 'admin.html';
         return;
@@ -82,14 +103,13 @@ async function handleSignIn(event) {
     
     try {
         console.log('Sending login request...');
-        const response = await fetch('/api/users/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // Send as either email or username based on format
-                [userInput.includes('@') ? 'email' : 'username']: userInput,
+                [email.includes('@') ? 'email' : 'username']: email,
                 password
             })
         });
@@ -104,12 +124,11 @@ async function handleSignIn(event) {
         // Store user data in localStorage
         localStorage.setItem('userId', userData._id);
         localStorage.setItem('userName', userData.name);
-        localStorage.setItem('username', userData.username); // Add this line
+        localStorage.setItem('username', userData.username);
         localStorage.setItem('authToken', userData.token || 'dummy-token');
         
         console.log('Redirecting to profile page...');
-        // Redirect to profile page
-        window.location.href = 'profile.html';
+        window.location.href = getRedirectUrl();
     } catch (error) {
         console.error('Login error:', error);
         showError('Invalid username/email or password');
@@ -117,7 +136,12 @@ async function handleSignIn(event) {
 }
 
 function showError(message) {
-    // Simple error display
     console.error('Error:', message);
-    alert(message);
+    const errorEl = document.getElementById('signin-error');
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+    } else {
+        alert(message);
+    }
 }

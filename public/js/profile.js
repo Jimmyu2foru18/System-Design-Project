@@ -91,26 +91,41 @@ function displayUserProfile(userData) {
     document.getElementById('profile-name').textContent = userData.name || 'User';
     document.getElementById('profile-bio').textContent = userData.bio || 'No bio provided. Click edit to add one.';
 
-    const profileImage = document.getElementById('profile-avatar');
-    if (profileImage) {
-        const userId = localStorage.getItem('userId');
-        const avatar = userData.avatar;
-        const hasAvatar = avatar && (
-            (typeof avatar === 'object' && avatar.data) ||
-            (typeof avatar === 'string' && avatar.trim() !== '')
-        );
+    const monogramEl = document.getElementById('avatar-monogram');
+    const avatarImg = document.getElementById('profile-avatar-img');
 
-        if (hasAvatar) {
-            profileImage.src = `/api/users/${userId}/avatar?t=${Date.now()}`;
-            profileImage.style.display = 'block';
-            profileImage.onerror = function () {
-                this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23e2e8f0'/%3E%3Ctext x='75' y='85' text-anchor='middle' font-size='48'%3E👤%3C/text%3E%3C/svg%3E";
-            };
-        } else {
-            profileImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23e2e8f0'/%3E%3Ctext x='75' y='85' text-anchor='middle' font-size='48'%3E👤%3C/text%3E%3C/svg%3E";
-            profileImage.style.display = 'block';
-        }
+    if (monogramEl) {
+        monogramEl.textContent = getMonogram(userData.name || 'U');
     }
+
+    const userId = localStorage.getItem('userId');
+    const avatar = userData.avatar;
+    const hasAvatar = avatar && (
+        (typeof avatar === 'object' && avatar.data) ||
+        (typeof avatar === 'string' && avatar.trim() !== '')
+    );
+
+    if (hasAvatar && avatarImg) {
+        avatarImg.src = `/api/users/${userId}/avatar?t=${Date.now()}`;
+        avatarImg.style.display = 'block';
+        avatarImg.onerror = function () {
+            this.style.display = 'none';
+            if (monogramEl) monogramEl.style.display = 'flex';
+        };
+        if (monogramEl) monogramEl.style.display = 'none';
+    } else {
+        if (avatarImg) avatarImg.style.display = 'none';
+        if (monogramEl) monogramEl.style.display = 'flex';
+    }
+}
+
+function getMonogram(name) {
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
 }
 
 async function loadUserProfile() {
@@ -332,7 +347,11 @@ function loadUserRecipes() {
     if (!userId) return;
 
     const recipesContainer = document.getElementById('user-recipes-container');
-    recipesContainer.innerHTML = '<div class="loading-message">Loading your recipes...</div>';
+    recipesContainer.innerHTML = `
+        <div class="skeleton-recipe"></div>
+        <div class="skeleton-recipe"></div>
+        <div class="skeleton-recipe"></div>
+    `;
 
     fetch(`/api/recipes/user/${userId}`)
         .then(response => {
@@ -342,38 +361,38 @@ function loadUserRecipes() {
             return response.json();
         })
         .then(recipes => {
+            recipesContainer.innerHTML = '';
+
             if (recipes.length === 0) {
                 recipesContainer.innerHTML = `
-                    <div class="no-recipes-message">
+                    <div class="empty-state">
                         <p>You haven't created any recipes yet.</p>
-                        <button class="btn btn-primary btn-sm" onclick="window.location.href='create-recipe.html'">Create Your First Recipe</button>
+                        <button class="btn btn-primary" onclick="window.location.href='create-recipe.html'">Create Your First Recipe</button>
                     </div>
                 `;
                 return;
             }
 
-            recipesContainer.innerHTML = '';
-
             recipes.forEach(recipe => {
                 const recipeCard = document.createElement('div');
                 recipeCard.className = 'recipe-card';
 
-                const imageUrl = recipe.image || 'https://via.placeholder.com/300x200?text=No+Image';
+                const imageUrl = recipe.image || '';
 
                 recipeCard.innerHTML = `
-                    <div class="recipe-image">
-                        <img src="${imageUrl}" alt="${recipe.title}">
+                    <div class="recipe-card-image">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${escapeHtml(recipe.title)}">` : `<div class="avatar-monogram" style="width:100%;height:100%;font-size:2rem;">${getMonogram(recipe.title || 'R')}</div>`}
                     </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">${recipe.title}</h3>
+                    <div class="recipe-card-content">
+                        <h3 class="recipe-card-title">${escapeHtml(recipe.title)}</h3>
                         <div class="recipe-meta">
                             <span>${recipe.difficulty || 'Medium'} • ${recipe.cookingTime || 30} mins</span>
                         </div>
-                        <p class="recipe-description">${recipe.description || 'No description provided.'}</p>
-                        <div class="recipe-actions">
-                            <button class="btn view-btn" onclick="window.location.href='recipes.html?id=${recipe._id}'">View</button>
-                            <button class="btn edit-btn" onclick="editRecipe('${recipe._id}')">Edit</button>
-                            <button class="btn delete-btn" onclick="deleteRecipe('${recipe._id}')">Delete</button>
+                        <p class="recipe-card-description">${escapeHtml(recipe.description || 'No description provided.')}</p>
+                        <div class="recipe-card-actions">
+                            <button class="btn btn-outline btn-sm" onclick="window.location.href='recipes.html?id=${escapeHtml(recipe._id)}'">View</button>
+                            <button class="btn btn-outline btn-sm" onclick="editRecipe('${escapeHtml(recipe._id)}')">Edit</button>
+                            <button class="btn btn-outline btn-sm" onclick="deleteRecipe('${escapeHtml(recipe._id)}')">Delete</button>
                         </div>
                     </div>
                 `;
@@ -384,8 +403,12 @@ function loadUserRecipes() {
         .catch(error => {
             console.error('Error loading recipes:', error);
             recipesContainer.innerHTML = `
-                <div class="loading-message">
+                <div class="error-state">
                     <p>Failed to load recipes. Please try again later.</p>
+                    <div class="btn-group">
+                        <button class="btn btn-outline" onclick="loadUserRecipes()">Retry</button>
+                        <button class="btn btn-primary" onclick="window.location.href='create-recipe.html'">Create Your First Recipe</button>
+                    </div>
                 </div>
             `;
         });
@@ -422,6 +445,12 @@ async function loadMealPlans() {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
 
+        const container = document.getElementById('meal-plans-grid');
+        container.innerHTML = `
+            <div class="skeleton-meal-plan"></div>
+            <div class="skeleton-meal-plan"></div>
+        `;
+
         const response = await fetch(`/api/meal-plans/user/${userId}`);
         if (!response.ok) throw new Error('Failed to load meal plans');
 
@@ -430,77 +459,75 @@ async function loadMealPlans() {
         displayMealPlans(mealPlans);
     } catch (error) {
         console.error('Error loading meal plans:', error);
-        document.getElementById('meal-plans-grid').innerHTML =
-            '<p class="error-message">Failed to load meal plans. Please try again later.</p>';
+        const container = document.getElementById('meal-plans-grid');
+        container.innerHTML = `
+            <div class="error-state">
+                <p>Failed to load meal plans. Please try again later.</p>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="loadMealPlans()">Retry</button>
+                    <button class="btn btn-primary" onclick="window.location.href='meal-planner.html'">Create Your First Meal Plan</button>
+                </div>
+            </div>
+        `;
     }
 }
 
 function displayMealPlans(mealPlans) {
     const container = document.getElementById('meal-plans-grid');
     if (!mealPlans || mealPlans.length === 0) {
-        container.innerHTML = '<p>No meal plans found. Create your first one!</p>';
+        container.innerHTML = `
+            <div class="empty-state">
+                <p>No meal plans found. Create your first one!</p>
+                <button class="btn btn-primary" onclick="window.location.href='meal-planner.html'">Create Your First Meal Plan</button>
+            </div>
+        `;
         return;
     }
 
     container.innerHTML = mealPlans.map(plan => `
         <div class="meal-plan-card">
-            <h3>${plan.planName}</h3>
-            <p>${plan.description || 'No description'}</p>
+            <h3>${escapeHtml(plan.planName)}</h3>
+            <p>${escapeHtml(plan.description || 'No description')}</p>
             <div class="meal-plan-days">
                 ${Object.keys(plan.days).map(day => `
                     <div class="meal-plan-day">
-                        <h4>${day.charAt(0).toUpperCase() + day.slice(1)}</h4>
-                        <p>${plan.days[day].meal || 'No meal planned'}</p>
+                        <strong>${day.charAt(0).toUpperCase() + day.slice(1)}:</strong> ${escapeHtml(plan.days[day].meal || 'No meal planned')}
                     </div>
                 `).join('')}
             </div>
             <div class="meal-plan-actions">
-                <button class="edit-meal-plan-btn" data-id="${plan._id}">Edit</button>
-                <button class="delete-meal-plan-btn" data-id="${plan._id}">Delete</button>
+                <button class="btn btn-outline btn-sm" data-id="${plan._id}" onclick="window.location.href='meal-planner.html?id=${escapeHtml(plan._id)}'">Edit</button>
+                <button class="btn btn-outline btn-sm" data-id="${plan._id}" onclick="deleteMealPlan('${escapeHtml(plan._id)}')">Delete</button>
             </div>
         </div>
     `).join('');
+}
 
-    document.querySelectorAll('.edit-meal-plan-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const planId = button.dataset.id;
-            window.location.href = `meal-planner.html?id=${planId}`;
-        });
-    });
+async function deleteMealPlan(mealPlanId) {
+    if (confirm('Are you sure you want to delete this meal plan?')) {
+        try {
+            const response = await fetch(`/api/meal-plans/${mealPlanId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: localStorage.getItem('userId')
+                })
+            });
 
-    document.querySelectorAll('.delete-meal-plan-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            const mealPlanId = e.target.dataset.id;
-            if (confirm('Are you sure you want to delete this meal plan?')) {
-                try {
-                    const response = await fetch(`/api/meal-plans/${mealPlanId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            userId: localStorage.getItem('userId')
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to delete meal plan');
-                    }
-
-                    const result = await response.json();
-                    console.log('Delete result:', result);
-
-                    await loadMealPlans();
-                    showSuccess('Meal plan deleted successfully');
-                } catch (error) {
-                    console.error('Error deleting meal plan:', error);
-                    showError(error.message || 'Failed to delete meal plan');
-                }
+            if (!response.ok) {
+                throw new Error('Failed to delete meal plan');
             }
-        });
-    });
+
+            await loadMealPlans();
+            showSuccess('Meal plan deleted successfully');
+        } catch (error) {
+            console.error('Error deleting meal plan:', error);
+            showError(error.message || 'Failed to delete meal plan');
+        }
+    }
 }
 
 async function loadFavorites() {
@@ -514,7 +541,10 @@ async function loadFavorites() {
             return;
         }
 
-        favoritesContainer.innerHTML = '<div class="loading-spinner"></div>';
+        favoritesContainer.innerHTML = `
+            <div class="skeleton-recipe"></div>
+            <div class="skeleton-recipe"></div>
+        `;
 
         const userResponse = await fetch(`/api/users/${userId}`, {
             headers: {
@@ -530,7 +560,12 @@ async function loadFavorites() {
         const favorites = userData.favorites || userData.profileData?.favorites || [];
 
         if (favorites.length === 0) {
-            favoritesContainer.innerHTML = '<div class="empty-message">No favorite recipes found</div>';
+            favoritesContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>No favorite recipes found.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='recipes-list.html'">Browse Recipes</button>
+                </div>
+            `;
             return;
         }
 
@@ -543,7 +578,12 @@ async function loadFavorites() {
         const recipes = (await Promise.all(recipePromises)).filter(Boolean);
 
         if (recipes.length === 0) {
-            favoritesContainer.innerHTML = '<div class="empty-message">No favorite recipes found</div>';
+            favoritesContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>No favorite recipes found.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='recipes-list.html'">Browse Recipes</button>
+                </div>
+            `;
             return;
         }
 
@@ -551,14 +591,14 @@ async function loadFavorites() {
         recipes.forEach(recipe => {
             const card = document.createElement('div');
             card.className = 'recipe-card';
+            const imageUrl = recipe.image || '';
             card.innerHTML = `
                 <div class="recipe-card-image">
-                    <img src="${recipe.image || 'https://via.placeholder.com/300x200?text=No+Image'}"
-                         alt="${recipe.title}">
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${escapeHtml(recipe.title)}">` : `<div class="avatar-monogram" style="width:100%;height:100%;font-size:2rem;">${getMonogram(recipe.title || 'R')}</div>`}
                 </div>
                 <div class="recipe-card-content">
-                    <h3 class="recipe-card-title">${recipe.title}</h3>
-                    <p class="recipe-card-description">${recipe.description || ''}</p>
+                    <h3 class="recipe-card-title">${escapeHtml(recipe.title)}</h3>
+                    <p class="recipe-card-description">${escapeHtml(recipe.description || '')}</p>
                 </div>
             `;
             card.addEventListener('click', () => {
@@ -569,7 +609,14 @@ async function loadFavorites() {
 
     } catch (error) {
         console.error('Error loading favorites:', error);
-        document.getElementById('favorites-container').innerHTML =
-            '<p class="error-message">Failed to load favorite recipes</p>';
+        document.getElementById('favorites-container').innerHTML = `
+            <div class="error-state">
+                <p>Failed to load favorite recipes</p>
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="loadFavorites()">Retry</button>
+                    <button class="btn btn-primary" onclick="window.location.href='recipes-list.html'">Browse Recipes</button>
+                </div>
+            </div>
+        `;
     }
 }

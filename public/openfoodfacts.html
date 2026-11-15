@@ -3,89 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Food Facts - Recspicy">
     <title>Food Facts - Recspicy</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/openfoodfacts.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <a href="index.html">
-                        <img src="images/logo1.png" alt="Recspicy Logo">
+                    <a href="index.html" class="nav-brand">
+                        <img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+                        <span class="visually-hidden">Recspicy - Recipe Management Platform</span>
                     </a>
                 </div>
                 <div class="nav-links" id="navLinks">
                     <ul>
                         <li><a href="home.html">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
                         <li><a href="openfoodfacts.html" class="active">Food Facts</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="user-actions" id="user-actions">
-                    <a href="signin.html" class="profile-link">Sign In</a>
+                    <a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
                     <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
                 </div>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    <span></span><span></span><span></span>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="container">
-        <section class="page-header">
-            <h1>Open Food Facts</h1>
-            <p class="page-subtitle">Search and explore food products from around the world</p>
-            
-            <div class="search-box">
-                <input type="text" id="search-input" class="search-input" placeholder="Search products by name, brand, or category...">
-                <button class="search-button" id="search-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
-            </div>
-        </section>
+    <main>
+        <div class="grid reveal">
+            <article class="feature">
+                <header class="page-header">
+                    <span class="kicker">Food Facts</span>
+                    <h1>Open Food Facts</h1>
+                    <p class="deck">Search and explore food products from around the world</p>
+                </header>
 
-        <section class="filters-section">
-            <h2 class="filters-title">Categories</h2>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="beverages">Beverages</button>
-                <button class="filter-btn" data-filter="snacks">Snacks</button>
-                <button class="filter-btn" data-filter="dairy">Dairy</button>
-                <button class="filter-btn" data-filter="meat">Meat</button>
-                <button class="filter-btn" data-filter="vegetables">Vegetables</button>
-                <button class="filter-btn" data-filter="fruits">Fruits</button>
-                <button class="filter-btn" data-filter="grains">Grains</button>
-            </div>
-        </section>
+                <div class="search-box reveal">
+                    <label for="search-input" class="visually-hidden">Search products</label>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search products by name, brand, or category..." aria-label="Search food products">
+                    <button class="search-button" id="search-btn" aria-label="Submit search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </article>
 
-        <section class="results-section">
-            <div class="results-header">
+            <aside class="sidebar reveal">
+                <section class="filters-section">
+                    <span class="kicker">Categories</span>
+                    <h2>Filter Products</h2>
+                    <div class="filter-buttons" role="group" aria-label="Product category filters">
+                        <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+                        <button class="filter-btn" data-filter="beverages" aria-pressed="false">Beverages</button>
+                        <button class="filter-btn" data-filter="snacks" aria-pressed="false">Snacks</button>
+                        <button class="filter-btn" data-filter="dairy" aria-pressed="false">Dairy</button>
+                        <button class="filter-btn" data-filter="meat" aria-pressed="false">Meat</button>
+                        <button class="filter-btn" data-filter="vegetables" aria-pressed="false">Vegetables</button>
+                        <button class="filter-btn" data-filter="fruits" aria-pressed="false">Fruits</button>
+                        <button class="filter-btn" data-filter="grains" aria-pressed="false">Grains</button>
+                    </div>
+                </section>
+            </aside>
+        </div>
+
+        <section class="results-section grid reveal">
+            <div class="results-header span-full">
+                <span class="kicker">Results</span>
                 <h2 id="results-title">All Products</h2>
                 <span id="results-count" class="results-count">Loading...</span>
             </div>
-            
+
             <div id="products-container" class="products-grid">
-                <div class="loading-spinner"></div>
+                <div class="loading-spinner" role="status" aria-label="Loading products"></div>
             </div>
-            
+
             <button id="load-more-btn" class="load-more-btn" style="display: none;">Load More</button>
-            
+
             <div id="no-results" class="no-results" style="display: none;">
                 <h3>No products found</h3>
                 <p>Try adjusting your search or filter criteria</p>
@@ -104,11 +113,10 @@
                     <ul>
                         <li><a href="home.html">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
-                        <li><a href="openfoodfacts.html">Food Facts</a></li>
-                        <li><a href="about.html">About Us</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
@@ -116,7 +124,7 @@
                     <h3>Resources</h3>
                     <ul>
                         <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                        <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
                     </ul>
                 </div>
             </div>

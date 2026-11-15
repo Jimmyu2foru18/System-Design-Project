@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reportsContainer.innerHTML = `
                 <div class="error-message">
                     <p>Failed to load reports. Please try again later.</p>
+                    <button class="btn btn-primary" onclick="loadReports()">Retry</button>
                 </div>
             `;
         } finally {
@@ -102,16 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="report-card-body">
                     <div class="report-info">
-                        <div class="report-info-item">
-                            <i>📅</i>
-                            <span>${report.date ? new Date(report.date).toLocaleDateString() : 'Date unknown'}</span>
-                        </div>
-                        ${report.summary ? `
-                        <div class="report-info-item">
-                            <i>📝</i>
-                            <span>${report.summary.substring(0, 100)}${report.summary.length > 100 ? '...' : ''}</span>
-                        </div>
-                        ` : ''}
+                    <div class="report-info-item">
+                        <span class="report-icon">Date:</span>
+                        <span>${report.date ? new Date(report.date).toLocaleDateString() : 'Date unknown'}</span>
+                    </div>
+                    ${report.summary ? `
+                    <div class="report-info-item">
+                        <span class="report-icon">Summary:</span>
+                        <span>${report.summary.substring(0, 100)}${report.summary.length > 100 ? '...' : ''}</span>
+                    </div>
+                    ` : ''}
                     </div>
                     <div class="report-rating">
                         <span class="stars">${stars}</span>

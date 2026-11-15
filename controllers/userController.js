@@ -7,6 +7,13 @@ const client = new OAuth2Client(
 );
 const { isDbConnected } = require('../db');
 
+// Recspicy demo accounts (fallback when DB is unavailable or user not seeded)
+const DEMO_CREDENTIALS = {
+  'demo@recspicy.com': { password: 'recspicy123', name: 'Demo User', username: 'demo', isAdmin: false },
+  'chef@recspicy.com': { password: 'recspicy123', name: 'Chef Recspicy', username: 'chef', isAdmin: false },
+  'reviewer@recspicy.com': { password: 'recspicy123', name: 'Recipe Reviewer', username: 'reviewer', isAdmin: false },
+};
+
 // @desc    Register a new user - simplified version
 // @route   POST /api/users/register
 // @access  Public
@@ -81,9 +88,25 @@ const loginUser = async (req, res) => {
         email: user.email,
         token: generateToken(user._id, user.isAdmin),
       });
-    } else {
-      res.status(401).json({ message: 'Invalid login details' });
+      return;
     }
+
+    // Demo credential fallback (works when DB is unavailable or user not seeded)
+    const demo = DEMO_CREDENTIALS[email];
+    if (demo && demo.password === password) {
+      res.json({
+        _id: 'demo-' + demo.username,
+        name: demo.name,
+        username: demo.username,
+        email: email,
+        isAdmin: demo.isAdmin,
+        token: generateToken('demo-' + demo.username, demo.isAdmin),
+        demo: true,
+      });
+      return;
+    }
+
+    res.status(401).json({ message: 'Invalid login details' });
   } catch (error) {
     console.error('Login error:', error);
     res.status(400).json({ message: 'Login failed' });

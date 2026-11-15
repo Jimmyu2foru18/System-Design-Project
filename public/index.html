@@ -7,89 +7,147 @@
     <title>Recspicy - Recipe Management Platform</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="images/logo1.png" alt="Recspicy Logo">
-                </a>
-            </div>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="index.html" class="nav-brand">
+                        <img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+                        <span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+                    </a>
+                </div>
                 <div class="nav-links" id="navLinks">
                     <ul>
                         <li><a href="home.html" class="active">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
                         <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="user-actions" id="user-actions">
-                    <a href="signin.html" class="profile-link">Sign In</a>
+                    <a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
                     <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
                 </div>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    <span></span><span></span><span></span>
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">Welcome to Recspicy</h1>
-                <p class="hero-subtitle">Discover, create, and share delicious recipes with our community of food lovers</p>
-                <div class="button-container">
-                    <a href="signup.html" class="btn btn-primary btn-lg">Get Started</a>
-                    <a href="home.html" class="btn btn-outline btn-lg">Explore Recipes</a>
-                </div>
-            </div>
-        </section>
+        <div class="grid reveal">
+            <article class="feature">
+                <header class="hero-header">
+                    <span class="kicker">Welcome</span>
+                    <h1>Welcome to Recspicy</h1>
+                    <p class="deck">Your one-stop platform for recipes, meal planning, nutrition analysis, and food exploration.</p>
+                </header>
 
-        <section class="features-section">
-            <div class="container">
-                <h2 class="section-title">Why Choose Recspicy?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">&#128161;</div>
-                        <h3>Smart Discovery</h3>
-                        <p>Find recipes that match your preferences, dietary needs, and available ingredients</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">&#128203;</div>
-                        <h3>Meal Planning</h3>
-                        <p>Plan your week ahead with our intuitive meal planning tools and shopping lists</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">&#128161;</div>
-                        <h3>Community</h3>
-                        <p>Share your creations and discover recipes from food lovers worldwide</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">&#11088;</div>
-                        <h3>Save & Organize</h3>
-                        <p>Build your personal recipe collection with ratings, notes, and custom categories</p>
+                <div class="search-block reveal">
+                    <div class="search-box">
+                        <label for="recipe-search" class="visually-hidden">Search recipes</label>
+                        <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes..." aria-label="Search recipes">
+                        <button class="search-button" id="search-btn" aria-label="Submit search">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-            </div>
-        </section>
+            </article>
 
-        <section class="cta-section">
-            <div class="container">
-                <h2>Ready to Start Cooking?</h2>
-                <p>Join thousands of home cooks and food enthusiasts. Create your free account today.</p>
-                <a href="signup.html" class="btn btn-primary btn-lg">Create Free Account</a>
+            <aside class="sidebar">
+                <section class="platform-stats reveal">
+                    <span class="kicker">Platform Stats</span>
+                    <h2>Platform Stats</h2>
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Users</span>
+                            <span class="stat-value" id="stat-users">Loading...</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Recipes</span>
+                            <span class="stat-value" id="stat-recipes">Loading...</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Food Products</span>
+                            <span class="stat-value">2.5M+</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+
+        <section class="grid reveal">
+            <header class="span-full">
+                <span class="kicker">Explore</span>
+                <h2>Platform Features</h2>
+                <p class="deck">Choose how you want to explore Recspicy.</p>
+            </header>
+            <div class="dashboard-grid">
+                <a href="recipes-list.html" class="dashboard-card reveal">
+                    <div class="dashboard-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="dashboard-card-title">Recipes</h3>
+                    <p class="dashboard-card-description">Browse thousands of recipes from TheMealDB and our community. Filter by category, diet, and more.</p>
+                </a>
+                <a href="meal-planner.html" class="dashboard-card reveal">
+                    <div class="dashboard-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h3 class="dashboard-card-title">Meal Planner</h3>
+                    <p class="dashboard-card-description">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
+                </a>
+                <a href="reports.html" class="dashboard-card reveal">
+                    <div class="dashboard-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3 class="dashboard-card-title">Reports</h3>
+                    <p class="dashboard-card-description">Browse reports from The Report of the Week. Energy Crisis, drink reviews, and more.</p>
+                </a>
+                <a href="openfoodfacts.html" class="dashboard-card reveal">
+                    <div class="dashboard-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M12 2l3.09 6.26C20.06 8.67 21 12.88 18 15c-1.73 1.19-4 1-5-1-1-1-3-0.19-4-1C3 12.88 3.94 8.67 7.91 8.26L12 2z"></svg>
+                        </svg>
+                    </div>
+                    <h3 class="dashboard-card-title">Food Facts</h3>
+                    <p class="dashboard-card-description">Search Open Food Facts for nutrition data, ingredients, and product information.</p>
+                </a>
+                <a href="create-recipe.html" class="dashboard-card reveal">
+                    <div class="dashboard-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3 class="dashboard-card-title">Create Recipe</h3>
+                    <p class="dashboard-card-description">Share your own recipes with the community. Add ingredients, instructions, and images.</p>
+                </a>
             </div>
         </section>
     </main>
@@ -105,7 +163,9 @@
                     <ul>
                         <li><a href="home.html">Home</a></li>
                         <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+                        <li><a href="openfoodfacts.html">Food Facts</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -114,7 +174,7 @@
                     <h3>Resources</h3>
                     <ul>
                         <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
+                        <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
                     </ul>
                 </div>
             </div>
@@ -125,5 +185,6 @@
     </footer>
 
     <script src="js/navigation.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

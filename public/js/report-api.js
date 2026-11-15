@@ -1,4 +1,4 @@
-const BASE_URL = 'https://thereportoftheweekapi.com/api/v1';
+const BASE_URL = '/api/reports';
 
 function normalizeReport(raw) {
   if (!raw || typeof raw !== 'object') return null;
@@ -22,11 +22,12 @@ async function getReports(filters = {}) {
     }
   });
 
-  const url = query.toString() ? `${BASE_URL}/reports/?${query}` : `${BASE_URL}/reports/`;
+  const url = query.toString() ? `${BASE_URL}?${query}` : BASE_URL;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Report API error ${response.status}`);
   const data = await response.json();
-  const reports = Array.isArray(data.reports) ? data.reports : [];
+  const raw = Array.isArray(data) ? data : data.reports || [];
+  const reports = Array.isArray(raw) ? raw : [];
   return reports.map(normalizeReport).filter(Boolean);
 }
 

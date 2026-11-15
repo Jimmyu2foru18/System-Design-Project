@@ -1,182 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Recspicy - Discover, create, and share delicious recipes">
-    <title>Recspicy - Recipe Management Platform</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/home.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Recspicy - Recipe Management Platform">
+<title>Recspicy - Recipe Management Platform</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="images/logo1.png" alt="Recspicy Logo">
-                    </a>
-                </div>
-                <div class="nav-links" id="navLinks">
-                    <ul>
-                        <li><a href="home.html" class="active">Home</a></li>
-                        <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
-                        <li><a href="openfoodfacts.html">Food Facts</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="user-actions" id="user-actions">
-                    <a href="signin.html" class="profile-link">Sign In</a>
-                    <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
-                </div>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </nav>
-    </header>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html" class="active">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Welcome to Recspicy</h1>
-                <p>Your one-stop platform for recipes, meal planning, nutrition analysis, and food exploration</p>
-                
-                <div class="search-box">
-                    <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes...">
-                    <button class="search-button" id="search-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </section>
+<main>
+<div class="grid reveal">
+<article class="feature">
+<header class="hero-header">
+<span class="kicker">Welcome</span>
+<h1>Welcome to Recspicy</h1>
+<p class="deck">Your one-stop platform for recipes, meal planning, nutrition analysis, and food exploration.</p>
+</header>
 
-        <section class="container">
-            <div class="filters-bar">
-                <div class="filter-group">
-                    <button class="filter-btn active" data-filter="all">All Recipes</button>
-                    <button class="filter-btn" data-filter="Breakfast">Breakfast</button>
-                    <button class="filter-btn" data-filter="Lunch">Lunch</button>
-                    <button class="filter-btn" data-filter="Dinner">Dinner</button>
-                    <button class="filter-btn" data-filter="Dessert">Dessert</button>
-                    <button class="filter-btn" data-filter="Snack">Snack</button>
-                </div>
-                <div class="source-toggle">
-                    <button class="source-btn active" data-source="all">All Sources</button>
-                    <button class="source-btn" data-source="mealdb">TheMealDB</button>
-                    <button class="source-btn" data-source="edamam">Edamam</button>
-                    <button class="source-btn" data-source="local">Community</button>
-                </div>
-            </div>
-        </section>
+<div class="search-block reveal">
+<div class="search-box">
+<label for="recipe-search" class="visually-hidden">Search recipes</label>
+<input type="text" id="recipe-search" class="search-input" placeholder="Search recipes..." aria-label="Search recipes">
+<button class="search-button" id="search-btn" aria-label="Submit search">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<circle cx="11" cy="11" r="8"></circle>
+<path d="m21 21-4.35-4.35"></path>
+</svg>
+</button>
+</div>
+</div>
+</article>
 
-        <section class="container">
-            <h2 class="section-title">Explore</h2>
-            <div class="dashboard-grid">
-                <a href="recipes-list.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">🍽️</div>
-                    <h3 class="dashboard-card-title">Recipes</h3>
-                    <p class="dashboard-card-description">Browse thousands of recipes from TheMealDB and our community. Filter by category, diet, and more.</p>
-                </a>
-                <a href="meal-planner.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">📅</div>
-                    <h3 class="dashboard-card-title">Meal Planner</h3>
-                    <p class="dashboard-card-description">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
-                </a>
-                <a href="breweries.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">🍺</div>
-                    <h3 class="dashboard-card-title">Breweries</h3>
-                    <p class="dashboard-card-description">Explore breweries worldwide. Filter by type, location, and discover new craft beer producers.</p>
-                </a>
-                <a href="reports.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">📺</div>
-                    <h3 class="dashboard-card-title">Reports</h3>
-                    <p class="dashboard-card-description">Browse reports from The Report of the Week. Energy Crisis, drink reviews, and more.</p>
-                </a>
-                <a href="openfoodfacts.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">🥗</div>
-                    <h3 class="dashboard-card-title">Food Facts</h3>
-                    <p class="dashboard-card-description">Search Open Food Facts for nutrition data, ingredients, and product information.</p>
-                </a>
-                <a href="create-recipe.html" class="dashboard-card">
-                    <div class="dashboard-card-icon">➕</div>
-                    <h3 class="dashboard-card-title">Create Recipe</h3>
-                    <p class="dashboard-card-description">Share your own recipes with the community. Add ingredients, instructions, and images.</p>
-                </a>
-            </div>
+<aside class="sidebar">
+<section class="platform-stats reveal">
+<span class="kicker">Platform Stats</span>
+<h2>Explore</h2>
+<div class="stat-card">
+<span class="stat-label">Users</span>
+<span class="stat-value" id="stat-users">Loading...</span>
+</div>
+<div class="stat-card">
+<span class="stat-label">Recipes</span>
+<span class="stat-value" id="stat-recipes">Loading...</span>
+</div>
+                <div class="stat-card">
+                    <span class="stat-label">Food Products</span>
+<span class="stat-value">2.5M+</span>
+</div>
+</section>
+</aside>
+</div>
 
-            <h2 class="section-title">Platform Stats</h2>
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">👥</div>
-                    <h3 class="dashboard-card-title">Users</h3>
-                    <p class="dashboard-card-description" id="stat-users">Loading...</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">📖</div>
-                    <h3 class="dashboard-card-title">Recipes</h3>
-                    <p class="dashboard-card-description" id="stat-recipes">Loading...</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">🏭</div>
-                    <h3 class="dashboard-card-title">Breweries</h3>
-                    <p class="dashboard-card-description">8,000+ worldwide</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">📦</div>
-                    <h3 class="dashboard-card-title">Food Products</h3>
-                    <p class="dashboard-card-description">2.5M+ products in Open Food Facts</p>
-                </div>
-            </div>
-        </section>
-    </main>
+<section class="grid reveal">
+<header class="span-full">
+<span class="kicker">Explore</span>
+<h2>Platform Features</h2>
+<p class="deck">Choose how you want to explore Recspicy.</p>
+</header>
+<div class="dashboard-grid">
+<a href="recipes-list.html" class="dashboard-card reveal">
+<div class="dashboard-card-icon">&#128161;</div>
+<h3 class="dashboard-card-title">Recipes</h3>
+<p class="dashboard-card-description">Browse thousands of recipes from TheMealDB and our community. Filter by category, diet, and more.</p>
+</a>
+<a href="meal-planner.html" class="dashboard-card reveal">
+<div class="dashboard-card-icon">&#128203;</div>
+<h3 class="dashboard-card-title">Meal Planner</h3>
+<p class="dashboard-card-description">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
+</a>
+                <a href="reports.html" class="dashboard-card reveal">
+<div class="dashboard-card-icon">&#128483;</div>
+<h3 class="dashboard-card-title">Reports</h3>
+<p class="dashboard-card-description">Browse reports from The Report of the Week. Energy Crisis, drink reviews, and more.</p>
+</a>
+<a href="openfoodfacts.html" class="dashboard-card reveal">
+<div class="dashboard-card-icon">&#129396;</div>
+<h3 class="dashboard-card-title">Food Facts</h3>
+<p class="dashboard-card-description">Search Open Food Facts for nutrition data, ingredients, and product information.</p>
+</a>
+<a href="create-recipe.html" class="dashboard-card reveal">
+<div class="dashboard-card-icon">&#10133;</div>
+<h3 class="dashboard-card-title">Create Recipe</h3>
+<p class="dashboard-card-description">Share your own recipes with the community. Add ingredients, instructions, and images.</p>
+</a>
+</div>
+</section>
+</main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-logo">
-                <img src="images/logo1.png" alt="Recspicy Logo">
-            </div>
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="home.html">Home</a></li>
-                        <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
-                        <li><a href="openfoodfacts.html">Food Facts</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="terms-privacy.html">Terms & Privacy</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Recspicy. All rights reserved.</p>
-        </div>
-    </footer>
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
 
-    <script src="js/navigation.js"></script>
-    <script src="js/home.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

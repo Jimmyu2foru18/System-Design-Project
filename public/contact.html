@@ -4,126 +4,126 @@
 <!-- Authors: James McGuigan -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Recspicy</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/navigation.css">
-<link rel="stylesheet" href="css/contact.css">
-<link rel="stylesheet" href="css/footer.css">
-<!-- Add EmailJS library -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+<title>Contact Us - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<!-- Navigation Bar -->
 <header>
 <nav class="navbar">
 <div class="nav-container">
 <div class="logo">
-<a href="index.html">
-<img src="images/logo1.png" alt="Recspicy Logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
 </a>
 </div>
-                <div class="nav-links" id="navLinks">
-                    <ul>
-                        <li><a href="home.html">Home</a></li>
-                        <li><a href="recipes-list.html">Recipes</a></li>
-                        <li><a href="meal-planner.html">Meal Planner</a></li>
-                        <li><a href="breweries.html">Breweries</a></li>
-                        <li><a href="reports.html">Reports</a></li>
-                        <li><a href="openfoodfacts.html">Food Facts</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html" class="active">Contact</a></li>
-                    </ul>
-                </div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html" class="active">Contact</a></li>
+</ul>
+</div>
 <div class="user-actions" id="user-actions">
-<a href="signin.html" class="profile-link">Sign In</a>
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
 <a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
 </div>
-<div class="hamburger" id="hamburger">
-<span></span>
-<span></span>
-<span></span>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
 </div>
 </div>
 </nav>
 </header>
-<main class="contact-container">
-<section class="contact-header">
-<h1 class="contact-title">Contact Us</h1>
-<p class="contact-subtitle">We're here to help with any questions or concerns</p>
-</section>
-<section class="contact-form">
-<form id="contact-form">
-<div class="form-group">
-<label class="form-label">What can we help you with?</label>
-<select id="category" name="category" class="form-select" required>
-<option value="">Select a category</option>
-<option value="technical">Technical Support</option>
-<option value="account">Account Issues</option>
-<option value="recipe">Recipe Submission</option>
-<option value="feedback">General Feedback</option>
-<option value="other">Other</option>
-</select>
+
+<main class="contact-container reveal">
+<div class="contact-layout">
+  <!-- Left: Contact Form Card -->
+  <article class="contact-card">
+    <div class="contact-header-card">
+      <span class="kicker">Contact</span>
+      <h1 class="contact-title">Contact Us</h1>
+      <p class="contact-subtitle">We're here to help with any questions or concerns</p>
+    </div>
+
+    <form id="contact-form" class="contact-form" novalidate>
+      <div class="form-group">
+        <label class="form-label">What can we help you with?</label>
+        <select id="category" name="category" class="form-select" required>
+          <option value="">Select a category</option>
+          <option value="technical">Technical Support</option>
+          <option value="account">Account Issues</option>
+          <option value="recipe">Recipe Submission</option>
+          <option value="feedback">General Feedback</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" id="firstName" name="firstName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" id="lastName" name="lastName" class="form-input" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="email" name="email" class="form-input" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contact-type" class="form-label">Subject</label>
+          <select name="type" id="contact-type" class="form-select" required>
+            <option value="general">General Inquiry</option>
+            <option value="support">Support Ticket</option>
+            <option value="feedback">Feedback</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="priority" class="form-label">Priority</label>
+          <select name="priority" id="priority" class="form-select">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message" class="form-label">Message</label>
+        <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-button btn btn-primary btn-block">Send Message</button>
+    </form>
+  </article>
+
+  <!-- Right: Info Card -->
+  <aside class="contact-info-card">
+    <div class="info-item">
+      <h3 class="info-title">Business Hours</h3>
+      <p class="info-text">Monday - Friday<br>9:00 AM - 5:00 PM EST</p>
+    </div>
+    <div class="info-item">
+      <h3 class="info-title">Response Time</h3>
+      <p class="info-text">We typically respond within<br>24-48 business hours</p>
+    </div>
+  </aside>
 </div>
-<div class="form-group name-fields">
-<div>
-<label class="form-label">First Name</label>
-<input type="text" id="firstName" name="firstName" class="form-input" required>
-</div>
-<div>
-<label class="form-label">Last Name</label>
-<input type="text" id="lastName" name="lastName" class="form-input" required>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Email Address</label>
-<input type="email" id="email" name="email" class="form-input" required>
-</div>
-<div class="form-group">
-<label for="subject" class="form-label">Subject</label>
-<select name="type" id="contact-type" class="form-select" required>
-<option value="general">General Inquiry</option>
-<option value="support">Support Ticket</option>
-<option value="feedback">Feedback</option>
-</select>
-</div>
-<div class="form-group">
-<label for="message" class="form-label">Message</label>
-<textarea id="message"
-                                                                                                                                            name="message"
-                                                                                                                                            class="form-textarea"
-                                                                                                                                            rows="5"
-                                                                                                                                            required></textarea>
-</div>
-<div class="form-group ticket-priority hidden" id="ticket-priority">
-<label for="priority" class="form-label">Priority</label>
-<select name="priority" id="priority" class="form-select">
-<option value="low">Low</option>
-<option value="medium">Medium</option>
-<option value="high">High</option>
-</select>
-</div>
-<button type="submit" class="submit-button">Send Message</button>
-</form>
-</section>
-<section class="contact-info">
-<div class="info-card">
-<h3 class="info-title">Business Hours</h3>
-<p class="info-text">
-                                                                                                                                                                    Monday - Friday<br>
-                                                                                                                                                                    9:00 AM - 5:00 PM EST
-</p>
-</div>
-<div class="info-card">
-<h3 class="info-title">Response Time</h3>
-<p class="info-text">
-                                                                                                                                                                        We typically respond within<br>
-                                                                                                                                                                        24-48 business hours
-</p>
-</div>
-</section>
 </main>
-<!-- Footer -->
+
 <footer class="footer">
 <div class="footer-container">
 <div class="footer-logo">
@@ -136,6 +136,8 @@
 <li><a href="home.html">Home</a></li>
 <li><a href="recipes-list.html">Recipes</a></li>
 <li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
 <li><a href="about.html">About Us</a></li>
 <li><a href="contact.html">Contact</a></li>
 </ul>
@@ -144,7 +146,7 @@
 <h3>Resources</h3>
 <ul>
 <li><a href="faq.html">FAQ</a></li>
-<li><a href="terms-privacy.html">Terms & Privacy</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
 </ul>
 </div>
 </div>
@@ -153,7 +155,6 @@
 <p>&copy; 2025 Recspicy. All rights reserved.</p>
 </div>
 </footer>
-<!-- Scripts -->
 <script src="js/navigation.js"></script>
 <script src="js/contact.js"></script>
 </body>
