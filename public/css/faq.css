@@ -1,0 +1,86 @@
+/* FAQ Page - Page-Specific Overrides */
+.faq-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+.faq-section {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+.faq-section h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+.faq-item { border-bottom: 1px solid var(--muted); padding: 1rem 0; }
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  color: var(--ink);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.faq-question:hover { color: var(--accent); }
+.faq-question:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.question-text { font-weight: 600; }
+.question-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s;
+}
+.faq-answer {
+  display: none;
+  padding-top: 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.help-section {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-top: 3rem;
+}
+.help-section h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+.help-text { color: var(--muted); margin-bottom: 1.5rem; font-size: 1rem; }
+.help-button {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.help-button:hover { background: var(--accent); color: var(--paper); }
+@media (max-width: 768px) {
+  .faq-categories { grid-template-columns: 1fr; }
+  .help-section { padding: 2rem 1rem; }
+}

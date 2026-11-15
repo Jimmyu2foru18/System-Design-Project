@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Authors: James McGuigan -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/print.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main>
+<div class="grid reveal">
+<article class="feature">
+<header class="article-header">
+<span class="kicker">Recipe</span>
+<h1 id="recipe-title" class="recipe-title"></h1>
+<div class="recipe-meta">
+<span class="meta-item" id="recipe-time"><span class="meta-icon" aria-hidden="true">⏱</span> <span id="recipe-time-value">?</span> min</span>
+<span class="meta-item" id="recipe-servings"><span class="meta-icon" aria-hidden="true">🍽</span> <span id="recipe-servings-value">4</span> servings</span>
+<span class="meta-item" id="recipe-difficulty"><span class="meta-icon" aria-hidden="true">📊</span> <span id="recipe-difficulty-value">Medium</span></span>
+<span class="meta-item" id="recipe-author"><span class="meta-icon" aria-hidden="true">👤</span> <span id="recipe-author-value">Unknown</span></span>
+</div>
+<div class="pull-quote" id="pull-quote" style="display: none;"></div>
+</header>
+
+<div class="article-body reveal" id="article-body">
+<div class="recipe-image-container">
+<img id="recipe-image" class="recipe-image" src="" alt="" />
+</div>
+
+<div id="recipe-description" class="recipe-description"></div>
+
+<div id="recipe-tags" class="recipe-tags"></div>
+
+<section class="recipe-section">
+<h2 class="section-title">Ingredients</h2>
+<ul id="ingredients-list" class="ingredients-list"></ul>
+</section>
+
+<section class="recipe-section">
+<h2 class="section-title">Instructions</h2>
+<ol id="instructions-list" class="instructions-list"></ol>
+</section>
+</div>
+
+<div class="recipe-actions reveal">
+<button id="star-btn" class="action-btn" title="Rate this recipe" aria-label="Rate this recipe">
+<span class="visually-hidden">Rate Recipe</span>
+<span id="star-icon">☆</span>
+<span id="star-label">Rate Recipe</span>
+<span id="star-count" class="count-badge">0</span>
+</button>
+<button id="favorite-btn" class="action-btn" title="Add to favorites" aria-label="Add to favorites">
+<span class="visually-hidden">Add to Favorites</span>
+<span id="favorite-icon">♡</span>
+<span id="favorite-label">Add to Favorites</span>
+</button>
+<button id="print-btn" class="action-btn" title="Print recipe" aria-label="Print recipe">
+<span class="visually-hidden">Print Recipe</span>
+<span id="print-icon">🖨</span>
+<span id="print-label">Print Recipe</span>
+</button>
+</div>
+</article>
+
+<aside class="sidebar">
+<section id="notes-section" class="notes-section" style="display: none;">
+<span class="kicker">Recipe Notes</span>
+<h2>Notes</h2>
+<div id="recipe-notes" class="recipe-notes"></div>
+</section>
+</aside>
+</div>
+</main>
+
+<div id="error-container" class="error-message" style="display: none;">
+<span id="error-message"></span>
+</div>
+
+<div id="toast-message" class="toast-message"></div>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo" width="150" height="auto">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/mealdb-api.js"></script>
+<script src="js/nutrition.js"></script>
+<script src="js/recipe-display.js"></script>
+</body>
+</html>

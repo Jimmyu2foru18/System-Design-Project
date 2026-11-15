@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Authors: James McGuigan -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/profile.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="profile.html" class="profile-link active">Profile</a>
+<button id="logout-btn" class="btn btn-outline btn-sm">Logout</button>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main class="profile-container reveal">
+<div class="profile-wrapper">
+  <!-- Profile Header Card -->
+  <section class="profile-header-card card reveal">
+    <div class="profile-header-inner">
+      <div class="avatar-wrapper">
+        <div class="avatar-monogram" id="avatar-monogram">U</div>
+        <img class="avatar-img" id="profile-avatar-img" src="" alt="" style="display: none;">
+      </div>
+      <div class="profile-text">
+        <h1 id="profile-name" class="profile-name">User</h1>
+        <p id="profile-bio" class="profile-bio">Loading profile...</p>
+      </div>
+      <div class="profile-actions">
+        <button id="edit-profile-btn" class="btn btn-primary" onclick="openEditProfileModal()">Edit Profile</button>
+        <a href="create-recipe.html" class="btn btn-secondary">Create Recipe</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tab Navigation -->
+  <section class="tabs-container card reveal">
+    <div class="tabs-nav">
+      <button class="tab pill active" data-tab="my-recipes">My Recipes</button>
+      <button class="tab pill" data-tab="favorites">Favorites</button>
+      <button class="tab pill" data-tab="meal-plans">Meal Plans</button>
+    </div>
+
+    <!-- My Recipes -->
+    <div id="my-recipes" class="tab-content active">
+      <h2 class="content-title">My Recipes</h2>
+      <div class="card-grid" id="user-recipes-container">
+        <div class="skeleton-recipe"></div>
+        <div class="skeleton-recipe"></div>
+        <div class="skeleton-recipe"></div>
+      </div>
+    </div>
+
+    <!-- Favorites -->
+    <div id="favorites" class="tab-content">
+      <h2 class="content-title">Favorite Recipes</h2>
+      <div class="card-grid" id="favorites-container">
+        <div class="skeleton-recipe"></div>
+        <div class="skeleton-recipe"></div>
+      </div>
+    </div>
+
+    <!-- Meal Plans -->
+    <div id="meal-plans" class="tab-content">
+      <h2 class="content-title">My Meal Plans</h2>
+      <div class="card-grid" id="meal-plans-grid">
+        <div class="skeleton-meal-plan"></div>
+        <div class="skeleton-meal-plan"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="form-error" class="error-message" style="display: none;"></div>
+</main>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+
+<div id="edit-profile-modal" class="modal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeEditProfileModal()">&times;</span>
+<h2>Edit Profile</h2>
+<form id="edit-profile-form">
+<div class="form-group">
+<label for="edit-name">Name</label>
+<input type="text" id="edit-name" name="name" required>
+</div>
+<div class="form-group">
+<label for="edit-bio">Bio</label>
+<textarea id="edit-bio" name="bio" rows="4"></textarea>
+</div>
+<div class="form-group">
+<label for="edit-profile-image">Profile Image</label>
+<input type="file" id="edit-profile-image" name="profileImage" accept="image/*" onchange="handleProfileImageChange(event)">
+<div class="image-preview-container">
+<img id="profile-image-preview" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
+</div>
+</div>
+<div class="form-actions">
+<button type="button" class="btn btn-outline btn-lg" onclick="closeEditProfileModal()">Cancel</button>
+<button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+
+<div id="edit-profile-modal-overlay" class="modal-overlay"></div>
+
+<script src="js/navigation.js"></script>
+<script src="js/profile.js"></script>
+<script>
+function openEditProfileModal() {
+    document.getElementById('edit-profile-modal').classList.add('show');
+    document.getElementById('edit-profile-modal-overlay').classList.add('show');
+}
+
+function closeEditProfileModal() {
+    document.getElementById('edit-profile-modal').classList.remove('show');
+    document.getElementById('edit-profile-modal-overlay').classList.remove('show');
+}
+
+document.getElementById('edit-profile-modal-overlay').addEventListener('click', function() {
+    closeEditProfileModal();
+});
+</script>
+</body>
+</html>

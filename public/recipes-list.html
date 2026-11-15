@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Browse Recipes - Recspicy">
+<title>Browse Recipes - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html" class="active">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main>
+<div class="grid reveal">
+<article class="feature">
+<header class="page-header">
+<span class="kicker">Recipes</span>
+<h1>Discover Your Next Favorite Recipe</h1>
+<p class="deck">Explore thousands of recipes across every cuisine, dietary preference, and meal type—from TheMealDB, Edamam Nutrition API, and our community of home cooks.</p>
+</header>
+
+<div class="search-box reveal">
+<label for="search-input" class="visually-hidden">Search recipes</label>
+<input type="text" id="search-input" class="search-input" placeholder="Search recipes..." aria-label="Search recipes">
+<button class="search-button" id="search-btn" aria-label="Submit search">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<circle cx="11" cy="11" r="8"></circle>
+<path d="m21 21-4.35-4.35"></path>
+</svg>
+</button>
+</div>
+</article>
+
+<aside class="sidebar">
+<section class="filters-section reveal">
+<span class="kicker">Filters</span>
+<h2>Filter Recipes</h2>
+<div class="filter-buttons" id="filter-buttons" role="group" aria-label="Recipe category filters">
+<button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+<button class="filter-btn" data-filter="meat" aria-pressed="false">Meat</button>
+<button class="filter-btn" data-filter="vegetarian" aria-pressed="false">Vegetarian</button>
+<button class="filter-btn" data-filter="vegan" aria-pressed="false">Vegan</button>
+<button class="filter-btn" data-filter="dessert" aria-pressed="false">Dessert</button>
+<button class="filter-btn" data-filter="breakfast" aria-pressed="false">Breakfast</button>
+<button class="filter-btn" data-filter="lunch" aria-pressed="false">Lunch</button>
+<button class="filter-btn" data-filter="dinner" aria-pressed="false">Dinner</button>
+</div>
+</section>
+</aside>
+</div>
+
+<section class="results-section grid reveal">
+<div class="results-header span-full">
+<span class="kicker">Results</span>
+<h2 id="results-title">All Recipes</h2>
+<span id="results-count" class="results-count">Loading...</span>
+</div>
+
+<div id="recipes-container" class="recipes-grid">
+<div class="loading-spinner" role="status" aria-label="Loading recipes"></div>
+</div>
+
+<button id="load-more-btn" class="load-more-btn" style="display: none;">Load More</button>
+
+<div id="no-results" class="no-results" style="display: none;">
+<h3>No recipes found</h3>
+<p>Try adjusting your search or filter criteria</p>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/mealdb-api.js"></script>
+<script src="js/recipes-list.js"></script>
+</body>
+</html>

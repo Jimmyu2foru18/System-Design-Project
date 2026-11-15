@@ -1,0 +1,72 @@
+/* Contact Page - Page-Specific Overrides */
+.article-header {
+  margin-bottom: 2rem;
+}
+.article-header h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.article-header .deck {
+  font-size: 1.125rem;
+  color: var(--muted);
+  max-width: 65ch;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.form-group.span-6 { grid-column: span 6; }
+.form-group.span-full { grid-column: span 12; }
+.submit-button {
+  height: 44px;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+.submit-button:hover { background: var(--accent-hover); }
+.submit-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.info-card {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+.info-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.info-text { color: var(--muted); line-height: 1.6; }
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
+  .form-group.span-6 { grid-column: span 12; }
+  .article-header h1 { font-size: 2rem; }
+}

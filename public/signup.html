@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Authors: James McGuigan -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://accounts.google.com https://www.google.com https://www.gstatic.com https://api.edamam.com https://www.themealdb.com;">
+<title>Sign Up - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="js/config.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main class="signup-container reveal">
+<div class="grid">
+<article class="feature">
+<header class="signup-header">
+<span class="kicker">Create Account</span>
+<h1 class="signup-title">Sign Up</h1>
+<p class="signup-subtitle">Join our community of food lovers</p>
+</header>
+
+<button class="btn-google reveal">
+<img src="images/Google__G__logo.svg" alt="Google" class="google-icon">
+Sign up with Google
+</button>
+
+<div class="divider reveal">
+<div class="divider-line"></div>
+<span class="divider-text">or</span>
+<div class="divider-line"></div>
+</div>
+
+<form id="signup-form">
+<div class="form-row">
+<div class="form-group">
+<label for="first-name" class="form-label">First Name</label>
+<input type="text" id="first-name" class="form-input" required aria-required="true">
+<span class="error-message" role="alert"></span>
+</div>
+<div class="form-group">
+<label for="last-name" class="form-label">Last Name</label>
+<input type="text" id="last-name" class="form-input" required aria-required="true">
+<span class="error-message" role="alert"></span>
+</div>
+</div>
+<div class="form-group">
+<input type="text" id="username" class="form-input" placeholder="Username" required>
+<span class="error-message">Username must be 3-20 characters</span>
+</div>
+<div class="form-group">
+<input type="email" id="email" class="form-input" placeholder="Email" required>
+<span class="error-message">Please enter a valid email</span>
+</div>
+<div class="form-group">
+<input type="password" id="password" class="form-input" placeholder="Password" required>
+<span class="error-message">Password must be at least 6 characters</span>
+</div>
+<div class="form-group">
+<input type="password" id="confirm-password" class="form-input" placeholder="Confirm Password" required>
+<span class="error-message">Passwords do not match</span>
+</div>
+<div class="terms-checkbox reveal">
+<input type="checkbox" id="terms-agree" required>
+<span class="terms-text">
+I agree to the <a href="terms-privacy.html#terms">Terms of Service.</a>
+</span>
+</div>
+<button type="submit" class="btn btn-primary btn-block reveal">Create Account</button>
+</form>
+
+<p class="signin-prompt reveal">
+Already have an account?
+<a href="signin.html" class="signin-link">Sign in</a>
+</p>
+</article>
+
+<aside class="sidebar">
+<section class="signup-info">
+<span class="kicker">Why Join?</span>
+<h2>Join Our Community</h2>
+<p class="deck">Create your free account to save recipes, plan meals, and connect with fellow food lovers.</p>
+<ul class="benefits-list">
+<li><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></svg></span> Save your favorite recipes</li>
+<li><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span> Plan your weekly meals</li>
+<li><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span> Rate and review recipes</li>
+<li><span class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M8 10h8"></path><path d="M12 14V4"></path></svg></span> Share your own creations</li>
+</ul>
+</section>
+</aside>
+</div>
+</main>
+
+<a href="index.html" class="return-link reveal">Return to Landing Page</a>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+
+<script src="js/navigation.js"></script>
+<script src="js/signup.js"></script>
+</body>
+</html>

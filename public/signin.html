@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sign in to your Recspicy account">
+<title>Sign In - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/signin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="js/config.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+<script src="js/navigation.js"></script>
+<script src="js/signin.js"></script>
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm active">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main class="signin-container reveal">
+  <div class="signin-wrap">
+    <article class="signin-card">
+      <header class="signin-header">
+        <span class="kicker">Welcome Back</span>
+        <h1 class="signin-title">Sign In</h1>
+        <p class="signin-subtitle">Sign in to access your recipes, meal plans, and saved favorites.</p>
+      </header>
+
+      <button class="btn btn-secondary btn-block btn-google reveal" type="button">
+        <img src="images/Google__G__logo.svg" alt="Google" class="google-icon">
+        Sign in with Google
+      </button>
+
+      <div class="divider reveal">
+        <div class="divider-line"></div>
+        <span class="divider-text">or</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <form id="signin-form">
+        <div id="signin-error" class="error-message" style="display: none;"></div>
+        <div class="form-group">
+          <label for="user-input">Username or Email</label>
+          <input type="text" id="user-input" class="form-input" placeholder="Username or Email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="Password" required>
+        </div>
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" id="remember">
+            <span>Remember me</span>
+          </label>
+          <a href="contact.html" class="forgot-password">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+
+      <p class="signup-prompt reveal">
+        Don't have an account?
+        <a href="signup.html" class="signup-link">Sign up</a>
+      </p>
+    </article>
+
+    <aside class="signin-demo">
+      <section class="demo-credentials">
+        <span class="kicker">Demo Credentials</span>
+        <h2>Try These Accounts</h2>
+        <p class="deck">Use any account below to explore Recspicy:</p>
+        <div class="cred-list">
+          <div class="cred-item reveal" data-email="demo@recspicy.com" data-pass="recspicy123">
+            <div class="cred-email">demo@recspicy.com</div>
+            <div class="cred-meta">
+              <span class="cred-role">Demo User</span>
+              <span class="cred-pass"><strong>Password:</strong> recspicy123</span>
+            </div>
+            <button class="btn btn-outline btn-sm cred-fill" type="button">Fill</button>
+          </div>
+          <div class="cred-item reveal" data-email="chef@recspicy.com" data-pass="recspicy123">
+            <div class="cred-email">chef@recspicy.com</div>
+            <div class="cred-meta">
+              <span class="cred-role">Chef</span>
+              <span class="cred-pass"><strong>Password:</strong> recspicy123</span>
+            </div>
+            <button class="btn btn-outline btn-sm cred-fill" type="button">Fill</button>
+          </div>
+          <div class="cred-item reveal" data-email="reviewer@recspicy.com" data-pass="recspicy123">
+            <div class="cred-email">reviewer@recspicy.com</div>
+            <div class="cred-meta">
+              <span class="cred-role">Reviewer</span>
+              <span class="cred-pass"><strong>Password:</strong> recspicy123</span>
+            </div>
+            <button class="btn btn-outline btn-sm cred-fill" type="button">Fill</button>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <a href="index.html" class="return-link reveal">← Return to Landing Page</a>
+</main>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+
+</body>
+</html>

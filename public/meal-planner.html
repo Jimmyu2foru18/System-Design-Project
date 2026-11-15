@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Authors: James McGuigan -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meal Planner - Recspicy</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/meal-planner.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar">
+<div class="nav-container">
+<div class="logo">
+<a href="index.html" class="nav-brand">
+<img src="images/logo1.png" alt="Recspicy Logo" width="40" height="40">
+<span class="visually-hidden">Recspicy - Recipe Management Platform</span>
+</a>
+</div>
+<div class="nav-links" id="navLinks">
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html" class="active">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="user-actions" id="user-actions">
+<a href="signin.html" class="btn btn-outline btn-sm">Sign In</a>
+<a href="signup.html" class="btn btn-secondary btn-sm">Sign Up</a>
+</div>
+<div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<main class="meal-planner-container reveal">
+<div class="meal-plan-wrapper">
+  <!-- Sign-in prompt (shown when not authenticated) -->
+  <section id="signin-prompt" class="signin-prompt card">
+    <div class="signin-prompt-body">
+      <span class="kicker">Sign In to Plan</span>
+      <h2>Create a Meal Plan</h2>
+      <p class="deck">You need to be signed in to create and save meal plans. Sign in below or continue browsing as a guest.</p>
+      <div class="signin-prompt-actions">
+        <a href="signin.html?redirect=meal-planner.html" class="btn btn-primary">Sign In</a>
+        <a href="signin.html?redirect=meal-planner.html" class="btn btn-secondary">Use Demo Account</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meal plan form (shown when authenticated) -->
+  <section id="meal-plan-section" class="meal-plan-section card" style="display: none;">
+    <header class="meal-plan-header">
+      <span class="kicker">Create Meal Plan</span>
+      <h1 class="meal-plan-title">Create Meal Plan</h1>
+      <p class="deck">Plan your weekly meals, generate shopping lists, and track nutrition across your plan.</p>
+    </header>
+
+    <form id="meal-plan-form" class="meal-plan-form" novalidate>
+      <!-- Basic Information -->
+      <section class="form-section">
+        <h2>Basic Information</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="plan-name">Meal Plan Name <span class="required">*</span></label>
+            <input type="text" id="plan-name" name="planName" placeholder="e.g. Summer Week" required>
+          </div>
+          <div class="form-group span-full">
+            <label for="plan-description">Description</label>
+            <textarea id="plan-description" name="description" placeholder="What meals will you be cooking this week?" rows="2"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Daily Meals -->
+      <section class="form-section">
+        <h2>Daily Meals</h2>
+        <p class="deck">Select a day to add meals and ingredients.</p>
+
+        <!-- Day tabs -->
+        <div class="day-tabs">
+          <button type="button" class="day-tab active" data-day="monday">Monday</button>
+          <button type="button" class="day-tab" data-day="tuesday">Tuesday</button>
+          <button type="button" class="day-tab" data-day="wednesday">Wednesday</button>
+          <button type="button" class="day-tab" data-day="thursday">Thursday</button>
+          <button type="button" class="day-tab" data-day="friday">Friday</button>
+          <button type="button" class="day-tab" data-day="saturday">Saturday</button>
+          <button type="button" class="day-tab" data-day="sunday">Sunday</button>
+        </div>
+
+        <!-- Day panels -->
+        <div class="day-panels">
+          <div class="day-panel active" id="panel-monday">
+            <div class="day-meal-block" id="day-monday">
+              <div class="form-group">
+                <label for="monday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="monday-meal" name="monday[meal]" placeholder="e.g. Grilled Chicken Salad" required>
+              </div>
+              <div class="form-group">
+                <label for="monday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="monday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="monday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="monday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="monday-instructions">Instructions</label>
+                <textarea id="monday-instructions" name="monday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-tuesday">
+            <div class="day-meal-block" id="day-tuesday">
+              <div class="form-group">
+                <label for="tuesday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="tuesday-meal" name="tuesday[meal]" placeholder="e.g. Pasta Primavera" required>
+              </div>
+              <div class="form-group">
+                <label for="tuesday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="tuesday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="tuesday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="tuesday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="tuesday-instructions">Instructions</label>
+                <textarea id="tuesday-instructions" name="tuesday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-wednesday">
+            <div class="day-meal-block" id="day-wednesday">
+              <div class="form-group">
+                <label for="wednesday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="wednesday-meal" name="wednesday[meal]" placeholder="e.g. Stir-Fry Vegetables" required>
+              </div>
+              <div class="form-group">
+                <label for="wednesday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="wednesday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="wednesday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="wednesday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="wednesday-instructions">Instructions</label>
+                <textarea id="wednesday-instructions" name="wednesday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-thursday">
+            <div class="day-meal-block" id="day-thursday">
+              <div class="form-group">
+                <label for="thursday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="thursday-meal" name="thursday[meal]" placeholder="e.g. Beef Tacos" required>
+              </div>
+              <div class="form-group">
+                <label for="thursday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="thursday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="thursday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="thursday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="thursday-instructions">Instructions</label>
+                <textarea id="thursday-instructions" name="thursday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-friday">
+            <div class="day-meal-block" id="day-friday">
+              <div class="form-group">
+                <label for="friday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="friday-meal" name="friday[meal]" placeholder="e.g. Salmon with Asparagus" required>
+              </div>
+              <div class="form-group">
+                <label for="friday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="friday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="friday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="friday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="friday-instructions">Instructions</label>
+                <textarea id="friday-instructions" name="friday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-saturday">
+            <div class="day-meal-block" id="day-saturday">
+              <div class="form-group">
+                <label for="saturday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="saturday-meal" name="saturday[meal]" placeholder="e.g. Weekend Brunch" required>
+              </div>
+              <div class="form-group">
+                <label for="saturday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="saturday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="saturday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="saturday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="saturday-instructions">Instructions</label>
+                <textarea id="saturday-instructions" name="saturday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="day-panel" id="panel-sunday">
+            <div class="day-meal-block" id="day-sunday">
+              <div class="form-group">
+                <label for="sunday-meal">Meal Name <span class="required">*</span></label>
+                <input type="text" id="sunday-meal" name="sunday[meal]" placeholder="e.g. Roast Dinner" required>
+              </div>
+              <div class="form-group">
+                <label for="sunday-ingredients">Ingredients</label>
+                <div class="ingredient-list" id="sunday-ingredients-list">
+                  <div class="ingredient-row">
+                    <input type="text" name="sunday[ingredients][]" placeholder="Enter ingredient" required>
+                    <button type="button" class="btn btn-outline btn-sm remove-ingredient">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm add-ingredient" data-day="sunday">Add Ingredient</button>
+              </div>
+              <div class="form-group">
+                <label for="sunday-instructions">Instructions</label>
+                <textarea id="sunday-instructions" name="sunday[instructions]" placeholder="Cooking steps..." rows="2" required></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="reset-form-btn">Reset Form</button>
+        <button type="button" class="btn btn-secondary" id="shopping-list-btn">Shopping List</button>
+        <button type="submit" class="btn btn-primary">Save Meal Plan</button>
+      </div>
+    </form>
+
+    <!-- Nutrition Summary -->
+    <section id="nutrition-summary" class="nutrition-summary card">
+      <h2>Weekly Nutrition Estimate</h2>
+      <div class="nutrition-grid" id="weekly-nutrition">
+        <div class="nutrition-card">
+          <span class="nutrition-label">Calories</span>
+          <span class="nutrition-value" id="total-calories">0</span>
+        </div>
+        <div class="nutrition-card">
+          <span class="nutrition-label">Protein</span>
+          <span class="nutrition-value" id="total-protein">0g</span>
+        </div>
+        <div class="nutrition-card">
+          <span class="nutrition-label">Fat</span>
+          <span class="nutrition-value" id="total-fat">0g</span>
+        </div>
+        <div class="nutrition-card">
+          <span class="nutrition-label">Carbs</span>
+          <span class="nutrition-value" id="total-carbs">0g</span>
+        </div>
+        <div class="nutrition-card">
+          <span class="nutrition-label">Fiber</span>
+          <span class="nutrition-value" id="total-fiber">0g</span>
+        </div>
+      </div>
+      <p class="nutrition-note">* Estimated values based on ingredients</p>
+    </section>
+  </section>
+</div>
+
+<div id="form-error" class="error-message" style="display: none;"></div>
+
+</main>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-logo">
+<img src="images/logo.png" alt="Recspicy Logo">
+</div>
+<div class="footer-links">
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="recipes-list.html">Recipes</a></li>
+<li><a href="meal-planner.html">Meal Planner</a></li>
+<li><a href="openfoodfacts.html">Food Facts</a></li>
+<li><a href="about.html">About Us</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2025 Recspicy. All rights reserved.</p>
+</div>
+</footer>
+<script src="js/navigation.js"></script>
+<script src="js/meal-planner.js"></script>
+</body>
+</html>
